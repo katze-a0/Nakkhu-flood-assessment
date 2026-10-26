@@ -1,0 +1,38 @@
+{
+ "model": "zeroshot:sam3:building:full",
+ "zeroshot": true,
+ "region": "test",
+ "scene": "maxar_wv02_20240113",
+ "tile_index": "{data_root}/interim/tiles/maxar_wv02_20240113/infer/index.parquet",
+ "tiles": 277,
+ "detections": 54334,
+ "conf_min": 0.02,
+ "prompt": "building",
+ "variant": "full",
+ "crops": [
+  [
+   0,
+   0,
+   640
+  ]
+ ],
+ "inputs_per_window": 1,
+ "inputs_capped_at_num_queries": 241,
+ "ms_per_tile": 13663.9,
+ "ms_per_input": 13663.9,
+ "predict_wall_s": 3784.9,
+ "load_s": 38.0,
+ "weights": "kaggle://keras/sam3/keras/sam3_pcs/1 (SAM License)",
+ "preset_listing_sha256": "b30adb8a7042d9f3f7bde483c060a18a50f6fa63e5916967e1fadfe94df6255a",
+ "versions": {
+  "keras": "3.15.1",
+  "keras_hub": "0.32.0",
+  "jax": "0.11.2",
+  "tensorflow": "2.21.0",
+  "python": "3.12.13"
+ },
+ "devices": [
+  "cuda:0"
+ ],
+ "host": "63248facfcac"
+}

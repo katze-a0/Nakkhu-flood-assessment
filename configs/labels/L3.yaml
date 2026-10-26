@@ -1,0 +1,4 @@
+# L3: union = L1 plus Microsoft instances that match no L1 instance.
+extends: common.yaml
+arm: L3
+rule: union

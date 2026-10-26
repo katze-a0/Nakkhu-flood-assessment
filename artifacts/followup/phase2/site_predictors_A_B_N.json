@@ -1,0 +1,130 @@
+{
+  "dems": {
+    "fabdem": {
+      "dem": "fabdem",
+      "drop_threshold_km2": 0.2,
+      "grid": {
+        "crs": "EPSG:32645",
+        "height": 1168,
+        "transform": [
+          30.0,
+          0.0,
+          319350.0,
+          0.0,
+          -30.0,
+          3080040.0
+        ],
+        "width": 1242
+      },
+      "interim": "/opt/nakkhu-xm/p2/root/data/interim/hand/dc9658f5",
+      "routing_gate_pass": true,
+      "routing_gate_reason": "nan",
+      "sweep_run": "hand/20261005T191226Z-dc9658f5",
+      "thresholds": "all16"
+    },
+    "glo30": {
+      "dem": "glo30",
+      "drop_threshold_km2": 0.2,
+      "grid": {
+        "crs": "EPSG:32645",
+        "height": 1168,
+        "transform": [
+          30.0,
+          0.0,
+          319350.0,
+          0.0,
+          -30.0,
+          3080040.0
+        ],
+        "width": 1242
+      },
+      "interim": "/opt/nakkhu-xm/p2/root/data/interim/hand/dc9658f5",
+      "routing_gate_pass": true,
+      "routing_gate_reason": "nan",
+      "sweep_run": "hand/20261005T191226Z-dc9658f5",
+      "thresholds": "all16"
+    }
+  },
+  "note": "the predictor tables stay in the run (over the artifact size limit); this summary pins their sha256",
+  "run": "followup-p2/20261017T154103Z-c9229b32",
+  "sites": {
+    "A": {
+      "drain_shares_drop_threshold": [
+        {
+          "dem": "glo30",
+          "inventory": "A",
+          "is_drop_threshold": true,
+          "n_buildings": 32669,
+          "n_drains_main": 7752,
+          "n_reach_stream": 32669,
+          "routing_gate_pass": true,
+          "share_drains_main": 0.23728917322232085,
+          "threshold_km2": 0.2
+        }
+      ],
+      "fabdem_main_cells": 572,
+      "file": "site_A_predictors.parquet",
+      "glo30_main_cells": 584,
+      "hand_mr_d8_nan": 25,
+      "hand_mr_d8_reach_share": 0.9992347485383697,
+      "hand_mr_d8_sha256": "8ba791eaa79d8373bbe5d1296a3e2df0569042fab8abe85ee381b2d33fb4ac22",
+      "hand_v9_nan": 0,
+      "ml_rows_all_28_finite": 32637,
+      "ml_rows_nan": 32,
+      "n_buildings": 32669,
+      "sha256": "1ef3e7841b40c99081eb0cee3ae8c82cd616942e3b32ec4de33fcea8f6b33c07"
+    },
+    "B": {
+      "drain_shares_drop_threshold": [
+        {
+          "dem": "glo30",
+          "inventory": "B",
+          "is_drop_threshold": true,
+          "n_buildings": 13507,
+          "n_drains_main": 4310,
+          "n_reach_stream": 13507,
+          "routing_gate_pass": true,
+          "share_drains_main": 0.31909380321314873,
+          "threshold_km2": 0.2
+        }
+      ],
+      "fabdem_main_cells": 323,
+      "file": "site_B_predictors.parquet",
+      "glo30_main_cells": 324,
+      "hand_mr_d8_nan": 4239,
+      "hand_mr_d8_reach_share": 0.6861627304360702,
+      "hand_mr_d8_sha256": "b0f7dec76e3439f71bfd75c65a142547b6b058f26a5c31cf41bf2c3d8e552596",
+      "hand_v9_nan": 0,
+      "ml_rows_all_28_finite": 9121,
+      "ml_rows_nan": 4386,
+      "n_buildings": 13507,
+      "sha256": "42cd78867edda19c3a3bbe243b0c7b26784dbecfa0548410f2f97b41c4afc5fe"
+    },
+    "N": {
+      "drain_shares_drop_threshold": [
+        {
+          "dem": "glo30",
+          "inventory": "N",
+          "is_drop_threshold": true,
+          "n_buildings": 37234,
+          "n_drains_main": 9639,
+          "n_reach_stream": 37234,
+          "routing_gate_pass": true,
+          "share_drains_main": 0.2588762958586238,
+          "threshold_km2": 0.2
+        }
+      ],
+      "fabdem_main_cells": 551,
+      "file": "site_N_predictors.parquet",
+      "glo30_main_cells": 552,
+      "hand_mr_d8_nan": 892,
+      "hand_mr_d8_reach_share": 0.9760434011924585,
+      "hand_mr_d8_sha256": "f70c052be4962a0fea826c62aa3117095431fcde526cc5bef36798e6721163e8",
+      "hand_v9_nan": 0,
+      "ml_rows_all_28_finite": 36310,
+      "ml_rows_nan": 924,
+      "n_buildings": 37234,
+      "sha256": "d55b4b6fae74bd7072e0b76fca83c3a3863c644826c9abdfc2464a443251eab4"
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+ "answered": 300,
+ "answers": {
+  "no": 43,
+  "unsure": 8,
+  "yes": 249
+ },
+ "auditors": [
+  "author"
+ ],
+ "author_total_min": 38.686283333333336,
+ "cap_min": 120.0,
+ "items_sha256": "0b12b7900de71c1f6eeced5d351665ab08604a551a916ae27428a2695a0b5352",
+ "queue_slots": 315,
+ "redo": {
+  "archive": "responses_pass1.jsonl",
+  "archive_sha256": "0b3b92e0da0a51b143b8206ef5095a3482fa2678d54141da2be27e618d735d38",
+  "auditor": "author",
+  "event": "redo",
+  "items_sha256": "0b12b7900de71c1f6eeced5d351665ab08604a551a916ae27428a2695a0b5352",
+  "note": "whole sitting redone in the same queue order; the page showed the pass1 answer of every slot before it was answered (non-blind)",
+  "prior_answer_shown": true,
+  "redo_of": "pass1",
+  "utc": "2026-10-16T16:38:43Z"
+ },
+ "repeats_answered": 15,
+ "self_agreement": {
+  "agreement": 0.9333333333333333,
+  "kappa": 0.6341463414634146,
+  "n": 15
+ },
+ "self_agreement_yes_no": {
+  "agreement": 0.9333333333333333,
+  "kappa": 0.6341463414634146,
+  "n": 15
+ },
+ "task": "precision_pool",
+ "timing": {
+  "logged_min": 4.904633333333333,
+  "mean_s": 0.8294412698412698,
+  "median_s": 0.561,
+  "sittings_min": {
+   "precision_pool-20261016T163843Z": 4.904633333333333
+  }
+ },
+ "undone": 32
+}

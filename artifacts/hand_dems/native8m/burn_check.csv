@@ -1,0 +1,5 @@
+dem,conditioning,burned,channel_band_length_m,outlet_found,catchment_km2,share_inside,reference_catchment_km2,catchment_rel_diff,gate_pass,gate_reason
+glo30,fill_burn,True,2953.31227177331,True,115.504832,1.0,55.821225908057656,1.0691919627534936,False,catchment 115.50 km2 differs from the reference 55.82 km2 by +106.9%
+glo30,breach_burn,True,2953.31227177331,True,55.94944,0.9982504355711441,55.821225908057656,0.0022968698708539024,True,
+hma8m,fill_burn,True,2953.31227177331,False,,0.0,55.821225908057656,,False,channel share 0.0000 < 0.99; no Nakkhu outlet
+hma8m,breach_burn,True,2953.31227177331,False,,0.0,55.821225908057656,,False,channel share 0.0000 < 0.99; no Nakkhu outlet

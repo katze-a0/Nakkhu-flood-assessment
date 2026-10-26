@@ -1,0 +1,6 @@
+# L7: L6 + tile quality gate (needs SAM2 outputs and gate.admit_fraction from val blocks).
+extends: common.yaml
+arm: L7
+rule: consensus
+refine: sam2
+use_gate: true

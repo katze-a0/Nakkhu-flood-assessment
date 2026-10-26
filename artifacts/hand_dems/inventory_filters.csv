@@ -1,0 +1,3 @@
+inventory,n_buildings,n_in_extent,role,n_greenhouse_removed,n_greenhouse_by_iou,n_greenhouse_by_centroid,n_final,cut_thresholds
+microsoft,12925,12950,primary,25,3,25,12925,
+detector_final,11853,11879,primary,26,1,26,11853,

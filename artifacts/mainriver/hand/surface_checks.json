@@ -1,0 +1,46 @@
+{
+  "detector_final": {
+    "fabdem__breach_burn": {
+      "column": "hand_mr_d8__fabdem",
+      "file": "artifacts/followup/prep_fabdem_detector_final.parquet",
+      "file_sha256": "3be3cb42de34a456cbf9903be5132f0ad6f201d4b885feb9e5626733fb351a2a",
+      "identical": true,
+      "max_abs_diff_m": 0.0,
+      "n": 11853,
+      "n_nan": 0,
+      "nan_mismatch": 0
+    },
+    "glo30__breach_burn": {
+      "column": "hand_mr_d8__glo30",
+      "file": "artifacts/followup/prep_glo30_detector_final.parquet",
+      "file_sha256": "5da760b9bdd1f39f8ad7bce94436814702a35bac62c0c93b7dd88e34c565df41",
+      "identical": true,
+      "max_abs_diff_m": 0.0,
+      "n": 11853,
+      "n_nan": 0,
+      "nan_mismatch": 0
+    }
+  },
+  "microsoft": {
+    "fabdem__breach_burn": {
+      "column": "hand_mr_d8__fabdem",
+      "file": "artifacts/followup/prep_fabdem_microsoft.parquet",
+      "file_sha256": "0bfdd3cd571ce472af9c861e0731906faff910ddf41db9064861e08920d0442b",
+      "identical": true,
+      "max_abs_diff_m": 0.0,
+      "n": 12925,
+      "n_nan": 0,
+      "nan_mismatch": 0
+    },
+    "glo30__breach_burn": {
+      "column": "hand_mr_d8__glo30",
+      "file": "artifacts/followup/prep_glo30_microsoft.parquet",
+      "file_sha256": "e8ba415791310e141e23dde887c4bced289fa15389d531cf85933c8d38187312",
+      "identical": true,
+      "max_abs_diff_m": 0.0,
+      "n": 12925,
+      "n_nan": 0,
+      "nan_mismatch": 0
+    }
+  }
+}

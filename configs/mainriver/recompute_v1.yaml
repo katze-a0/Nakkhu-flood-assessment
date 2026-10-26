@@ -1,0 +1,59 @@
+# Recompute of the exposure, uncertainty, event-validation and hazard-class results with
+# main-river HAND (plans/recompute_main_river.md). Version 1. Read by src/nakkhu/mainriver/.
+# Post hoc: main-river HAND was chosen after the event labels were seen (plan 014 P1-1); nothing
+# here is a pre-registered test, and the paper no longer claims pre-registration.
+#
+# Every analysis setting is the frozen one of the v9 analysis it repeats; only the HAND
+# surfaces change (configs/hand/main_river_v1.yaml):
+#   exposure: configs/uncertainty/uncertainty.yaml (U1-U3, D4), unchanged, with the main-river
+#             ensemble in place of the 28 v9 surfaces (HandProvider of nakkhu.mainriver)
+#   event:    nakkhu.flood.validate.score_inventory (V3, V4, H2-H6, V2), n_boot 2000, seed 0, as
+#             journal 47 / 51; plus the UNOSAT reference (plan 014 P1-8 labels) and the team
+#             recipe on its own coverage (plan 014 P1-10 surfaces)
+#
+# Access rule (offload-experiments 2.8): label-reading analyses are reserved on the laptop
+# (`nakkhu mainriver reserve --analysis <a>`: journal entry `main_river_v1:<a>` + receipt),
+# executed once on a remote host from a bundle (`nakkhu mainriver run --receipt`), promoted on
+# the laptop after verification (`nakkhu mainriver promote --analysis <a>`).
+schema_version: 1
+version: main_river_v1
+ensemble_config: configs/hand/main_river_v1.yaml
+uncertainty_spec: configs/uncertainty/uncertainty.yaml
+uncertainty_spec_sha256: 0eb4d59637e3a2b809c540b00c6fa5e212464f318686901daa92749df612eda5
+prep_config: configs/followup/prep.yaml     # prep tables (distance, blocks, team surfaces)
+run_stage: mainriver                        # reserved runs: runs/mainriver/<run_id>/
+artifact_dir: mainriver                     # artifacts/mainriver/{hand,uncertainty,validation}/
+analyses:
+  exposure:
+    reads: [audit precision_pool, precision_microsoft, recall_points, recall_nearmiss answers]
+    outputs_dir: uncertainty
+    # D4 event AUCs: the v9 by_inventory.csv is NOT used (other HAND); the event analysis
+    # reports the main-river AUCs (validation/by_inventory.csv)
+    event_skill: none
+  event:
+    reads: [change maps (R1 classes), flood_trace + damage answers, UNOSAT FL20240928NPL]
+    outputs_dir: validation
+    inventories: [microsoft, detector_final]
+    n_boot: 2000
+    seed: 0
+    min_cell: 10                             # as plan 014 common.min_cell (>= 10 affected and unaffected)
+    h6_ece_bins: 10                          # equal-count bins of the out-of-fold probability
+    unosat:
+      rows: all Microsoft buildings whose centroid lies in the UNOSAT analysis extent (as P1-8
+        un_all) and the R1 rows among them (un_r1rows)
+      label: R-UN = footprint intersects the Spot-6 flood extent (P1-8)
+      predictors: [hand_mr (primary), distance_to_channel, river_buffer_100m, glo30_elevation,
+                   asf_glo30_hand]
+    team_own_coverage:
+      members: hand_team_{acc,dig}__{glo30,fabdem,dem12.5}__{fill,breach_burn} (P1-10 surfaces)
+      rows: each member's own finite rows within each reference (not the P1-9 team-raster rows)
+      comparators: [distance_to_channel, hand_mr (primary)]
+  roc:
+    # ROC curves for the event-skill figure: main-river HAND (primary member) and distance to the
+    # channel on R1 (change-map class, observable buildings, unweighted), the rows and scores of
+    # the event analysis, so each curve's area equals the promoted AUC (competitors_auc.csv).
+    # Thinned as validation/roc_predictor_curves_thin.csv (nakkhu.flood.curves, one per predictor).
+    reads: [change maps (R1 classes), flood_trace estimates (drop rule)]
+    outputs_dir: validation
+    inventories: [microsoft, detector_final]
+    predictors: [hand_mr (primary), distance_to_channel]

@@ -1,0 +1,429 @@
+# Pre-registration addendum prereg_v9_a4 (frozen 2026-10-17): the
+# Phase-2 record of plan 014 (prereg_v9_a3 `phase2.freeze_before_labels`). It freezes the two
+# Phase-2 candidates, the sites, their blocks, imagery and inputs, and the label pipeline,
+# BEFORE any change-map class, audit answer or other label of a Phase-2 site exists. It changes
+# nothing in prereg_v9 or prereg_v9_a3: every Phase-2 rule of a3 (hypotheses, test, Holm, size
+# check, modes, audit drop rule) is mirrored below and checked by `nakkhu prereg verify`.
+#
+# State: every label-free input was computed on the VPS (2026-10-17) and is pinned below;
+# the selection rule was completed and the M-C model fitted in ONE journalled explore run
+# (journal 64). Frozen with `nakkhu prereg addendum` before any Phase-2 change map or audit
+# answer existed.
+# Plan note: plans/followup_phase2_prep.md. Site settings: configs/followup/phase2/sites.yaml.
+addendum: prereg_v9_a4
+base_version: prereg_v9
+base_sha256: 89baaed3e19554db599b510219c94285880820d4b840a7a0e76478d2150253ba
+requires: [prereg_v9_a3]
+declared_utc: "2026-10-17T17:49:39Z"
+declared_by: coordinator agent on the user's authorisation of Phase-2 preparation and remote
+  compute and the user's audit answer (one remote rater; 2026-10-17, plans/README.md log)
+seen_before_declaration:
+  - journal 1-61, incl. C3 (journal 47 / 51) and Phase 1 P1-1 to P1-10 (journal 52-61, once
+    each, no retry); plans/followup_results_p1.md
+  - journal 64 `prereg_v9_a3:explore 1 phase-2 selection ...` (run
+    followup/20261017T151626Z-c87eb636, VPS, receipt-verified) - the only explore run; it read
+    the Nakkhu R1 labels to compute the six HAND members' AUCs on one common row set and to
+    refit M-C; nothing else (no comparison with distance, no CI, no model score)
+  - journal 62-63 belong to another record (`main_river_v1:`), not to this addendum
+  - plans/followup_data_check.md (site metadata). Disclosure - to choose the sites, that check
+    intersected Microsoft footprints with the UNOSAT Spot-6 secondary reference in scratch
+    scripts and reported aggregate counts only (site A 472 / site B 317 Microsoft buildings
+    inside the Spot-6 flood within 500 m of the channel; 1,465 / 890 affected-building points).
+    No change-map class or audit answer of any Phase-2 site exists, no predictor was scored
+    against any reference at a Phase-2 site, and UNOSAT carries no Phase-2 decision.
+  - label-free site outputs listed in `sites` (geometry, buildings, imagery overlap,
+    registration, co-registration verify, observability shares, predictor NaN counts)
+
+pins:
+  prereg_v9_a3:
+    sha256_of: configs/prereg_addenda/prereg_v9_a3.yaml
+    sha256: 709c724513d4da57c784946a641c84275626d0fed9f7c0c734af21ffbcae46d0
+  sites_config:
+    sha256_of: configs/followup/phase2/sites.yaml
+    sha256: 975cb378f801355eb2197bb95e5bbf9e2aa8678618ed05eac9ee3a90e2cce521
+  p1_6_models:
+    sha256_of: artifacts/followup/p1_6_models.csv
+    sha256: 424a89e713ba8bbd382813526d4b2526cc53b487b04d8b327baf96144450afd6
+  selection_members:
+    sha256_of: artifacts/followup/p2_select_hand_members.csv
+    sha256: eb8ba19f00c9d2cc8d14eed6e0ca1150dce6dfda15b6b902f1c5a2636ff4ec6a
+  selection_rule:
+    sha256_of: artifacts/followup/p2_select_rule.json
+    sha256: b2df171a902030112791c2f4b5a240f82d3edc8bac3e24b364c969d96d5ed6d2
+  mc_model:
+    sha256_of: artifacts/followup/p2_mc_model.json
+    sha256: 227c1fca295349a187ff69999d526b211427a03b944a57901f853d187cad5faa
+  mc_feature_spec:
+    sha256_of: artifacts/followup/p2_mc_feature_spec.json
+    sha256: 1a3982ba051a2a39cb0bea5125973531e4a1d508b7c241d30a014fc2690a2b0c
+  change_rule:                 # the v9 change map, unchanged (a3 phase2.labels.change_rule)
+    sha256_of: configs/flood/change.yaml
+    sha256: e720af6c25a1cb48be8dc5f3a0b1c140d487e69e03ba833c983ead0fcf8da5a0
+  audit_rule:                  # flood_trace protocol, the new flood_trace_p2 task, chips, strata
+    sha256_of: configs/audit/audit.yaml
+    sha256: 5d2c05e44063189e2d4afce366f64cd214d5ef6c21d2aee4f45bd95e13267a49
+  river_lines:
+    sha256_of: configs/aoi/osm_waterways_rivers.json
+    sha256: 4dc9a7f9e2ff8240f508937085926ad90520caa081203c4b5d56adbcfad49356
+  nakkhu_extent:
+    sha256_of: configs/aoi/aoi_recommended_analysis_extent.geojson
+    sha256: 1c02298a5f2242d5109d31931f6b4fecfcf922d589b01695a779bfef72517de7
+  routing_domain:
+    sha256_of: configs/aoi/routing_domain_upper_bagmati_glo30.geojson
+    sha256: 82d5be4f5ee1afa8846ae5ea2d6d0375ca5b57d6e283996c5839724103d66d56
+  data_manifest_phase2:        # imagery and footprint downloads (files on the private VPS)
+    sha256_of: configs/data/manifest_phase2.yaml
+    sha256: 0962664a8c2dd59a5274605428ecffe870a63f43f284294e6e579cefa2f5ec68
+  registration_v9_thresholds:
+    footprints:
+      sha256_of: artifacts/labels/registration_shifts.csv
+      sha256: 5132e5ea29bc2ee770b288cf0a33d5a2fc8855afa2359072752531114fd9eb58
+    osm:
+      sha256_of: artifacts/labels/osm_registration_shifts.csv
+      sha256: 63ec7a0ffac05b4d8af6dbeb7c8a657afc8fcdd39b29b52f35a165011508c997
+  nakkhu_code:
+    commit: 16d743f90d464a0d73d44ece60ba79cf4bb9f20c   # builds the change maps, P2-audit and P2
+
+# --- 1. Phase-2 candidates (a3 phase2.candidates applied) -----------------------------------
+candidates:
+  hand_rule:
+    rule:
+      mirror_of: configs/prereg_addenda/prereg_v9_a3.yaml#phase2.candidates.hand_rule
+      values: the main-river variant with the highest Phase-1 AUC on Microsoft R1 among
+        {hand_mr_d8, hand_mr_rem, hand_team_acc (breach_burn)} x {glo30, fabdem}, compared on the
+        P1-9 covered rows (the only rows all members share); if within 0.005 of the best, prefer
+        glo30 over fabdem, then hand_mr_d8, then hand_team_acc, then hand_mr_rem
+    row_set: the P1-9 covered rows (finite hand_team; 4,014) on which all six members are finite
+      - n 3,920, 196 affected, 18 blocks (hand_team_acc is NaN on 49 / 62 covered rows)
+    evidence: # artifacts/followup/p2_select_hand_members.csv (journal 64), Microsoft R1
+      - {member: hand_mr_d8 x glo30, auc: 0.90704}
+      - {member: hand_team_acc x glo30, auc: 0.90697}
+      - {member: hand_mr_d8 x fabdem, auc: 0.90691}
+      - {member: hand_team_acc x fabdem, auc: 0.90680}
+      - {member: hand_mr_rem x glo30, auc: 0.90546}
+      - {member: hand_mr_rem x fabdem, auc: 0.90447}
+    applied: best = hand_mr_d8 x glo30 (0.90704); all six lie within 0.005 of it (tied); the tie
+      order (glo30, then hand_mr_d8) gives hand_mr_d8 x glo30 - the same member either way
+      (artifacts/followup/p2_select_rule.json)
+    frozen:
+      predictor: hand_mr_d8
+      dem: glo30
+      conditioning: breach_burn
+      statistic: centroid
+      orientation: lower value = more exposed (score = -value)
+      definition:
+        mirror_of: configs/prereg_addenda/prereg_v9_a3.yaml#definitions.hand_mr_d8
+        values: max(0, z_ref(c) - z_ref(m(c))), m(c) = first cell of M on the D8 path from c
+          (breach_burn routing of the same DEM); NaN if the path leaves the grid without reaching
+          M
+      main_mask_at_site: M_site = cells of the sweep grid touched (all_touched) by the site's
+        main lines (section 2) AND with D8 contributing area >= 1 km2 on GLO-30 breach_burn (the
+        a3 main_mask rule with the site's lines in place of the Nakkhu/Bagmati ways)
+      routing: # the GLO-30 breach_burn routing of the frozen v9 sweep, reused unchanged
+        sweep_run: hand/20261005T191226Z-dc9658f5
+        dem_ref: 5d7c00b232fa23e60952a6de6f150b9a6585d8454b3bd8d7e3601f625ed1ece8
+        fdir: 445e4b704708bbbc9ba6c9b0f3da1555c1ba2980eacfba5b3f3c1c401231399f
+        acc: 58977604a892dede8a1fcf82efdce67e46079e5480d0404d873e640544db9d84
+        dem_glo30: 1f3c7ee85c6926d6adb6bd3c76f996f19fbc2c45dbcb2471b2e936818b5bfc33
+        hand_v9_surface: 4f499d323021cf4888e920b5ca65c1b1dab43318a3a56154b9edd099b5aa3d98
+      routing_grid:
+        mirror_of: configs/hand/sweep.yaml#grid
+        values: {crs: "EPSG:32645", res_m: 30, buffer_m: 2000, resampling: bilinear,
+                 domain: configs/aoi/routing_domain_upper_bagmati_glo30.geojson}
+  ml_model:
+    rule:
+      mirror_of: configs/prereg_addenda/prereg_v9_a3.yaml#phase2.candidates.ml_model
+      values: the P1-6 family with the highest pooled OOF AUC on Microsoft R1; if within 0.005
+        of the best, prefer M-C, then M-E, then M-D; refit on all Nakkhu Microsoft R1 rows with
+        the config chosen by 5-fold GroupKFold (same search, seed 0); no recalibration later
+    evidence: # p1_6_models.csv, Microsoft R1, 6,769 rows, 352 affected, 26 outer folds
+      - {family: M-E, oof_auc: 0.90351}
+      - {family: M-C, oof_auc: 0.90028}
+      - {family: M-D, oof_auc: 0.89467}
+    applied: best M-E; M-C is 0.0032 below it (within 0.005), so the tie order picks M-C
+    frozen:
+      family: M-C (penalised logistic GAM, natural cubic spline df 4 per feature, knots at the
+        1/25/50/75/99th percentiles of the training values, values outside the boundary knots
+        clamped, L2 penalty on all non-intercept coefficients)
+      refit: journal 64; all 6,769 Nakkhu Microsoft R1 rows (352 affected, 26 blocks, 0 rows
+        with a NaN feature); 5-fold GroupKFold by block; mean inner log-loss per lambda
+        [0.001 0.2969, 0.01 0.2023, 0.1 0.1642, 1 0.1455, 10 0.1361, 100 0.1511]
+      selected_lambda: 10.0
+      model_file: artifacts/followup/p2_mc_model.json (pins.mc_model)
+      feature_spec: artifacts/followup/p2_mc_feature_spec.json (pins.mc_feature_spec)
+      predict: nakkhu.followup.explore.predict(model, site predictor table); a row with any
+        non-finite feature gets no prediction
+      at_site: every feature is computed label-free for the site's buildings with the site's
+        main lines and M_site wherever the a3 definition names the main river (hand_mr_d8,
+        hand_mr_rem, hand_mr_d8_fabdem, log1p distance, flowdist_main, log10 area at m(c)); all
+        other features as in P1-6; no refit, no recalibration, no imputation
+  no_gate:
+    mirror_of: configs/prereg_addenda/prereg_v9_a3.yaml#phase2.candidates.no_gate
+    values: both candidates go to Phase 2 whatever their Phase-1 result
+  extra_candidates: none (the Holm family stays {H2a, H2b})
+
+# --- 2. Sites (a3 phase2.site_criteria and phase2.sites) -----------------------------------
+sites:
+  construction: # nakkhu followup p2 sites (run followup-p2/20261017T151233Z-cc950d7b)
+    overlap: union of the ARD data-mask polygons of the site's pre strip(s) intersected with the
+      data-mask union of GE01 105001003E1F0600
+    site_lines: the OSM ways listed per site (configs/aoi/osm_waterways_rivers.json, snapshot
+      nepal-261003), clipped to the overlap
+    lattice: plan-005 blocks extended - 960 m squares (3 x 3 tiles of 320 m), origin west
+      331200.0, north 3074880.0 (configs/tiling.yaml grid origin), block (col // 3, row // 3)
+    blocks: every lattice block whose centre lies within 1,000 m of the site lines; never
+      trimmed by visible flood traces
+    nakkhu_exclusion: a block that intersects the Nakkhu analysis extent buffered by 320 m is
+      dropped (0 dropped at every site)
+    shared_blocks: a block qualifying for two sites goes to the site whose lines are nearer to
+      the block centre, ties to the earlier site letter (user decision 2026-10-17; 0 shared)
+    extent: union of the site's kept blocks
+    main_lines: site_lines plus every Bagmati way (ids below) clipped to the site extent; the
+      distance competitor and M_site use exactly these lines
+    buildings: Microsoft footprints (fp_microsoft_routing, release 2026-08-13 as v9) whose
+      centroid lies in the extent, OSM greenhouses removed (configs/hand/sweep.yaml
+      greenhouse_filter, pinned PBF nepal-261003); building_uid = <site>/microsoft:<i>
+  bagmati_way_ids: [751466757, 518770057, 751466758, 1053917529]
+  A:
+    name: Manohara + Hanumante
+    way_ids: [327796598, 1181523800, 341559558, 5209634, 341598002, 518746337, 27033861,
+              32133805, 538977158, 1190905688]
+    pre: # one pre mosaic on the site grid, first valid pixel wins
+      - {scene: maxar_wv02_20240113, catalog: 10300100F5AB8000, order: 1}
+      - {scene: maxar_wv02_20240113_f2bccf00, catalog: 10300100F2BCCF00, order: 2}
+    post: {scene: maxar_ge01_20241006_0600_full, catalog: 105001003E1F0600, strip: "0600"}
+    out: the Bhaktapur reach east of 85.403 E (covered only by the gated-out 0500 strip)
+    label_free_facts: {site_line_km_in_overlap: 17.34, bagmati_km_in_extent: 3.26,
+                       extent_km2: 33.18, n_blocks: 36, n_buildings: 32669,
+                       n_buildings_in_overlap: 29506}
+    lines: {file: artifacts/followup/phase2/site_A_lines.geojson, sha256: 0c82526332b348494ad91d5693e663d7ca24983b78db49de91d9c287da8e4d06}
+    extent: {file: artifacts/followup/phase2/site_A_extent.geojson, sha256: 0eaa219dfd2fdee8c3a48879b3d6dcc110626aa0dda53f39553892690004471a}
+    blocks: {file: artifacts/followup/phase2/site_A_blocks.geojson, sha256: d52d394309c116326563b86c3c90e16b41d3ca86a96c0b04001e6481d041d7aa}
+    buildings: {file: artifacts/followup/phase2/site_A_buildings.parquet, sha256: 50f4ea626024f2a91307f799fb73e4003f7d1a399e1362cc9e5bcece89da1b43}
+    coregistration_gate: {pass: true, held_back_median_residual_px: 0.197, held_back_accepted: 25,
+                          blocks: 48, run: followup-p2/20261017T155723Z-5038a183}
+  B:
+    name: Godawari + Kodku
+    way_ids: [339705639, 240177910, 518776738]
+    pre:
+      - {scene: maxar_wv02_20240113, catalog: 10300100F5AB8000, order: 1}
+    post: {scene: maxar_ge01_20241006_0600_full, catalog: 105001003E1F0600, strip: "0600"}
+    label_free_facts: {site_line_km_in_overlap: 13.13, bagmati_km_in_extent: 0.0,
+                       extent_km2: 21.20, n_blocks: 23, n_buildings: 13507,
+                       n_buildings_in_overlap: 11070}
+    lines: {file: artifacts/followup/phase2/site_B_lines.geojson, sha256: 67f0e6133e309ffe1ca9ce54fcc2305e93393c4a31d8bab469f659e9ad4b3038}
+    extent: {file: artifacts/followup/phase2/site_B_extent.geojson, sha256: 8a56e414a17fb3aa3147d72a1e1b1b643ded797e2d26fe35492578bf8cc12fdc}
+    blocks: {file: artifacts/followup/phase2/site_B_blocks.geojson, sha256: 422c875af741bdc5f94665212f7f716a3f43cbff76e12037077256a62586b9f6}
+    buildings: {file: artifacts/followup/phase2/site_B_buildings.parquet, sha256: ed2e9843d79405dbb88d155d526236929028c0f08e168a082fa1e0126a3c37e1}
+    coregistration_gate: {pass: true, held_back_median_residual_px: 0.276, held_back_accepted: 17,
+                          blocks: 36, run: followup-p2/20261017T155932Z-2e0cc6bf}
+  N:
+    name: Bishnumati + Dhobi (Rudramati) - negative control only
+    role:
+      mirror_of: configs/prereg_addenda/prereg_v9_a3.yaml#phase2.sites.excluded.bishnumati_dhobi
+      values: almost no mapped flood; negative control only - affected counts and the
+        candidates' predicted exposure reported, no hypothesis, AUC only if min_cell holds
+    way_ids: [52869409, 185751198, 752113745, 756183475, 788476632, 788476633, 52869396,
+              1425820139]
+    pre:
+      - {scene: maxar_wv02_20240113, catalog: 10300100F5AB8000, order: 1}
+    post: {scene: maxar_ge01_20241006_0600_full, catalog: 105001003E1F0600, strip: "0600"}
+    label_free_facts: {site_line_km_in_overlap: 15.75, bagmati_km_in_extent: 2.78,
+                       extent_km2: 35.94, n_blocks: 39, n_buildings: 37234,
+                       n_buildings_in_overlap: 34702}
+    lines: {file: artifacts/followup/phase2/site_N_lines.geojson, sha256: 380d5e53ef4a3e6cbb7cb87728c5b943b9d9c31aa8cb323eda57d7ab9280faf0}
+    extent: {file: artifacts/followup/phase2/site_N_extent.geojson, sha256: 3bc6a7f7a29fd35ebd066f425896fd804b2a67be6be19d7e8472c7412f48339e}
+    blocks: {file: artifacts/followup/phase2/site_N_blocks.geojson, sha256: be0bba33ec931cb1b0e0e420a231dbbec26e446341401987ff428abf0ef7d054}
+    buildings: {file: artifacts/followup/phase2/site_N_buildings.parquet, sha256: 48d0ffccf3b6c0fe2ac7a1d2203b614b0c3075322be10c01df7a48a5ba142007}
+    coregistration_gate: {pass: true, held_back_median_residual_px: 0.356, held_back_accepted: 33,
+                          blocks: 60, run: followup-p2/20261017T160046Z-34d49e0c}
+    audit: none (no decision rests on it); report - change-map positives / observable, mean
+      M-C probability and hand_mr_d8 tier shares, AUCs only if >= 10 affected and >= 10 not
+  predictors: # nakkhu followup p2 predictors (run followup-p2/20261017T154103Z-c9229b32)
+    tables: # in the run (over the artifact size limit); summary
+      # artifacts/followup/phase2/site_predictors_A_B_N.json
+      A: {file: runs/followup-p2/20261017T154103Z-c9229b32/site_A_predictors.parquet, sha256: 1ef3e7841b40c99081eb0cee3ae8c82cd616942e3b32ec4de33fcea8f6b33c07}
+      B: {file: runs/followup-p2/20261017T154103Z-c9229b32/site_B_predictors.parquet, sha256: 42cd78867edda19c3a3bbe243b0c7b26784dbecfa0548410f2f97b41c4afc5fe}
+      N: {file: runs/followup-p2/20261017T154103Z-c9229b32/site_N_predictors.parquet, sha256: d55b4b6fae74bd7072e0b76fca83c3a3863c644826c9abdfc2464a443251eab4}
+    nan_counts: # all buildings of the extent (label-free); reported per site in P2
+      A: {hand_mr_d8_nan: 25, ml_rows_with_nan_feature: 32, m_site_cells: 584}
+      B: {hand_mr_d8_nan: 4239, ml_rows_with_nan_feature: 4386, m_site_cells: 324}
+      N: {hand_mr_d8_nan: 892, ml_rows_with_nan_feature: 924, m_site_cells: 552}
+    note_B: 31 % of site-B buildings drain (D8) to a channel outside M_site, so hand_mr_d8 and
+      M-C are NaN there; H2a / H2b use their finite rows (decision 3)
+  routing: every site channel lies inside the upper-Bagmati routing domain; the frozen GLO-30
+    grid and routing are reused (routing gate pass for GLO-30 breach_burn)
+  inventory:
+    mirror_of: configs/prereg_addenda/prereg_v9_a3.yaml#phase2.sites.inventory
+    values: Microsoft footprints only (29 % / 58 % of the site corridors lie in the detector
+      training domain); detector_final is not scored in Phase 2
+  pooling:
+    mirror_of: configs/prereg_addenda/prereg_v9_a3.yaml#phase2.sites.pooling
+    values: the primary test pools every site that passes its gates, blocks nested in sites,
+      bootstrap stratified by site; per-site rows are secondary (no decision)
+  site_failure:
+    mirror_of: configs/prereg_addenda/prereg_v9_a3.yaml#phase2.sites.site_failure
+    values: a site that fails co-registration, routing or its audit drop rule leaves the pool
+      and is reported with the reason; the pool is the remaining site(s), and the size check
+      applies to the pool
+  pooled_blocks_A_B: 59 (36 + 23); planning MDE about 0.048 x sqrt(26 / 59) = 0.032 if every
+    block has an observable building (the P2 run computes the real one before scoring)
+
+# --- 3. Labels (a3 phase2.labels; the v9 change map unchanged) ------------------------------
+labels:
+  rule:
+    mirror_of: configs/prereg_addenda/prereg_v9_a3.yaml#phase2.labels.rule
+    values: the v9 change map unchanged (configs/flood/change.yaml pinned below; site parameters
+      such as scene ids live in a separate site file frozen in prereg_v9_a4); the change-map code
+      imports no HAND, DEM or river module (test-enforced)
+  command: uv run nakkhu followup p2 change --site <A|B|N> (VPS; refuses unless this addendum
+    is frozen and the site config hash equals the pin below; one run per site, z-scores and
+    the GMM boundary per site and strip; outputs stay in the run)
+  site_files: # resolved site change configs = config.resolved.yaml of the co-registration runs
+    note: nakkhu.followup.phase2.site_change_values - configs/flood/change.yaml with only
+      `region` (the site extent), `scenes` (site mosaics), buildings.inventories [microsoft]
+      and buildings.phase2 (site inventories, tile index and registration tables) changed; the
+      sections coregistration, mask, normalise, score, sentinel2 and every building rule key
+      are the v9 values (checked in code and tests)
+    A: {config_sha256: 5038a1836fc42eeca67231d231fd660c4fedd41ed74a88c4640328e2f8145488, run: followup-p2/20261017T155723Z-5038a183}
+    B: {config_sha256: 2e0cc6bf8c0c82b527dd3f9916665f6476ddaabc7bb648eef1e8cea84ff585fa, run: followup-p2/20261017T155932Z-2e0cc6bf}
+    N: {config_sha256: 34d49e0cba6935fd3300f0e9910320b6a55c555c6b471f3f1c612e1f41eeb222, run: followup-p2/20261017T160046Z-34d49e0c}
+  mosaics: # private VPS data_root; sha256 of the files used by the co-registration runs
+    A:
+      pre: 4453c892d6d3f6ffa69e100b71c32cbba87af829e396b88cee8f5af3255386fc
+      post: d6e1104de0b34f4f108f8a2167b239b9f759605a72fb6a0a9c57793bffb9987f
+      record: artifacts/followup/phase2/site_A_mosaics.json
+    B:
+      pre: b81b0cdfcbbe5aefa09d2b730c96ffed3b2a0848f2e5f6cea8c21ecc7bc48e81
+      post: d74fed3bbdda49d5635c64db60fa798daae54ea8869aa8bd09eb24295aa15720
+      record: artifacts/followup/phase2/site_B_mosaics.json
+    N:
+      pre: d7e74c49f28f255932dd023022f7d539c0ff5a69978294e4d6455b8c50f1893c
+      post: 38af7d1094089a340d66d35fb8ae4795497d3e15599c52e8c2b6814b25f6d07f
+      record: artifacts/followup/phase2/site_N_mosaics.json
+  footprint_registration: # decision 4 - plan-004 method and settings (labels/common.yaml), v9
+    # thresholds (footprints 1.2161, OSM 1.2247), Google v3 uncut + Microsoft (and OSM) on the
+    # site's 320 m lattice tiles of the site pre mosaic (v9 used the JPEG train tiles)
+    A: {tiles: 389, footprints_ok: 219, osm_ok: 165, record: artifacts/followup/phase2/site_A_registration.json}
+    B: {tiles: 254, footprints_ok: 145, osm_ok: 71, record: artifacts/followup/phase2/site_B_registration.json}
+    N: {tiles: 439, footprints_ok: 225, osm_ok: 164, record: artifacts/followup/phase2/site_N_registration.json}
+  ground_mask_layers: google_v3_uncut (fp_google_v3_routing), microsoft (fp_microsoft_routing),
+    osm (pinned PBF, artifacts/followup/phase2/site_osm_footprints.json) as change.yaml
+    buildings.ground_mask_from
+  sentinel2: same 45RUL scenes as v9 (23 Sep and 1 Oct 2024)
+  reference: R1 (gated change-map class on observable buildings), per site
+  secondary_reference:
+    mirror_of: configs/prereg_addenda/prereg_v9_a3.yaml#phase2.labels.secondary_reference
+    values: UNOSAT Spot-6 R-UN and R-UN-pts (as P1-8) on the same sites; reported, no decision
+
+# --- 4. P2-audit design (a3 tests.P2-audit, phase2.labels.audit) ---------------------------
+audit:
+  rule:
+    mirror_of: configs/prereg_addenda/prereg_v9_a3.yaml#phase2.labels.audit
+    values: a V1 audit per site with the v9 flood_trace protocol and strata, 150 active items +
+      8 repeats per site, blind (imagery only), one sitting for all sites; drop rule as v9 per
+      site (PPV Wilson lower bound < 0.5 drops that site's change map)
+  sites: [A, B]               # N is not audited
+  task: flood_trace_p2 (configs/audit/audit.yaml tasks.flood_trace_p2; a new task - the v9 tasks
+    and their protocol are unchanged); items are drawn by `nakkhu audit sample --task
+    flood_trace_p2`, which refuses until this addendum is frozen and reads the site change maps
+    pinned in configs/followup/phase2/p2_change_maps.yaml (written after G6); chips by `nakkhu
+    audit chips --task flood_trace_p2` (pre = the first of the site's WV02 strips with valid
+    pixels at the building, F5AB8000 then F2BCCF00 for site A and F5AB8000 for site B; post =
+    GE01 0600)
+  frame: per site, the observable Microsoft buildings of that site's change map in its extent
+  strata: positive; negative within 300 m of the site's main lines (negative_near); negative
+    farther (negative_far) - the v9 flood_trace strata (audit.yaml tasks.flood_trace)
+  allocation: per site, sqrt allocation of 150 over the three strata, >= 10 per stratum, then
+    the v9 rebalance scaled to 150 - the positive stratum gets 50 items (all of it if smaller),
+    taken from negative_far (user decision 2026-10-17)
+  repeats: 8 per site (repeat_frac 0.05 of 150, rounded up), each >= 20 items after its
+    original
+  seed: 0
+  order: the 316 items of both sites in one random order (seed 0), so position reveals neither
+    site nor stratum
+  page: v9 flood_trace page - chips only (pre WV02 of the strip that supplied the building's
+    pre pixels, post GE01 0600; 0.305 m visual sources; 64 m context, 2x); question, keys and the
+    damage follow-up as audit.yaml tasks.flood_trace / damage; auditor = author
+  estimates: per site - PPV and NPV, design-weighted (N_h / n_h), Wilson 95 %; Not observable
+    excluded; repeats give self-agreement only
+  drop_rule: per site - PPV Wilson lower bound < 0.5 drops that site's change map and the site
+    leaves the pool (a3 site_failure)
+  journal: one estimate run, note `prereg_v9_a3:P2-audit`, reserved on the laptop
+    (`nakkhu followup reserve --test P2-audit`, executed remotely; nakkhu.followup.p2audit) -
+    it reads the primary rater's log only (raters/rater_1/responses.jsonl) and writes
+    artifacts/followup/p2_audit_estimates.json (per site PPV / NPV / drop rule), the file P2
+    reads; the rater's self-agreement on the repeats comes from `nakkhu audit agreement --task
+    flood_trace_p2` (and `--task damage_p2` for the follow-up), with no decision
+  sessions: one audit task, answered in up to 3 sessions of <= 30 min (orchestrator approval
+    2026-10-17, reading a3's "one sitting" as one item set and one estimate); the v9 120-min
+    cap applies to the rater's own logged time on this task
+  pacing: 10-15 s per item (about 55-80 min for 316 items); the pace guidance (instruction
+    card) and the soft fast-answer warning (logged as `pace_warning`, answers never refused)
+    apply to EVERY rater of flood_trace_p2, the author included (orchestrator decision
+    2026-10-17; tasks.flood_trace_p2.pace_all_raters is true)
+  raters: # the user's answer (2026-10-17): one auditor, remote, unnamed
+    n_raters: 1
+    primary_rater: rater_1      # the one remote rater (configs/audit/audit.yaml
+      # tasks.flood_trace_p2.primary_rater); the gate (drop rule) and the PPV / NPV use its log
+    remote_access: the rater answers on the audit page through the user's own private tunnel
+      with a per-rater token (`nakkhu audit invite`, stored as a hash only); answers go to
+      audit/flood_trace_p2/raters/rater_1/responses.jsonl
+    design: the rater answers every P2-audit item of both sites in an own random order (seed
+      from the rater id) with own repeats (8 per site)
+    secondary_no_decision: self-agreement of the rater on the repeats (Cohen's kappa with a
+      bootstrap 95 % CI); with one rater there is no inter-rater kappa
+    blindness: the rater sees no change-map class, stratum, site, HAND or distance
+
+# --- 5. Size check, modes, hypotheses, test, decision (a3, unchanged) ----------------------
+size_check:
+  mirror_of: configs/prereg_addenda/prereg_v9_a3.yaml#phase2.size_check
+  values: computed inside the P2 run before any predictor is read - n_blocks (blocks with
+    >= 1 observable building) and R1 affected count over the pooled set
+modes:
+  mirror_of: configs/prereg_addenda/prereg_v9_a3.yaml#phase2.modes
+  values:
+    confirmatory: n_blocks >= 26 and affected >= 150 and the change map kept by the audit
+    descriptive: otherwise - point estimates and CIs reported as "underpowered / no valid
+      reference, not confirmatory"; no hypothesis decision is reported
+hypotheses:
+  mirror_of: configs/prereg_addenda/prereg_v9_a3.yaml#phase2.hypotheses
+  values:
+    H2a: AUC(frozen HAND rule) - AUC(distance_competitor of the site) > 0
+    H2b: AUC(frozen ML model) - AUC(distance_competitor of the site) > 0
+    rows: H2a on the pooled R1 rows where the frozen HAND rule is finite (all rows unless it is
+      hand_team_acc), H2b on all pooled R1 rows; distance on the same rows in each; the size
+      check and mode apply to the H2a rows for H2a
+rows_clarification: decision 3 (2026-10-17) - hand_mr_d8 is NaN where the D8 path never
+  reaches M_site, and M-C cannot score a row with a non-finite feature; H2a is scored on the
+  pooled R1 rows where hand_mr_d8 is finite and H2b on those where every M-C feature is
+  finite; distance is ALWAYS restricted to exactly the rows of that hypothesis (same rows for
+  candidate and distance); the size check, MDE and mode are computed on those rows; the NaN
+  count and share are reported prominently, pooled and per site, in p2_confirm.json
+  (`nan`, `sites.<s>.share_nan_H2a / _H2b`) - label-free site-B share 31 % before observability
+implementation: nakkhu.followup.confirm (P2 through the receipt flow, note prereg_v9_a3:P2);
+  its inputs are pinned in configs/followup/phase2/p2_inputs.yaml (site predictor tables,
+  site change maps, the primary rater's P2-audit estimates, the M-C model), written after G7
+test:
+  mirror_of: configs/prereg_addenda/prereg_v9_a3.yaml#phase2.test
+  values: one-sided paired block bootstrap, 2000 resamples of whole blocks stratified by site,
+    seed 0; p = (1 + #{delta* <= 0}) / (2000 + 1)
+decision:
+  mirror_of: configs/prereg_addenda/prereg_v9_a3.yaml#phase2.decision
+  values: Holm over {H2a, H2b} at family-wise alpha 0.05 one-sided - reject the smaller p if
+    p <= 0.025, then the other if p <= 0.05; a missing candidate counts as p = 1
+reported:
+  mirror_of: configs/prereg_addenda/prereg_v9_a3.yaml#phase2.reported
+  values: delta AUC with the two-sided 95 % percentile CI and the one-sided 97.5 % lower
+    bound, DeLong; secondary (no decision) - v9 rule hand_v9 vs distance (C3 replication), ML
+    vs frozen HAND, tier hit rates and ORs of the frozen HAND rule, per-site rows, both
+    hypotheses against the UNOSAT references, the negative-control river
+mde: computed from the pooled block count and written before scoring (a3 power_planning -
+  0.048 at 26 blocks, 0.039 at 40, 0.030 at 67, 0.020 at 150; SE about 0.017 x sqrt(26 / n))
+
+# --- 6. Tests (P2-audit and P2 stay a3 tests: notes prereg_v9_a3:P2-audit / :P2) ----------
+tests:
+  P2-site-check:
+    title: the label-free site checks recorded above (imagery, geometry, registration,
+      co-registration, predictors); no label, not journalled
+    access: none

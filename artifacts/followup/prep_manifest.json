@@ -1,0 +1,274 @@
+{
+  "addendum": "prereg_v9_a3",
+  "config": "configs/followup/prep.yaml",
+  "config_sha256": "b4d2b57dbb3663c0166028c60169baeb1ede9061f778c0a305fe4d5d12365588",
+  "dems": {
+    "aw3d30": {
+      "burn_cells": 9588,
+      "burn_cells_below_threshold": {
+        "t0p2": 3062,
+        "t0p5": 3152,
+        "t1": 3313,
+        "t2": 3422
+      },
+      "dem": "aw3d30",
+      "drop_threshold_km2": 0.2,
+      "grid": {
+        "crs": "EPSG:32645",
+        "height": 1168,
+        "transform": [
+          30.0,
+          0.0,
+          319350.0,
+          0.0,
+          -30.0,
+          3080040.0
+        ],
+        "width": 1242
+      },
+      "interim": "D:\\academia\\flood\\nakkhu\\data\\interim\\hand\\c1b4c03a",
+      "main_cells": 2240,
+      "routing_gate_pass": false,
+      "routing_gate_reason": "channel share 0.9867 < 0.99",
+      "sweep_run": "hand-dems/20261017T074042Z-c1b4c03a",
+      "thresholds": "p1_4"
+    },
+    "fabdem": {
+      "burn_cells": 9588,
+      "burn_cells_below_threshold": {
+        "t0p05": 2753,
+        "t0p075": 2878,
+        "t0p1": 2945,
+        "t0p15": 3009,
+        "t0p2": 3057,
+        "t0p25": 3085,
+        "t0p3": 3101,
+        "t0p4": 3128,
+        "t0p5": 3150,
+        "t0p75": 3209,
+        "t1": 3230,
+        "t1p5": 3341,
+        "t2": 3404,
+        "t3": 3537,
+        "t4": 3667,
+        "t5": 3760
+      },
+      "dem": "fabdem",
+      "drop_threshold_km2": 0.2,
+      "grid": {
+        "crs": "EPSG:32645",
+        "height": 1168,
+        "transform": [
+          30.0,
+          0.0,
+          319350.0,
+          0.0,
+          -30.0,
+          3080040.0
+        ],
+        "width": 1242
+      },
+      "interim": "D:\\academia\\flood\\nakkhu\\data\\interim\\hand\\dc9658f5",
+      "main_cells": 2249,
+      "routing_gate_pass": true,
+      "routing_gate_reason": "nan",
+      "sweep_run": "hand/20261005T191226Z-dc9658f5",
+      "thresholds": "all16"
+    },
+    "gedtm30": {
+      "burn_cells": 9588,
+      "burn_cells_below_threshold": {
+        "t0p05": 2841,
+        "t0p075": 2926,
+        "t0p1": 2976,
+        "t0p15": 3027,
+        "t0p2": 3063,
+        "t0p25": 3084,
+        "t0p3": 3105,
+        "t0p4": 3135,
+        "t0p5": 3160,
+        "t0p75": 3210,
+        "t1": 3238,
+        "t1p5": 3318,
+        "t2": 3399,
+        "t3": 3504,
+        "t4": 3659,
+        "t5": 3764
+      },
+      "dem": "gedtm30",
+      "drop_threshold_km2": 0.15,
+      "grid": {
+        "crs": "EPSG:32645",
+        "height": 1168,
+        "transform": [
+          30.0,
+          0.0,
+          319350.0,
+          0.0,
+          -30.0,
+          3080040.0
+        ],
+        "width": 1242
+      },
+      "interim": "D:\\academia\\flood\\nakkhu\\data\\interim\\hand\\dc9658f5",
+      "main_cells": 2247,
+      "routing_gate_pass": false,
+      "routing_gate_reason": "channel share 0.9867 < 0.99",
+      "sweep_run": "hand/20261005T191226Z-dc9658f5",
+      "thresholds": "all16"
+    },
+    "glo30": {
+      "burn_cells": 9588,
+      "burn_cells_below_threshold": {
+        "t0p05": 2839,
+        "t0p075": 2918,
+        "t0p1": 2965,
+        "t0p15": 3019,
+        "t0p2": 3049,
+        "t0p25": 3072,
+        "t0p3": 3104,
+        "t0p4": 3140,
+        "t0p5": 3165,
+        "t0p75": 3214,
+        "t1": 3233,
+        "t1p5": 3321,
+        "t2": 3407,
+        "t3": 3506,
+        "t4": 3651,
+        "t5": 3756
+      },
+      "dem": "glo30",
+      "drop_threshold_km2": 0.2,
+      "grid": {
+        "crs": "EPSG:32645",
+        "height": 1168,
+        "transform": [
+          30.0,
+          0.0,
+          319350.0,
+          0.0,
+          -30.0,
+          3080040.0
+        ],
+        "width": 1242
+      },
+      "interim": "D:\\academia\\flood\\nakkhu\\data\\interim\\hand\\dc9658f5",
+      "main_cells": 2238,
+      "routing_gate_pass": true,
+      "routing_gate_reason": "nan",
+      "sweep_run": "hand/20261005T191226Z-dc9658f5",
+      "thresholds": "all16"
+    },
+    "nasadem": {
+      "burn_cells": 9588,
+      "burn_cells_below_threshold": {
+        "t0p2": 3096,
+        "t0p5": 3212,
+        "t1": 3312,
+        "t2": 3498
+      },
+      "dem": "nasadem",
+      "drop_threshold_km2": 0.2,
+      "grid": {
+        "crs": "EPSG:32645",
+        "height": 1168,
+        "transform": [
+          30.0,
+          0.0,
+          319350.0,
+          0.0,
+          -30.0,
+          3080040.0
+        ],
+        "width": 1242
+      },
+      "interim": "D:\\academia\\flood\\nakkhu\\data\\interim\\hand\\c1b4c03a",
+      "main_cells": 2232,
+      "routing_gate_pass": false,
+      "routing_gate_reason": "channel share 0.9867 < 0.99",
+      "sweep_run": "hand-dems/20261017T074042Z-c1b4c03a",
+      "thresholds": "p1_4"
+    },
+    "srtmgl1": {
+      "burn_cells": 9588,
+      "burn_cells_below_threshold": {
+        "t0p2": 3094,
+        "t0p5": 3198,
+        "t1": 3292,
+        "t2": 3459
+      },
+      "dem": "srtmgl1",
+      "drop_threshold_km2": 0.2,
+      "grid": {
+        "crs": "EPSG:32645",
+        "height": 1168,
+        "transform": [
+          30.0,
+          0.0,
+          319350.0,
+          0.0,
+          -30.0,
+          3080040.0
+        ],
+        "width": 1242
+      },
+      "interim": "D:\\academia\\flood\\nakkhu\\data\\interim\\hand\\c1b4c03a",
+      "main_cells": 2228,
+      "routing_gate_pass": false,
+      "routing_gate_reason": "channel share 0.9867 < 0.99",
+      "sweep_run": "hand-dems/20261017T074042Z-c1b4c03a",
+      "thresholds": "p1_4"
+    }
+  },
+  "files": {
+    "prep_aw3d30_detector_final.parquet": "df5fbca0dc3465ca23144ebbdd7a10c3b232d3844b596ba8207f59ef8269506f",
+    "prep_aw3d30_microsoft.parquet": "b23b1deb046fa4ee8eee86f50f0a08bcbb80c8b498f633a25ef2b599f9794ada",
+    "prep_checks.json": "0d6073f65fba4710eb4d368d60fe99f91782872e143bd3b8150c036c1d03bf66",
+    "prep_core_detector_final.parquet": "c9ec366bb86a219ab9741f8e11d28fab50f2b91eda18916d62d014ee25703270",
+    "prep_core_microsoft.parquet": "ba36268c1b9d35a9d6e53667f636097d7ad46b84352f6e2be5fd0d257b5dc22c",
+    "prep_drain_shares.csv": "2d17b5d911fc49d2caeca0f127aee4c3a8cf2794edf4c8ff6dc326dca1375de9",
+    "prep_fabdem_detector_final.parquet": "3be3cb42de34a456cbf9903be5132f0ad6f201d4b885feb9e5626733fb351a2a",
+    "prep_fabdem_microsoft.parquet": "0bfdd3cd571ce472af9c861e0731906faff910ddf41db9064861e08920d0442b",
+    "prep_features_detector_final.parquet": "08d6a4a6c6be41d247a4bce5ee2a9eb8defc7619755c6088a8a76f7d2faf7133",
+    "prep_features_microsoft.parquet": "0bd946fe2bafc873b1597fdd0b305239b49300ae74ba6f1694e437f0265a0179",
+    "prep_gedtm30_detector_final.parquet": "71963a04fe9d16b20d4122f360d1c2437626d5ff4b44fada8a74fa1a0426de29",
+    "prep_gedtm30_microsoft.parquet": "0304e0112cc77ea79b470e14bb0f7e392e07f4f64193b4889548ebdcd969d75c",
+    "prep_glo30_detector_final.parquet": "5da760b9bdd1f39f8ad7bce94436814702a35bac62c0c93b7dd88e34c565df41",
+    "prep_glo30_microsoft.parquet": "e8ba415791310e141e23dde887c4bced289fa15389d531cf85933c8d38187312",
+    "prep_nasadem_detector_final.parquet": "468bbc6af14a8677c40e7275569c47632029d6dd75a2c88ed38ecd1db1577351",
+    "prep_nasadem_microsoft.parquet": "29fcd02fd1334b2422239c4c71e58a4f37cbcc5d81766ad0f29df4c9b6324b13",
+    "prep_srtmgl1_detector_final.parquet": "f100038109a9fb7432295c56261cc2af552dbd17b6a80a02829ef61d527f1cc7",
+    "prep_srtmgl1_microsoft.parquet": "2552a3f30ac9c94d4754d468ead4ddbdfecc1d978e92964b032fc3b2c0b95aa4",
+    "prep_surface_checks.csv": "bfccd19e4f435096bb1eff640a4260503e220025116b58a6a842c5b8f5d729ad",
+    "prep_team_coverage.csv": "31add82b7f46c32eed846becd3da61088737360d2d21a2d5caf5679c23092ad2",
+    "prep_team_detector_final.parquet": "4ca8ebe0e6215f03dcf308ba2bdb66b39cbe4ebeb7f4d154af6040eb95cf44bb",
+    "prep_team_microsoft.parquet": "7c332e4be3ded9bd265fc111f9652e45a190e5ed9b3b42e890f01d96c01f8760",
+    "prep_team_recipe.csv": "67618803cd0f7d7074c1bcdb7c4ecaa7d4aecae8544a1307a8290dccb8a53d84",
+    "prep_team_reproduction.csv": "bfcfa3b01f965efa64e48ba5d3b3c2e8230fad6a9f92eafa53179d9950c583f0",
+    "prep_unosat.json": "ac343dab86b62872fbf0eae93f29f03b6b9b7c776f458e4d40ee8f36ad6cf78e"
+  },
+  "groups": [
+    "core",
+    "features",
+    "team",
+    "glo30",
+    "fabdem",
+    "gedtm30",
+    "nasadem",
+    "srtmgl1",
+    "aw3d30"
+  ],
+  "inputs": {
+    "hand_tables": {
+      "detector_final": "4c3e304340ff1b02d018a0abb4c3f0f2f514e34818bc37633e067f5c9660955f",
+      "microsoft": "da7c6a2777c555cef1eb7cfba8970ceebd462fea8e2902f89d402d613ab563e3"
+    },
+    "team_zip": "Nakkhu_handmodel_results-20261017T072229Z-1-001.zip",
+    "unosat_zip": "d4fe146d72d5fab905ad087ac9b08ee2d5fb98596488f3d126983090f28f728b"
+  },
+  "inventories": [
+    "microsoft",
+    "detector_final"
+  ],
+  "run": "followup-prep/20261017T090226Z-eaabadff"
+}

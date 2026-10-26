@@ -1,0 +1,53 @@
+{
+ "agree": 5323,
+ "agree_boxes": 11853,
+ "agree_with": "detector_final",
+ "inputs": {
+  "agree_inventory": "a5e291c42e5968f505cd5edfeef028f8c330e1441e77ec76b1c1d5acf7b21318",
+  "fp_microsoft": "35755fc0c0e567e5a441b1de8fb56f56e430e2f2f3d2b898f7380882230cb576",
+  "registration_footprints": "5132e5ea29bc2ee770b288cf0a33d5a2fc8855afa2359072752531114fd9eb58"
+ },
+ "inventory": {
+  "n_final": 12925,
+  "n_greenhouse_by_centroid": 25,
+  "n_greenhouse_by_iou": 3,
+  "n_greenhouse_removed": 25,
+  "n_in_extent": 12950,
+  "role": "primary"
+ },
+ "items": 150,
+ "items_sha256": "0d4f7fe860f3625c4a2b411f019226af9fd08873b169b52b89dc6ff8bc94855f",
+ "pilot_items": 0,
+ "polygons": 12925,
+ "prereg_sha256": "284669fc745263f32f86b0868cdff15f673618f79637510b0bfe5d5a638be059",
+ "run": "audit/20261016T092641Z-db205d95",
+ "seed": 0,
+ "split_sha256": "52786e81a91046ed4ca5e6db33c8767aeb9aa098b6d745b8e7c571f9957309ef",
+ "strata": {
+  "agree_chan0": {
+   "design_n": 18,
+   "frame_n": 548
+  },
+  "agree_chan1": {
+   "design_n": 24,
+   "frame_n": 1647
+  },
+  "agree_chan2": {
+   "design_n": 29,
+   "frame_n": 3128
+  },
+  "ms_only_chan0": {
+   "design_n": 21,
+   "frame_n": 1122
+  },
+  "ms_only_chan1": {
+   "design_n": 27,
+   "frame_n": 2435
+  },
+  "ms_only_chan2": {
+   "design_n": 31,
+   "frame_n": 4045
+  }
+ },
+ "task": "precision_microsoft"
+}

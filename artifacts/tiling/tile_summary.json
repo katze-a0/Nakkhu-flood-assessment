@@ -1,0 +1,356 @@
+{
+  "aoi_km2": {
+    "analysis_extent": 13.344122927629066,
+    "training_domain": 143.60279129985807
+  },
+  "cross_scene_ids": {
+    "infer": {
+      "same_id_same_bounds": true,
+      "scenes": [
+        "maxar_ge01_20241006_0500",
+        "maxar_ge01_20241006_0600",
+        "maxar_wv02_20240113",
+        "maxar_wv03_20230404"
+      ],
+      "shared_id_pairs": 1662
+    },
+    "train": {
+      "same_id_same_bounds": true,
+      "scenes": [
+        "maxar_wv02_20240113"
+      ],
+      "shared_id_pairs": 0
+    }
+  },
+  "grid": {
+    "crs": "EPSG:32645",
+    "height_px": 43520,
+    "origin": {
+      "north": 3074880.0,
+      "west": 331200.0
+    },
+    "origin_from": "training_domain",
+    "pixel_size_m": 0.5,
+    "tile_px": 640,
+    "width_px": 14080
+  },
+  "grid_sha256": "bf7f6d0b07edf288914a9d7ae37fbcb369f08a5201015aac5b40048362783c77",
+  "mosaics": {
+    "10300100F5AB8000_0p5m.tif": {
+      "crs": "EPSG:32645",
+      "height": 43520,
+      "transform": [
+        0.5,
+        0.0,
+        331200.0,
+        0.0,
+        -0.5,
+        3074880.0
+      ],
+      "width": 14080
+    },
+    "1040010085132700_0p5m.tif": {
+      "crs": "EPSG:32645",
+      "height": 43520,
+      "transform": [
+        0.5,
+        0.0,
+        331200.0,
+        0.0,
+        -0.5,
+        3074880.0
+      ],
+      "width": 14080
+    },
+    "105001003E1F0500_0p5m.tif": {
+      "crs": "EPSG:32645",
+      "height": 43520,
+      "transform": [
+        0.5,
+        0.0,
+        331200.0,
+        0.0,
+        -0.5,
+        3074880.0
+      ],
+      "width": 14080
+    },
+    "105001003E1F0600_0p5m.tif": {
+      "crs": "EPSG:32645",
+      "height": 43520,
+      "transform": [
+        0.5,
+        0.0,
+        331200.0,
+        0.0,
+        -0.5,
+        3074880.0
+      ],
+      "width": 14080
+    }
+  },
+  "mosaics_share_grid": true,
+  "tile_sets": [
+    {
+      "checks": {
+        "extent_tile_coverage": 0.9999999999999986,
+        "lattice_exact": true,
+        "unique_tile_ids": true
+      },
+      "empty": 0,
+      "extent_valid_share": 0.9998474800132965,
+      "low_valid": 0,
+      "partly_valid": 15,
+      "purpose": "infer",
+      "radiometry": {
+        "mode": "global",
+        "percentiles": [
+          [
+            8.0,
+            251.0
+          ],
+          [
+            12.0,
+            250.0
+          ],
+          [
+            11.0,
+            250.0
+          ]
+        ],
+        "percentiles_q": [
+          2.0,
+          98.0
+        ]
+      },
+      "scene": "maxar_ge01_20241006_0500",
+      "stride_px": 512,
+      "tiles": 277,
+      "tiles_by_domain": {
+        "buffer": 0,
+        "test": 277,
+        "train": 0
+      },
+      "tiles_by_domain_valid_ge_min": {
+        "buffer": 0,
+        "test": 277,
+        "train": 0
+      },
+      "valid_frac": {
+        "mean": 0.9813339949514891,
+        "median": 1.0,
+        "min": 0.61876220703125
+      },
+      "with_image": 277
+    },
+    {
+      "checks": {
+        "extent_tile_coverage": 0.9999999999999986,
+        "lattice_exact": true,
+        "unique_tile_ids": true
+      },
+      "empty": 0,
+      "extent_valid_share": 0.9998474800132965,
+      "low_valid": 0,
+      "partly_valid": 15,
+      "purpose": "infer",
+      "radiometry": {
+        "mode": "global",
+        "percentiles": [
+          [
+            8.0,
+            249.0
+          ],
+          [
+            14.0,
+            249.0
+          ],
+          [
+            11.0,
+            249.0
+          ]
+        ],
+        "percentiles_q": [
+          2.0,
+          98.0
+        ]
+      },
+      "scene": "maxar_ge01_20241006_0600",
+      "stride_px": 512,
+      "tiles": 277,
+      "tiles_by_domain": {
+        "buffer": 0,
+        "test": 277,
+        "train": 0
+      },
+      "tiles_by_domain_valid_ge_min": {
+        "buffer": 0,
+        "test": 277,
+        "train": 0
+      },
+      "valid_frac": {
+        "mean": 0.9813339949514891,
+        "median": 1.0,
+        "min": 0.61876220703125
+      },
+      "with_image": 277
+    },
+    {
+      "checks": {
+        "extent_tile_coverage": 0.9999999999999986,
+        "lattice_exact": true,
+        "unique_tile_ids": true
+      },
+      "empty": 0,
+      "extent_valid_share": 0.9998474800132965,
+      "low_valid": 0,
+      "partly_valid": 15,
+      "purpose": "infer",
+      "radiometry": {
+        "mode": "global",
+        "percentiles": [
+          [
+            16.0,
+            217.0
+          ],
+          [
+            22.0,
+            201.0
+          ],
+          [
+            21.0,
+            184.0
+          ]
+        ],
+        "percentiles_q": [
+          2.0,
+          98.0
+        ]
+      },
+      "scene": "maxar_wv02_20240113",
+      "stride_px": 512,
+      "tiles": 277,
+      "tiles_by_domain": {
+        "buffer": 0,
+        "test": 277,
+        "train": 0
+      },
+      "tiles_by_domain_valid_ge_min": {
+        "buffer": 0,
+        "test": 277,
+        "train": 0
+      },
+      "valid_frac": {
+        "mean": 0.9813339949514891,
+        "median": 1.0,
+        "min": 0.61876220703125
+      },
+      "with_image": 277
+    },
+    {
+      "checks": {
+        "extent_tile_coverage": 0.9999999999999986,
+        "lattice_exact": true,
+        "training_domain_tile_coverage": 1.0000000000000002,
+        "unique_tile_ids": true
+      },
+      "empty": 0,
+      "extent_valid_share": 0.9998474800132965,
+      "low_valid": 75,
+      "partly_valid": 176,
+      "purpose": "train",
+      "radiometry": {
+        "mode": "global",
+        "percentiles": [
+          [
+            16.0,
+            217.0
+          ],
+          [
+            22.0,
+            201.0
+          ],
+          [
+            21.0,
+            184.0
+          ]
+        ],
+        "percentiles_q": [
+          2.0,
+          98.0
+        ]
+      },
+      "scene": "maxar_wv02_20240113",
+      "stride_px": 640,
+      "tiles": 1483,
+      "tiles_by_domain": {
+        "buffer": 67,
+        "test": 180,
+        "train": 1236
+      },
+      "tiles_by_domain_valid_ge_min": {
+        "buffer": 65,
+        "test": 174,
+        "train": 1169
+      },
+      "valid_frac": {
+        "mean": 0.9456992233595329,
+        "median": 1.0,
+        "min": 0.00079833984375
+      },
+      "with_image": 1483
+    },
+    {
+      "checks": {
+        "extent_tile_coverage": 0.9999999999999986,
+        "lattice_exact": true,
+        "unique_tile_ids": true
+      },
+      "empty": 0,
+      "extent_valid_share": 0.9998474800132965,
+      "low_valid": 0,
+      "partly_valid": 15,
+      "purpose": "infer",
+      "radiometry": {
+        "mode": "global",
+        "percentiles": [
+          [
+            18.0,
+            221.0
+          ],
+          [
+            28.0,
+            200.0
+          ],
+          [
+            29.0,
+            191.0
+          ]
+        ],
+        "percentiles_q": [
+          2.0,
+          98.0
+        ]
+      },
+      "scene": "maxar_wv03_20230404",
+      "stride_px": 512,
+      "tiles": 277,
+      "tiles_by_domain": {
+        "buffer": 0,
+        "test": 277,
+        "train": 0
+      },
+      "tiles_by_domain_valid_ge_min": {
+        "buffer": 0,
+        "test": 277,
+        "train": 0
+      },
+      "valid_frac": {
+        "mean": 0.9813339949514891,
+        "median": 1.0,
+        "min": 0.61876220703125
+      },
+      "with_image": 277
+    }
+  ]
+}

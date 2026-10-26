@@ -1,0 +1,35 @@
+# HMA 8 m at its native resolution (prereg_v9_a1 P1-4-hma8m: "on its native grid"): the same
+# routing domain + 2 km, burn, conditioning and thresholds as configs/hand/sweep_dems.yaml, but on
+# an EPSG:32645 grid with 8 m cells (the HMA posting; the HMA Albers grid is reprojected
+# bilinearly to the working CRS at the same cell size). GLO-30 is warped onto the same 8 m grid
+# as the reference DEM (units guard, routing domain, primary) and as the void-fill donor.
+# The drop-analysis threshold is recomputed on this grid, so the primary threshold check
+# (0.2 km2 on the 30 m grid) is not applied here (`threshold_km2: null`).
+#   uv run nakkhu hand sweep --config configs/hand/sweep_dems_hma8m_native.yaml
+#   uv run nakkhu hand attribute --config configs/hand/sweep_dems_hma8m_native.yaml --inventory microsoft detector_final
+#   uv run nakkhu hand dem-diagnostics --config configs/hand/sweep_dems_hma8m_native.yaml
+extends: configs/hand/sweep_dems.yaml
+stage: hand-dems-8m
+attribute_stage: hand-dems-8m-attribute
+grid:
+  crs: EPSG:32645
+  res_m: 8
+  buffer_m: 2000
+  resampling: bilinear
+  domain: configs/aoi/routing_domain_upper_bagmati_glo30.geojson
+only:
+  dems: [glo30, hma8m]
+  conditioning: [fill_burn, breach_burn]
+  inventories: [microsoft, detector_final]
+primary:
+  dem: glo30
+  conditioning: breach_burn
+  threshold: drop
+  threshold_km2: null
+  statistic: centroid
+diagnostics:
+  main_lines: configs/aoi/osm_nakkhu_bagmati_lines.geojson
+  main_min_area_km2: 1.0
+  drain_thresholds_km2: [0.2, 1.0]
+  references: [glo30]
+  artefact_abs_diff_m: [20, 50]

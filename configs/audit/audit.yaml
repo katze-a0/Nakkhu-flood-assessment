@@ -1,0 +1,184 @@
+# Author yes/no audit (plan 006; R-AUD in configs/prereg.yaml). Sample sizes below are design
+# targets; the timed pilot (first 40 recall_points items) sets the final sizes in
+# audit/allocation.yaml. Every item lies in the test region (the 13.34 km2 analysis extent).
+# Blindness: nothing below except `question`, `help` and the chips ever reaches the page.
+schema_version: 1
+seed: 0
+
+# Test region = scored region of split_v1 (prereg split.test).
+region: analysis_extent
+# Flooded channel for distance bands (Nakkhu + Bagmati, OSM).
+channel_lines: [configs/aoi/osm_nakkhu_bagmati_lines.geojson]
+
+# Imagery for chips (the 0.305 m `visual` sources; local only, never copied to artifacts/).
+scenes:
+  pre: maxar_wv02_20240113
+  post: [maxar_ge01_20241006_0600, maxar_ge01_20241006_0500]   # first with valid pixels wins
+  # Extra post panel if covered. Empty since prereg v9: the OAM Dukuchhap UAV mosaics
+  # (oam_dukuchhap_1-3) are pre-flood imagery despite their 2024-10-01 metadata
+  # (plans/oam_panel_check.md), so flood_trace chips show WV02 before and GE01 after only.
+  oam: []
+
+chips:
+  context_m: 64.0       # chip side on the ground
+  upscale: 2            # shown at 2x
+  jpeg_quality: 90
+  crosshair_gap_px: 7   # radius of the open centre (output pixels)
+  crosshair_arm_px: 26
+  prefetch: 10          # page preloads the next N chips
+  examples: 3           # instruction-card examples per answer (from train tiles, never test)
+
+time:
+  cap_min: 120          # hard cap on cumulative logged author time (STOP condition)
+  sitting_max_min: 35
+  sitting_budget_min: 30  # answering time planned per sitting (3 x 30 = 90 min, inside 75-100)
+  pilot_items: 40
+  floor_per_task: 150
+  repeat_frac: 0.05     # repeated items for self-agreement
+  repeat_min_gap: 20    # a repeat comes at least this many items after its original
+
+# Footprint registration (plan 004, promoted shifts in tile pixels of the 0.5 m train grid).
+registration:
+  footprints: labels/registration_shifts.csv       # Google + Microsoft (joint)
+  osm: labels/osm_registration_shifts.csv
+
+# Auditor per task (written into every response event; estimates carry it). Sitting 1 was
+# answered by one teammate, not the author (user, 2026-10-12); every other sitting is the author's.
+tasks:
+  recall_points:
+    sitting: 1
+    auditor: teammate_1
+    question: Is the crosshair on a building roof?
+    keys: {"yes": "Yes", "no": "No", "unsure": "Unsure"}
+    sources: [google, microsoft, osm]   # never Overture (prereg audit.overture_rule)
+    dedup_m: 3.0            # centroids of different footprints closer than this are one unit
+    membership_tol_m: 1.0   # a unit is "in" a source if within this distance of its polygon
+    design_n: 300
+    min_per_stratum: 10     # sqrt allocation over source-membership patterns, at least this
+    outside_n: 50           # random points outside every footprint
+    outside_buffer_m: 5.0
+  # Sitting 1b (plan 006 follow-up, prereg v4 `audit_recall`): a sitting-1 point is a footprint's
+  # representative point, and unregistered footprints sit metres off their roofs, so a real
+  # building's point often lands beside it. Every sitting-1 primary item answered No/Unsure in a
+  # footprint stratum is asked again with a circle of radius_m; a Yes needs a click on the roof
+  # inside the circle (offset logged in metres). overlap_n random sitting-1 primary items (any
+  # answer, any stratum) are asked the original question again (inter-rater agreement).
+  recall_nearmiss:
+    sitting: 1b
+    auditor: author
+    parent: recall_points
+    question: Is there a building roof within the circle?
+    keys: {"yes": "Yes", "no": "No", "unsure": "Unsure"}
+    include_answers: ["no", "unsure"]
+    exclude_strata: [outside]
+    overlap_n: 20
+    # R: 95th percentile of the footprint (Google/Microsoft) registration shift magnitude on the
+    # 109 registered test-region tiles (7.91 m; artifacts/labels/registration_shifts.csv, no
+    # audit answer used), rounded up to 0.5 m. The registered shift is the offset that
+    # unregistered tiles keep. All 739 registered tiles give 7.65 m, train-only 7.21 m. Cap:
+    # below the median nearest-neighbour spacing of Google split units in the extent (8.24 m).
+    radius_m: 8.0
+    # Sensitivity radius: median of the same shift distribution (3.81 m), rounded up to 0.5 m.
+    sensitivity_radius_m: 4.0
+    mark_gap_px: 3          # small centre mark, so roofs inside the circle stay visible
+    mark_arm_px: 8
+  precision_pool:
+    sitting: 2
+    auditor: author
+    question: Does the box mark a real building or attached building block?
+    keys: {"yes": "Yes", "no": "No", "unsure": "Unsure"}
+    # Filled after plan 007 Phase A/B: one entry per detection run on the test region, each
+    # with the frozen val threshold of its model (`threshold_from` an eval run).
+    # prereg v5+ audit_precision_pool: exactly the five final seeds + the detector_final
+    # ensemble run, each cut at the val threshold of its own model (filled 2026-10-13).
+    runs:
+      - {run: infer/20261006T041829Z-0fccbb63, threshold_from: eval/20261006T012716Z-4fb60242, model: "L5/yolo11n-obb seed0"}
+      - {run: infer/20261006T041918Z-c250103f, threshold_from: eval/20261006T014250Z-446813b8, model: "L5/yolo11n-obb seed1"}
+      - {run: infer/20261006T032900Z-73c84d03, threshold_from: eval/20261006T043247Z-4c24d0e3, model: "L5/yolo11n-obb seed2"}
+      - {run: infer/20261012T193014Z-a8231abe, threshold_from: eval/20261012T194042Z-400c5cd1, model: "L5/yolo11n-obb seed3"}
+      - {run: infer/20261012T193020Z-3704436c, threshold_from: eval/20261012T194155Z-2d4f6600, model: "L5/yolo11n-obb seed4"}
+      - {run: infer/20261012T194507Z-6e03e8a3, threshold_from: eval/20261012T194414Z-3bce8cf3, model: "detector_final ensemble"}
+    cluster_iou: 0.5
+    run_share_bands: [0.0, 0.34, 0.67, 1.0]   # share of runs containing the cluster
+    channel_bands_m: [0, 100, 300, .inf]
+    design_n: 300
+    min_per_stratum: 10
+  # Plan 013 (prereg v8): Microsoft is the main inventory (prereg v7 C5 fallback, user
+  # 2026-10-16), so sitting 2 also asks for the precision of a Microsoft polygon, the unit
+  # counted in Microsoft exposure. Frame = the Microsoft exposure units (hydro.sweep
+  # load_inventory: centroid in the extent, greenhouses removed; same ids as its HAND table),
+  # shown moved by the joint footprint registration shift. Strata: agree (a detector_final box
+  # centroid lies inside the moved polygon) / ms_only x channel band; sqrt allocation. Not in
+  # audit/allocation.yaml (pinned), so its size is design_n (= time.floor_per_task).
+  precision_microsoft:
+    sitting: 2
+    auditor: author
+    question: Does the outline mark a real building or attached building block?
+    keys: {"yes": "Yes", "no": "No", "unsure": "Unsure"}
+    inventory: microsoft
+    agree_with: detector_final
+    channel_bands_m: [0, 100, 300, .inf]
+    design_n: 150
+    min_per_stratum: 10
+  flood_trace:
+    sitting: 3
+    auditor: author
+    question: Fresh water, mud or debris touching this building that is absent before?
+    keys: {"yes": "Yes", "no": "No", "unsure": "Not observable"}
+    # Plan 009 output per inventory (building id, score, class, observable, geometry) and its
+    # sidecar with the change-map, source-inventory and building-table SHA-256. Primary =
+    # microsoft (prereg v8, plan 013: the main inventory under the prereg v7 C5 fallback); the
+    # unanswered detector_final draw (items sha 0cf83866...) was replaced by this one. One
+    # flood_trace inventory per task directory; every inventory uses its PPV and drop rule.
+    inventory: microsoft
+    change_map: artifacts/flood/change_map_buildings_{inventory}.parquet
+    change_map_meta: artifacts/flood/change_map_buildings_{inventory}.json
+    near_channel_m: 300
+    design_n: 300
+    min_per_stratum: 10
+    # Rebalance after the sqrt allocation (same total): the positive stratum gets `n` items
+    # (all of it if smaller), taken from `from` (coordinator decision 2026-10-06).
+    rebalance: {stratum: positive, n: 100, from: negative_far}
+    followup: damage        # asked on the same chips right after a Yes
+    time_factor: 2.0        # assumed s/item relative to the pilot (two panels + follow-up)
+  damage:
+    sitting: 3
+    auditor: author
+    parent: flood_trace
+    question: Visible structural damage (collapse, missing wall or roof)?
+    keys: {"yes": "Yes", "no": "No", "unsure": "Unsure"}
+  # Plan 014 Phase 2 (prereg_v9_a3 P2-audit; prereg_v9_a4 `audit`): the v9 flood_trace protocol
+  # (question, keys, strata, sqrt allocation, damage follow-up, chips) on the Phase-2 site change
+  # maps; a new task, so the v9 tasks above are unchanged. Items are drawn only after
+  # prereg_v9_a4 is frozen and the site change maps (G6) are pinned in `change_maps`. Sizes are
+  # per site: 150 active items (sqrt allocation, >= 10 per stratum, then the positive stratum
+  # raised to 50 from negative_far) and 8 repeats; both sites in one random order.
+  # `primary_rater` (prereg_v9_a4 audit.raters) is the one remote rater whose log
+  # (raters/<name>/responses.jsonl) the P2-audit estimate reads; raters answer through
+  # `nakkhu audit invite / share`. The 10-15 s pace guidance and the soft warning apply to
+  # every rater of this task, the author included (orchestrator decision 2026-10-17).
+  flood_trace_p2:
+    sitting: p2
+    auditor: author
+    # The one and only rater (user 2026-10-17): a remote rater, unnamed, id rater_1; the
+    # P2-audit estimate reads raters/rater_1/responses.jsonl (prereg_v9_a4 audit.raters).
+    primary_rater: rater_1
+    question: Fresh water, mud or debris touching this building that is absent before?
+    keys: {"yes": "Yes", "no": "No", "unsure": "Not observable"}
+    followup: damage
+    requires_frozen: prereg_v9_a4
+    sites: [A, B]
+    change_maps: configs/followup/phase2/p2_change_maps.yaml
+    site_lines: "artifacts/followup/phase2/site_{site}_lines.geojson"
+    site_extent: "artifacts/followup/phase2/site_{site}_extent.geojson"
+    near_channel_m: 300
+    design_n: 150
+    min_per_stratum: 10
+    rebalance: {stratum: positive, n: 50, from: negative_far}
+    repeats_per_site: 8
+    pace_all_raters: true
+    scenes:
+      pre:
+        A: [maxar_wv02_20240113, maxar_wv02_20240113_f2bccf00]
+        B: [maxar_wv02_20240113]
+      post: [maxar_ge01_20241006_0600_full]

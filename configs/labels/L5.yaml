@@ -1,0 +1,6 @@
+# L5: consensus (Decisions 2026-10-05). agree -> keep (Google geometry); split/merge/complex
+# conflict -> keep Google's per-house units; lone Google >= t90 -> keep; lone Google < t90 and
+# lone Microsoft -> dropped.
+extends: common.yaml
+arm: L5
+rule: consensus

@@ -1,0 +1,531 @@
+# Pre-registration addendum prereg_v9_a3 (plan 014: follow-up tests on the HAND result).
+# Declared 2026-10-17, AFTER the primary event validation (journal 47) and the competitor re-run
+# (journal 51) were seen: C3 failed (Microsoft R1 HAND 0.887 vs distance 0.895, delta AUC -0.008
+# [-0.044, 0.023], 26 blocks). It does not change configs/prereg.yaml (prereg_v9, 89baaed3...):
+# C3 stays the pre-registered result. Phase 1 re-uses the Nakkhu test region as DEVELOPMENT
+# data; every Phase-1 result is post hoc / exploratory, whatever its outcome. Only Phase 2 (a new
+# site, frozen candidates, tested once) can be called confirmatory.
+# Frozen by `nakkhu prereg addendum` (hash in artifacts/prereg/addenda/prereg_v9_a3.sha256;
+# frozen plan text prereg_v9_a3.plan.md). Implementing code reads its settings from THIS file
+# (no copies) and journals each access through nakkhu.evaluate.addendum.record_addendum_access.
+# Human-readable plan: plans/014-followup-tests.md (the frozen copy governs).
+addendum: prereg_v9_a3
+base_version: prereg_v9
+base_sha256: 89baaed3e19554db599b510219c94285880820d4b840a7a0e76478d2150253ba
+requires: []
+supersedes: prereg_v9_a2
+supersede_reason: the user supplied the team's / supervisor's earlier ArcGIS HAND model of the
+  Nakkhu (2026-10-17) after prereg_v9_a2 (b14b52a1...) was frozen. a3 is a2 plus P1-9 (the team
+  surface evaluated as-is), P1-10 (the team recipe reproduced on our DEMs) and the team
+  recipe added to the Phase-2 HAND candidate set; ids renumbered (Phase-2 record a3 -> a4).
+  Every other test, setting and rule of a2 is unchanged. a2 had no journal entry (a2 itself
+  superseded the unused a1, whose full-file sweep.yaml pin was too broad).
+team_hand_data:
+  location: "{data_root}/raw/ext_team_hand/ (PROVENANCE.yaml; reference-only external data,
+    copied unmodified from the user's downloads on 2026-10-17; licence not stated)"
+  files:
+    Nakkhu_handmodel_results-20261017T072229Z-1-001.zip: d02dca811a876da05176fc30e576d635769591ad1f4a1b3fc1bcb06b0d35f5d3
+    Dem_forHand-20261017T072206Z-1-001.zip: 1a84b8170d5099bf8df7890ca27f3fc170a1d000c5de47ad65aba68428c19048
+  check: the P1-9 / P1-10 runner refuses unless both zips have exactly these sha256 values;
+    members are read from the zips (no extraction into the repo)
+  facts: Dem12.5 = the ALOS "12.5 m" (resampled SRTM) DEM in EPSG:32645 at 12.5 m; routing
+    clipped to the Nakkhu_Basin polygon (55.8 km2); streams = flow accumulation >= 5000 cells
+    (0.78125 km2) inside the basin; Nakkhu_river_digitized line (27.4 km); outputs Hand Value
+    (0-676 m) and masks HAND < 4, 6, 10 m (coordinator's label-free check)
+declared_utc: "2026-10-17"
+declared_by: coordinator agent on the user's decision of 2026-10-17 (plans/README.md log)
+seen_before_declaration:
+  - journal 1-51 incl. flood validate (journal 47) and competitor re-run (journal 51)
+  - plans/investigation_hand.md, investigation_eval.md, investigation_prior.md
+  - the logged H2-H5 grid (HAND AUC rises with the stream threshold; >= 0.5 km2 above distance)
+  - label-free drain-to-main shares (investigation_hand.md section 2)
+evidence_pins:
+  competitors_v2:
+    sha256_of: artifacts/validation/competitors_auc_v2.csv
+    sha256: c57fbc0eac0726cb6b9fb6df09c35175b41b0c44c191fe397951ce3c2a1f345b
+  skill_grid:
+    sha256_of: artifacts/validation/config_skill_grid.csv
+    sha256: f134e37219f1599878c7f9a60895497f5ffdfdf49c755d92b784cc4fcb604a43
+
+# --- shared settings (every test unless it says otherwise) ----------------------------------
+common:
+  inventories:
+    headline: microsoft            # prereg v9 main inventory
+    secondary: [detector_final]
+  references:
+    headline: R1                   # gated 0600 change-map class on observable buildings (v9)
+    secondary: [R1-aud]            # Microsoft only, design weights N_h/n_h (v9)
+  rows: exactly the rows of the v9 primary cell (Microsoft R1 n 6,769, 352 affected, 26 blocks);
+    a predictor that is NaN for a row is reported with its NaN count and scored on the
+    complement, never imputed
+  orientation: lower value = more exposed for every HAND, distance and elevation predictor
+    (score = -value); model outputs are probabilities (higher = more exposed)
+  metric: ROC-AUC (Mann-Whitney, ties 1/2; weighted for R1-aud), nakkhu.flood.validate.roc_auc
+  paired_test: delta AUC (candidate - comparator) on identical rows; DeLong (unweighted R1
+    only) and the paired block bootstrap, nakkhu.flood.validate.block_bootstrap_delta_auc
+  ci: 95 % percentile CI of the paired block bootstrap, 2000 resamples of whole plan-005 blocks,
+    seed 0 (the C3 method); two-sided; no multiplicity correction in Phase 1 (all exploratory)
+  also_reported: PR-AUC, n, affected, n_blocks, n_boot_valid, DeLong se and p
+  blocks:
+    sha256_of: artifacts/splits/blocks.geojson
+    sha256: 702e6bcd93d96c1ad850d89a75959c79890b4745cb19d0933a769744f2428c69
+  bootstrap_defaults:
+    constant_of: nakkhu.flood.validate:block_bootstrap_delta_auc.__defaults__
+    values: [2000, 0, null]
+  level:
+    constant_of: nakkhu.flood.validate:LEVEL
+    values: 0.95
+  distance_competitor: shapely distance (m) from the EPSG:32645 building centroid to
+    configs/aoi/osm_nakkhu_bagmati_lines.geojson (the v9 `distance_to_channel`)
+  main_lines:
+    sha256_of: configs/aoi/osm_nakkhu_bagmati_lines.geojson
+    sha256: 86dbc6ce9513fb1f99974fbbcc8c7402bf89b40c469b58700ba905d70f7476ec
+  river_lines:
+    sha256_of: configs/aoi/osm_waterways_rivers.json
+    sha256: 4dc9a7f9e2ff8240f508937085926ad90520caa081203c4b5d56adbcfad49356
+  hand_grid:                 # the method keys of configs/hand/sweep.yaml (DEM entries may grow)
+    grid:
+      mirror_of: configs/hand/sweep.yaml#grid
+      values: {crs: "EPSG:32645", res_m: 30, buffer_m: 2000, resampling: bilinear,
+               domain: configs/aoi/routing_domain_upper_bagmati_glo30.geojson}
+    burn:
+      mirror_of: configs/hand/sweep.yaml#burn
+      values:
+        depth_m: 60
+        all_touched: true
+        lines: [configs/aoi/osm_nakkhu_bagmati_lines.geojson, configs/aoi/osm_waterways_rivers.json]
+    breach:
+      mirror_of: configs/hand/sweep.yaml#breach
+      values: {max_dist_cells: 100}
+    conditioning:
+      mirror_of: configs/hand/sweep.yaml#conditioning.breach_burn
+      values: {method: breach, burn: true}
+    statistics:
+      mirror_of: configs/hand/sweep.yaml#statistics
+      values: [centroid, footprint_min, buffer_min]
+    buffer:
+      mirror_of: configs/hand/sweep.yaml#buffer_m
+      values: 10
+    tiers:
+      mirror_of: configs/hand/sweep.yaml#tiers_m
+      values: [0, 3, 6, 9, 12]
+    drop_analysis:
+      mirror_of: configs/hand/sweep.yaml#drop_analysis
+      values:
+        candidates_km2: [0.05, 0.075, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.75, 1, 1.5, 2, 3, 4,
+                         5]
+        t_critical: 2.0
+    thresholds:
+      mirror_of: configs/hand/sweep.yaml#thresholds_km2
+      values: [0.05, 0.1, 0.25, 0.5, 1, 2]
+    routing_domain:
+      sha256_of: configs/aoi/routing_domain_upper_bagmati_glo30.geojson
+      sha256: 82d5be4f5ee1afa8846ae5ea2d6d0375ca5b57d6e283996c5839724103d66d56
+  hand_v9: GLO-30, breach_burn, drop threshold 0.2 km2, centroid (prereg v9 hand.primary)
+  min_cell: a subgroup or band is scored only with >= 10 affected and >= 10 unaffected
+    buildings; otherwise counts only
+  labelling: every Phase-1 number is reported as "post hoc (prereg_v9_a3 <test>)"; none
+    replaces C3, the v9 primary or any v9 number
+  journal: each test declared with access test runs once (note `prereg_v9_a3:<test>`); one retry
+    only for a
+    run that failed before writing any metric (note `... retry`), disclosed
+
+# --- derived predictors (label-free; computed before any Phase-1 access) ---------------------
+definitions:
+  main_mask: M = cells of the sweep grid touched (all_touched) by the 11 ways of
+    configs/aoi/osm_nakkhu_bagmati_lines.geojson AND with D8 contributing area >= 1 km2 on the
+    same DEM x conditioning (excludes bank cells of the 2-cell burn band)
+  z_ref: conditioned elevation with burned cells restored to the original (as sweep HAND)
+  hand_mr_d8: max(0, z_ref(c) - z_ref(m(c))), m(c) = first cell of M on the D8 path from c
+    (breach_burn routing of the same DEM); NaN if the path leaves the grid without reaching M
+  hand_mr_rem: max(0, z_raw(c) - z_ch(c)), z_ch(c) = minimum z_raw over the M cells whose
+    centres lie within 60 m of the M cell nearest (Euclidean, cell centres) to c
+  hand_any_t: sweep HAND with stream threshold t km2 (streams = contributing area >= t plus
+    the burned lines), i.e. height above the nearest drainage of any kind
+  dist_stream_t: Euclidean distance (m) from the building centroid to the nearest stream-cell
+    centre at threshold t
+  drains_main_t: True if the first stream cell on the building's D8 path at threshold t is in M
+  dist_cell: distance_competitor measured from the centre of the 30 m HAND cell holding the
+    centroid (resolution-matched distance)
+  statistic: building centroid cell for every raster predictor
+  hand_team: the team's `Hand Value.tif` sampled as-is (nearest cell, in its own CRS and grid)
+    at the building centroid; NaN outside the raster's valid cells (it covers the Nakkhu basin
+    only)
+  team_basin: the team's Nakkhu_Basin polygon (EPSG as in its .prj), reprojected to the sweep
+    CRS; a building is covered if its centroid lies inside it
+  hand_team_acc_<dem>_<cond>: the team recipe on our DEM - routing clipped to team_basin (cells
+    outside are no-data, the outlet is the lowest-accumulation-sink cell nearest the team's
+    Nakkhu_Outlet point), conditioning <cond> in {fill (pysheds fill as sweep fill_*, no burn,
+    the team's ArcGIS Fill analogue), breach_burn (ours, burn lines clipped to the basin)},
+    streams = contributing area >= 0.78125 km2 inside the basin, HAND = z_ref(c) minus z_ref of
+    the first stream cell on the D8 path, clamped at 0; NaN outside the basin
+  hand_team_dig_<dem>_<cond>: as hand_team_acc but the drainage is only the cells touched
+    (all_touched) by the team's Nakkhu_river_digitized line; NaN where the D8 path leaves the
+    basin without reaching it
+  team_dems:
+    - dem12.5 = the team Dem12.5 on its own 12.5 m grid (reimplementation check)
+    - glo30
+    - fabdem
+
+tests:
+  P1-1:
+    title: main-river HAND
+    access: test
+    predictors: [hand_mr_d8, hand_mr_rem]
+    dems: [glo30, fabdem]
+    conditioning: breach_burn
+    comparisons: each predictor vs distance_competitor and vs hand_v9 (paired delta AUC)
+    references: [R1, R1-aud, R1-all-strips]
+    also: tier hit rates and tier odds ratios of hand_mr_d8 (GLO-30) with the v9 tier edges
+      [0, 3, 6, 9, 12] and the v9 OR / monotone rule; NaN-path count
+  P1-2:
+    title: stream-threshold curve and drainage matching
+    access: test
+    thresholds_km2: [0.05, 0.075, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.75, 1, 1.5, 2, 3, 4, 5]
+    dem: glo30
+    conditioning: breach_burn
+    per_threshold:
+      - AUC of hand_any_t and of dist_stream_t
+      - delta AUC hand_any_t - distance_competitor (CI, DeLong)
+      - delta AUC hand_any_t - dist_stream_t (drainage-matched)
+      - delta AUC hand_any_t - hand_mr_d8 (nearest any drainage vs the flooding river)
+      - share drains_main_t (label-free) and AUC of hand_any_t and distance_competitor within
+        drains_main_t True / False
+    reading: a curve, not a selection; no threshold is chosen from it for any later use
+  P1-3:
+    title: does HAND add information beyond distance
+    access: test
+    joint_model:
+      family: logistic (nakkhu.flood.validate.logistic, Newton-IRLS, unpenalised)
+      basis: natural cubic spline, df 4 per predictor (interior knots at the 25/50/75th and
+        boundary knots at the 1st/99th percentiles of the training fold; values outside the
+        boundary clamped); distance enters as log1p(distance_competitor)
+      models:
+        M0: ns(log1p distance)
+        M1: ns(log1p distance) + ns(hand_v9)
+        M1mr: ns(log1p distance) + ns(hand_mr_d8 GLO-30)
+      cv: leave-one-block-out over the plan-005 blocks (outer folds = blocks)
+      report: pooled out-of-fold AUC, delta AUC M1 - M0 and M1mr - M0 (paired block bootstrap
+        of the OOF predictions), out-of-fold log-loss and Brier and their deltas, and on the
+        all-data fit a CR1 (blocks) Wald chi2 test of the 4 HAND spline coefficients (df 4)
+    bands:
+      distance_bands_m: [0, 100, 300]          # [0,100), [100,300), [300, inf)
+      hand_bands_m: [3, 12]                    # mirror: <= 3 (incl. on drainage), (3,12], > 12
+      predictors: [hand_v9, hand_mr_d8]
+      report: AUC of each HAND predictor and of distance_competitor inside each distance band
+        with delta AUC (block bootstrap over the blocks present in the band); stratified AUC =
+        sum_b P_b N_b AUC_b / sum_b P_b N_b over the scorable bands, with its paired block
+        bootstrap; mirror - AUC of distance_competitor inside each HAND band (hand_v9)
+  P1-4:
+    title: DEM comparison at matched thresholds
+    access: test
+    dems: [glo30, fabdem, gedtm30, srtmgl1, nasadem, aw3d30, hma8m]
+    dem_notes:
+      sources: srtmgl1, nasadem, aw3d30 via OpenTopography or Planetary Computer, hma8m
+        (NSIDC HMA_DEM8m_MOS) via Earthdata; fetched and routed label-free by the DEM agent
+        (product, version, source URL, licence and vertical datum recorded in the manifest)
+      surface_types: glo30, srtmgl1, nasadem, aw3d30 and hma8m are surface models (buildings and
+        canopy included; hma8m is a 2002-2016 VHR-stereo DSM); fabdem and gedtm30 are DTMs
+      hma8m: resampled bilinearly onto the sweep grid (the P1-4 member); a native-8 m surface,
+        if produced by the same code (area thresholds in km2), is an extra row of the same run;
+        buildings on its no-data cells are NaN and counted, and every DEM, distance_competitor
+        and hand_v9 are also scored on its valid rows
+      late: a DEM whose surface is not ready when P1-4 runs is scored later, once, as
+        P1-4-<dem> with this protocol
+    conditioning: breach_burn
+    rules: [threshold 0.2 km2, threshold 0.5, threshold 1, threshold 2, drop threshold of the
+      DEM, hand_mr_d8, hand_mr_rem]
+    vertical: every DEM converted to EGM2008 metres; units guard of sweep.yaml applies
+    routing_gate: sweep.yaml rule; failing surfaces scored, flagged and excluded from ranges
+    report: AUC per DEM x rule; delta AUC vs distance_competitor; paired delta AUC vs GLO-30 at
+      the same rule
+  P1-4-srtmgl1:
+    access: test
+    title: P1-4 protocol for SRTM GL1, only if not ready when P1-4 runs
+  P1-4-nasadem:
+    access: test
+    title: P1-4 protocol for NASADEM, only if not ready when P1-4 runs
+  P1-4-aw3d30:
+    access: test
+    title: P1-4 protocol for ALOS AW3D30, only if not ready when P1-4 runs
+  P1-4-hma8m:
+    access: test
+    title: P1-4 protocol for the NASA HMA 8 m DSM, only if not ready when P1-4 runs
+  P1-4-tandemx12:
+    access: test
+    title: P1-4 protocol for TanDEM-X 12 m (DLR science licence); sweep grid and native grid
+  P1-4-uav:
+    access: test
+    title: P1-4 protocol for the Khatiwada et al. 2026 UAV DEM if shared; scored only on the
+      buildings it covers, with GLO-30 and distance on the same rows
+  P1-5:
+    title: label diagnostics
+    access: test
+    parts:
+      label_source: on the answered sitting-3 Microsoft items only, AUC of hand_v9, hand_mr_d8
+        and distance_competitor against (a) the audit answer and (b) the R1 class of the same
+        items, unweighted and design-weighted; Unsure excluded
+      misses: among audited change-map-negative items, AUC of the same predictors for audit Yes
+        vs No (descriptive; counts and Wilson shares by distance band if below min_cell)
+      gradient: R1 affected share by distance band ([0,50,100,200,300,500,1000] m) and by v9
+        HAND tier, Wilson 95 % CI (descriptive)
+      change_score: Spearman rho of the continuous change-map building score (the column the
+        v9 class rule thresholds) with hand_v9 and with distance_competitor on observable
+        buildings, overall and per distance band, block-bootstrap 95 % CI
+  P1-8:
+    title: independent second reference - UNOSAT Spot-6 flood extent (label-bias diagnostic)
+    access: test
+    source: UNOSAT FL20240928NPL, HDX package 3996, FL20240928NPL_SHP.zip, layers
+      Spot6_20240930_FloodExtent_Kathmandu, Spot6_20240930_PotentiallyAffectedBuilding_Kathmandu
+      and Spot6_20240930_AnalysisExtent_Kathmandu (Spot-6, 30 Sep 2024, CC BY-SA; marked "not yet
+      field validated" by UNOSAT, so a second reference, not truth); the zip is registered in
+      the data manifest with its sha256 before the run (label-free)
+    caveat: whether UNOSAT used a DEM or HAND mask is unverified; reported with that caveat, and
+      if its documentation shows one, the result is labelled "not independent of terrain"
+    labels:
+      R-UN: affected = Microsoft footprint intersects a FloodExtent polygon (0 m buffer)
+      R-UN-pts: affected = a PotentiallyAffectedBuilding point lies inside the footprint or within
+        8.0 m of it (the prereg near-miss radius)
+    rows:
+      un_all: every Microsoft building of the Nakkhu extent inside the UNOSAT AnalysisExtent
+        (needs no change-map observability)
+      un_r1rows: the subset in the v9 primary R1 rows (paired label comparison on the same rows)
+    predictors: [hand_v9, hand_mr_d8, distance_competitor]
+    report: AUC and delta AUC (paired block bootstrap, DeLong) per label x rows; Cohen kappa of
+      R-UN with R1 on un_r1rows and the 2x2 table; AUC of the predictors against R1 within
+      R-UN = 1 and within R-UN = 0 (descriptive)
+  P1-9:
+    title: the team's earlier HAND surface, evaluated as-is
+    access: test
+    predictor: hand_team
+    rows: the v9 primary rows (Microsoft R1) whose centroid has a valid hand_team value;
+      coverage (n, affected, blocks covered vs the full cell) reported first
+    comparisons: on exactly the covered rows - hand_team vs distance_competitor, vs hand_v9
+      and vs hand_mr_d8 (GLO-30); paired delta AUC (block bootstrap over the covered blocks,
+      DeLong); secondary on detector_final R1 and Microsoft R1-aud covered rows
+    also: cumulative skill (H, FAR, CSI) of the team masks HAND < 4, < 6, < 10 m and of hand_v9
+      and hand_mr_d8 at the same cuts, on the covered rows (descriptive)
+  P1-10:
+    title: the team recipe reproduced on our DEMs
+    access: test
+    predictors: hand_team_acc and hand_team_dig on team_dems x {fill, breach_burn}
+    label_free_first: agreement of hand_team_acc_dem12.5_fill with hand_team at the covered
+      building cells (weighted kappa on the v9 tiers, median and q90 |difference|) is computed
+      and promoted before any label is read; it measures how faithfully our code reproduces the
+      ArcGIS chain, and is reported whatever its value
+    rows: the covered rows of P1-9 (same subset for every member)
+    comparisons: each member vs distance_competitor, vs hand_team and vs hand_mr_d8 (same DEM
+      where it exists); paired delta AUC, block bootstrap, DeLong; R1 headline, detector_final
+      R1 and Microsoft R1-aud secondary
+  P1-5-ext:
+    title: a further independent reference (conditional)
+    access: test
+    condition: an event reference other than UNOSAT Spot-6 that is not derived from HAND, a DEM
+      or a hydraulic model and whose licence permits analysis (e.g. TASA FORMOSAT-5 polygons
+      once their licence is confirmed); Sentinel-1 is excluded (27 Sep pass before the peak,
+      2 Oct after the recession); provenance, date and licence recorded label-free first
+    label: affected = footprint intersects the mapped flood polygons (0 m buffer); only
+      buildings inside the reference's coverage footprint
+    report: as P1-1 (hand_v9, hand_mr_d8, distance_competitor; delta AUC, block bootstrap) plus
+      agreement (Cohen kappa) of the external label with R1 on common observable buildings
+  P1-6:
+    title: learned building-level exposure model
+    access: test
+    training_label: Microsoft R1 (binary, unweighted); R1-aud never used for training
+    features:
+      hand:
+        - hand_v9
+        - hand_any_0.05
+        - hand_any_0.1
+        - hand_any_0.25
+        - hand_any_0.5
+        - hand_any_1
+        - hand_any_2
+        - hand_mr_d8 (GLO-30)
+        - hand_mr_rem (GLO-30)
+        - hand_mr_d8_fabdem
+      distance:
+        - log1p distance_competitor
+        - log1p dist_stream_0.2
+        - log1p dist_stream_2
+        - flowdist_main = D8 path length from c to m(c) in metres
+      elevation:
+        - elev_glo30 = z_raw of GLO-30
+        - elev_fabdem
+        - dsm_excess = GLO-30 minus FABDEM
+      terrain:
+        - slope_deg = Horn 3x3 on GLO-30 raw
+        - curv_plan = Zevenbergen-Thorne plan curvature on GLO-30 raw
+        - curv_profile = Zevenbergen-Thorne profile curvature on GLO-30 raw
+        - tpi_150 = z minus mean z within 150 m (GLO-30 raw)
+        - tpi_500 = z minus mean z within 500 m (GLO-30 raw)
+        - twi = ln(a / tan(max(slope, 0.1 deg))), a = contributing area per unit contour width
+      flow:
+        - log10 contributing area (km2) at the building cell
+        - log10 contributing area (km2) at the first drop-network stream cell reached
+        - log10 contributing area (km2) at m(c)
+      building:
+        - footprint area in m2
+        - count of centroids of the same inventory within 100 m
+      excluded: coordinates, block id, any imagery, change-map or audit quantity
+    families:
+      M-C:
+        model: penalised logistic GAM - natural cubic spline df 4 per feature (knots as P1-3),
+          L2 penalty on all non-intercept coefficients, penalised Newton-IRLS
+        search: lambda in [0.001, 0.01, 0.1, 1, 10, 100] (6 configs)
+      M-D:
+        model: gradient boosting, scikit-learn HistGradientBoostingClassifier, early stopping
+          off, random_state 0
+        search: random search, 60 configs drawn with seed 0 from learning_rate [0.02, 0.05,
+          0.1] x max_iter [100, 300, 1000] x max_leaf_nodes [7, 15, 31] x min_samples_leaf [20,
+          50, 100, 200] x l2_regularization [0, 0.1, 1, 10] x max_features [0.5, 1.0]
+      M-E:
+        model: M-D with monotone_cst - non-increasing in every hand and distance feature and in
+          flowdist_main, unconstrained otherwise
+        search: the same 60 configs as M-D
+    cv:
+      outer: leave-one-block-out over the plan-005 blocks (26 folds on Microsoft R1)
+      inner: 5-fold GroupKFold by block over the outer-training blocks (deterministic order of
+        block ids); selection by mean inner log-loss; the selected config is refit on all
+        outer-training rows
+      secondary_inventory: detector_final rows of a held-out block are predicted by the model of
+        that outer fold (trained on Microsoft rows of the other blocks)
+      compute: VPS (CPU) or Kaggle; no tuning outside this budget
+    report: per family - pooled OOF AUC, PR-AUC, log-loss, Brier, ECE (10 equal-mass bins);
+      delta AUC vs distance_competitor, vs hand_v9 and vs hand_mr_d8 (paired block bootstrap of
+      the OOF predictions, DeLong); grouped permutation importance (groups as `features`,
+      permuted within the held-out block, 20 repeats, seed 0; descriptive)
+  P1-7:
+    title: metric diagnostics
+    access: test
+    predictors: [hand_v9, hand_mr_d8, distance_competitor, dist_cell]
+    report:
+      - standardised partial AUC for FPR <= 0.1 (McClish 1989) with paired block bootstrap
+      - PR-AUC of every predictor with paired block bootstrap of the difference
+      - delta AUC hand_v9 - dist_cell and dist_cell - distance_competitor (resolution matching)
+      - TOST of hand_v9 vs distance_competitor with margin +-0.03 AUC - equivalent if the 90 %
+        percentile block-bootstrap CI lies inside (-0.03, 0.03)
+  P1-explore:
+    title: open development on Nakkhu (not a declared test)
+    access: none
+    rule: allowed after P1-1 to P1-10; each run journalled through guard.record_test_access with
+      note `prereg_v9_a3:explore <n> <one-line description>`; all such runs listed with their
+      count in the Phase-1 report; their results are never called declared tests and cannot
+      become a Phase-2 candidate except by being declared in prereg_v9_a4 (raising the family)
+  P2-audit:
+    title: V1 audit estimate of the Phase-2 change maps (PPV, NPV, drop rule per site), one
+      sitting over all Phase-2 sites with strata per site, one estimate run
+    access: test
+    journal: once, note `prereg_v9_a3:P2-audit`, only after prereg_v9_a4 is frozen
+  P2:
+    title: confirmation on a new site (one shot)
+    access: test
+    journal: once, note `prereg_v9_a3:P2`, only after prereg_v9_a4 is frozen and P2-audit ran
+
+# --- Phase 2 rules (declared now; the site and candidates are frozen in prereg_v9_a4) --------
+phase2:
+  candidates:
+    hand_rule: the main-river variant with the highest Phase-1 AUC on Microsoft R1 among
+      {hand_mr_d8, hand_mr_rem, hand_team_acc (breach_burn)} x {glo30, fabdem}, compared on the
+      P1-9 covered rows (the only rows all members share); if within 0.005 of the best, prefer
+      glo30 over fabdem, then hand_mr_d8, then hand_team_acc, then hand_mr_rem
+    team_recipe_at_new_site: hand_team_acc at a Phase-2 site = routing clipped to the catchment
+      of the site river at the most downstream main-line cell inside the site extent (one basin
+      per site river), streams >= 0.78125 km2 inside it, breach_burn; buildings outside the
+      basin take NaN and are scored on the covered subset, as in P1-9 (recorded in a4)
+    team_surface: hand_team itself exists only for the Nakkhu and is never a Phase-2 candidate
+    ml_model: the P1-6 family with the highest pooled OOF AUC on Microsoft R1; if within 0.005
+      of the best, prefer M-C, then M-E, then M-D; refit on all Nakkhu Microsoft R1 rows with
+      the config chosen by 5-fold GroupKFold (same search, seed 0); no recalibration later
+    no_gate: both candidates go to Phase 2 whatever their Phase-1 result
+    extra: any further candidate must be declared in prereg_v9_a4 and joins the Holm family
+  freeze_before_labels: prereg_v9_a4 (requires prereg_v9_a3) records the site extent(s), main
+    line set, imagery ids, blocks, inventory, the HAND candidate config and surface hashes, the
+    ML model file + feature spec hashes and the nakkhu commit; it is frozen before any
+    change-map class, audit answer or other label of a Phase-2 site exists; a site with any
+    label made earlier is ineligible
+  site_criteria:
+    rules:
+    - documented riverine flooding in the 26-28 Sept 2024 event in a public source (recorded)
+    - outside the Nakkhu analysis extent and its 320 m test buffer
+    - pre (<= 2024-09-25) and post (2024-09-28 to 2024-10-15) VHR imagery (<= 0.75 m GSD,
+      licence permitting analysis); post-to-pre co-registration passes the v9 change-map gate
+    - Microsoft footprints cover it; the site river (and the river it joins inside the extent)
+      is mapped in OSM as waterway=river
+    - a routing domain built by the plan 008 rule passes the sweep.yaml routing gate
+    - extent = every 960 m block of the plan-005 lattice (same origin and spacing, extended)
+      whose centre lies within 1,000 m of the main-river lines along the whole river length
+      inside the pre/post overlap; never trimmed by visible flood traces
+    - main-river lines = OSM waterway=river ways named as the site river plus the river it
+      joins inside the extent (the Nakkhu + Bagmati rule); the distance competitor uses the
+      same lines
+    - every qualifying site is used and pooled; none is picked over another
+    candidates_named: [Kodku, Godawari, Bagmati upstream, Hanumante, Roshi, Bishnumati]
+  sites:
+    note: from plans/followup_data_check.md (2026-10-17, label-free metadata); GE01
+      105001003E1F0600 (6 Oct 2024) is the only usable post image (0500 stays gated out as in
+      v9); each site must still pass every rule above, checked label-free before prereg_v9_a4
+    A:
+      rivers: [Manohara, Hanumante]
+      pre: [WV02 10300100F5AB8000, WV02 10300100F2BCCF00 (to be downloaded)]
+      post: GE01 105001003E1F0600
+    B:
+      rivers: [Godawari, Kodku]
+      pre: [WV02 10300100F5AB8000]
+      post: GE01 105001003E1F0600
+    excluded:
+      bagmati_main_stem: development river (shares the Nakkhu data); its own corridor is never a
+        Phase-2 site; Bagmati segments inside a site extent belong to that site's main lines
+      bishnumati_dhobi: almost no mapped flood; negative control only - affected counts and the
+        candidates' predicted exposure reported, no hypothesis, AUC only if min_cell holds
+      roshi_balkhu_nallu: outside the post-event imagery
+    main_lines: the site rivers plus any Bagmati segment inside the site extent (OSM
+      waterway=river; ways listed and hashed in prereg_v9_a4)
+    inventory: Microsoft footprints only (29 % / 58 % of the site corridors lie in the detector
+      training domain); detector_final is not scored in Phase 2
+    pooling: the primary test pools every site that passes its gates, blocks nested in sites,
+      bootstrap stratified by site; per-site rows are secondary (no decision)
+    site_failure: a site that fails co-registration, routing or its audit drop rule leaves the
+      pool and is reported with the reason; the pool is the remaining site(s), and the size
+      check applies to the pool
+  labels:
+    rule: the v9 change map unchanged (configs/flood/change.yaml pinned below; site parameters
+      such as scene ids live in a separate site file frozen in prereg_v9_a4); the change-map
+      code imports no HAND, DEM or river module (test-enforced)
+    change_rule:
+      sha256_of: configs/flood/change.yaml
+      sha256: e720af6c25a1cb48be8dc5f3a0b1c140d487e69e03ba833c983ead0fcf8da5a0
+    reference: R1 (gated change-map class on observable buildings)
+    audit: a V1 audit per site with the v9 flood_trace protocol and strata, 150 active items +
+      8 repeats per site, blind (imagery only), one sitting for all sites; drop rule as v9 per
+      site (PPV Wilson lower bound < 0.5 drops that site's change map)
+    secondary_reference: UNOSAT Spot-6 R-UN and R-UN-pts (as P1-8) on the same sites; reported,
+      no decision
+  size_check: computed inside the P2 run before any predictor is read - n_blocks (blocks with
+    >= 1 observable building) and R1 affected count over the pooled set
+  modes:
+    confirmatory: n_blocks >= 26 and affected >= 150 and the change map kept by the audit
+    descriptive: otherwise - point estimates and CIs reported as "underpowered / no valid
+      reference, not confirmatory"; no hypothesis decision is reported
+  hypotheses:
+    H2a: AUC(frozen HAND rule) - AUC(distance_competitor of the site) > 0
+    H2b: AUC(frozen ML model) - AUC(distance_competitor of the site) > 0
+    rows: H2a on the pooled R1 rows where the frozen HAND rule is finite (all rows unless it is
+      hand_team_acc), H2b on all pooled R1 rows; distance on the same rows in each; the size
+      check and mode apply to the H2a rows for H2a
+  test: one-sided paired block bootstrap, 2000 resamples of whole blocks stratified by site,
+    seed 0; p = (1 + #{delta* <= 0}) / (2000 + 1)
+  decision: Holm over {H2a, H2b} at family-wise alpha 0.05 one-sided - reject the smaller p if
+    p <= 0.025, then the other if p <= 0.05; a missing candidate counts as p = 1
+  reported: delta AUC with the two-sided 95 % percentile CI and the one-sided 97.5 % lower
+    bound, DeLong; secondary (no decision) - v9 rule hand_v9 vs distance (C3 replication), ML
+    vs frozen HAND, tier hit rates and ORs of the frozen HAND rule, per-site rows, both
+    hypotheses against the UNOSAT references, the negative-control river
+  power_planning: from Nakkhu (26 blocks, CI width 0.067, SE about 0.017) with SE scaling as
+    1/sqrt(blocks) - the one-sided alpha 0.025, power 0.8 minimum detectable delta is about 0.048
+    at 26 blocks, 0.039 at 40, 0.030 at 67, 0.020 at 150; the MDE of the actual set is computed
+    from its block count and stated before scoring. Planning guess only (label-free building
+    counts, plans/followup_data_check.md) - sites A and B each hold about as many Microsoft
+    buildings near the river as the Nakkhu extent (about 14.8k and 15.0k within 500 m), with
+    roughly 290 and 225 change-map positives (uncertain by at least 50 %); at about 52 pooled
+    blocks the MDE would be about 0.034

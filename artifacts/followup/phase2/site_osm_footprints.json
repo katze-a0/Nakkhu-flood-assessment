@@ -1,0 +1,9 @@
+{
+  "features": 456868,
+  "file": "{data_root}/interim/followup/phase2/fp_osm_routing.parquet",
+  "pbf": "nepal-261003.osm.pbf",
+  "pbf_sha256": "36d6142de5e554b32bc7250289dd17b4fc6f98ef52b4d2bf205c7953d1224ea1",
+  "replication_timestamp": "2026-10-03T20:20:50Z",
+  "run": "followup-p2/20261017T154824Z-6958ee58",
+  "sha256": "036e35c051bfac8b734f1d75934085d8d1a66241d03d31945293e3fd2559cbd3"
+}

@@ -1,0 +1,93 @@
+{
+  "curves": [
+    {
+      "affected": 352,
+      "auc": 0.9146762151670987,
+      "inventory": "microsoft",
+      "n": 6769,
+      "predictor": "hand_mr",
+      "reference": "R1",
+      "score": "-HAND (m)"
+    },
+    {
+      "affected": 352,
+      "auc": 0.8949062858600025,
+      "inventory": "microsoft",
+      "n": 6769,
+      "predictor": "distance_to_channel",
+      "reference": "R1",
+      "score": "-distance (m)"
+    },
+    {
+      "affected": 259,
+      "auc": 0.8633886775157167,
+      "inventory": "detector_final",
+      "n": 6021,
+      "predictor": "hand_mr",
+      "reference": "R1",
+      "score": "-HAND (m)"
+    },
+    {
+      "affected": 259,
+      "auc": 0.8480022889949999,
+      "inventory": "detector_final",
+      "n": 6021,
+      "predictor": "distance_to_channel",
+      "reference": "R1",
+      "score": "-distance (m)"
+    }
+  ],
+  "primary_column": "glo30__breach_burn__mr__centroid",
+  "reference": "R1 (change-map class, observable buildings, unweighted)",
+  "reporting": "post hoc (figure curves of the promoted main_river_v1:event AUCs)",
+  "rows": {
+    "full": 19903,
+    "thin": 1350
+  },
+  "thinning": [
+    {
+      "auc_full": 0.9146762151670987,
+      "auc_thin": 0.9146775433153413,
+      "inventory": "microsoft",
+      "kept": 276,
+      "non_finite_dropped": 0,
+      "points": 3776,
+      "predictor": "hand_mr",
+      "reference": "R1",
+      "tolerance": 0.0001
+    },
+    {
+      "auc_full": 0.8949062858600025,
+      "auc_thin": 0.8949067285760834,
+      "inventory": "microsoft",
+      "kept": 438,
+      "non_finite_dropped": 0,
+      "points": 6769,
+      "predictor": "distance_to_channel",
+      "reference": "R1",
+      "tolerance": 0.0001
+    },
+    {
+      "auc_full": 0.8633886775157167,
+      "auc_thin": 0.8633866672742063,
+      "inventory": "detector_final",
+      "kept": 249,
+      "non_finite_dropped": 0,
+      "points": 3337,
+      "predictor": "hand_mr",
+      "reference": "R1",
+      "tolerance": 0.0001
+    },
+    {
+      "auc_full": 0.848002288995,
+      "auc_thin": 0.848002288995,
+      "inventory": "detector_final",
+      "kept": 387,
+      "non_finite_dropped": 0,
+      "points": 6021,
+      "predictor": "distance_to_channel",
+      "reference": "R1",
+      "tolerance": 0.0001
+    }
+  ]
+}

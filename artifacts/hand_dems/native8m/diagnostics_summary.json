@@ -1,0 +1,33 @@
+{
+  "dems": [
+    "glo30",
+    "hma8m"
+  ],
+  "interim": "data/interim/hand/08599952",
+  "inventories": {
+    "detector_final": {
+      "n_buildings": 11853,
+      "n_final": 11853,
+      "n_greenhouse_by_centroid": 26,
+      "n_greenhouse_by_iou": 1,
+      "n_greenhouse_removed": 26,
+      "n_in_extent": 11879,
+      "role": "primary"
+    },
+    "microsoft": {
+      "n_buildings": 12925,
+      "n_final": 12925,
+      "n_greenhouse_by_centroid": 25,
+      "n_greenhouse_by_iou": 3,
+      "n_greenhouse_removed": 25,
+      "n_in_extent": 12950,
+      "role": "primary"
+    }
+  },
+  "label_free": true,
+  "main_mask": "cells touched (all_touched) by configs/aoi/osm_nakkhu_bagmati_lines.geojson with D8 contributing area >= 1.0 km2 on the same DEM x conditioning (prereg_v9_a1 definitions.main_mask)",
+  "references": [
+    "glo30"
+  ],
+  "sweep_run": "hand-dems-8m/20261017T074851Z-08599952"
+}

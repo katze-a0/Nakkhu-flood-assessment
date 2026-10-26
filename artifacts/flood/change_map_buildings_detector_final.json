@@ -1,0 +1,14 @@
+{
+  "buildings_sha256": "927febcc19275a8ade6091bef18dd227f8a283ba7144af2501d8d75c95112609",
+  "change_map": "change_map_buildings_detector_final.parquet",
+  "change_map_sha256": "93c29513aec3bae828580ebf52370b988889cb1f99654c15aaea0a6296ed907b",
+  "config_sha256": "f88295700b5ac896aa713248b9e7d4f3060f5c03f7da05403c8d1e9cc674c701",
+  "inventory": "detector_final",
+  "inventory_sha256": "a5e291c42e5968f505cd5edfeef028f8c330e1441e77ec76b1c1d5acf7b21318",
+  "inventory_source": "artifacts/detector/inventory_final.parquet",
+  "n_buildings": 11853,
+  "primary_strips": [
+    "0600"
+  ],
+  "run": "flood/20261012T194555Z-f8829570"
+}

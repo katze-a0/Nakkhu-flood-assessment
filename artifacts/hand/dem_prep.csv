@@ -1,0 +1,8 @@
+dem,manifest_id,status,reason,surface,vertical_datum,apply_scale,height,width,transform,nan_in_grid,nan_in_domain,min_domain_m,max_domain_m,median_abs_diff_vs_reference_m
+glo30,dem_glo30,available,,DSM,EGM2008,False,1168.0,1242.0,"[30.0, 0.0, 319350.0, 0.0, -30.0, 3080040.0]",0.0,0.0,1257.0645751953125,2729.654541015625,0.0
+fabdem,dem_fabdem,available,,DTM (buildings and forests removed from GLO-30),EGM2008,False,1168.0,1242.0,"[30.0, 0.0, 319350.0, 0.0, -30.0, 3080040.0]",0.0,0.0,1257.2353515625,2715.6103515625,2.9075927734375
+gedtm30,dem_gedtm30,available,,DTM (ensemble),EGM2008,False,1168.0,1242.0,"[30.0, 0.0, 319350.0, 0.0, -30.0, 3080040.0]",0.0,0.0,1258.0472412109375,2721.268798828125,1.635986328125
+nasadem,dem_nasadem,skipped,pending: needs user account (manifest dem_nasadem),DSM (SRTM reprocessed),EGM96 (product documentation; UNVERIFIED until fetched),False,,,,,,,,
+srtmgl1,dem_srtmgl1,skipped,pending: needs user account (manifest dem_srtmgl1),DSM (the 12.5 m ALOS-RTC DEM is resampled SRTM),EGM96 (product documentation; UNVERIFIED until fetched),False,,,,,,,,
+aw3d30,dem_aw3d30,skipped,pending: needs user account (manifest dem_aw3d30),DSM (optical),EGM96 (product documentation; UNVERIFIED until fetched),False,,,,,,,,
+fathomdem,,skipped,not registered in the data manifest (access on request),DTM (ViT-corrected GLO-30),EGM2008,False,,,,,,,,

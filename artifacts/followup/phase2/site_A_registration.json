@@ -1,0 +1,34 @@
+{
+  "footprints": {
+    "file": "artifacts/followup/phase2/site_A_registration_shifts.csv",
+    "n_ok": 219,
+    "reasons": {
+      "low_peak": 143,
+      "ok": 219,
+      "shift_too_large": 27
+    },
+    "sha256": "ec395eb08303cfc1653115bffb49dc7d833648f8ba37c1614672f9e490cca1d7",
+    "threshold": 1.2161,
+    "threshold_from": "artifacts/labels/registration_shifts.csv"
+  },
+  "osm": {
+    "file": "artifacts/followup/phase2/site_A_osm_registration_shifts.csv",
+    "n_ok": 165,
+    "reasons": {
+      "low_peak": 109,
+      "no_footprints": 1,
+      "ok": 165,
+      "shift_too_large": 114
+    },
+    "sha256": "add34453aa5d2c7b2f9d6c0447a9d501a35ab103d0ed2e2684daa34f1694a4e3",
+    "threshold": 1.2247,
+    "threshold_from": "artifacts/labels/osm_registration_shifts.csv"
+  },
+  "run": "followup-p2/20261017T155532Z-1c633f8e",
+  "site": "A",
+  "tile_index": {
+    "file": "artifacts/followup/phase2/site_A_tiles.parquet",
+    "sha256": "e9771cbb850b54d8f0a45d12a1b8081ed09b76f614fd5ecf0b6d937b410e7afa"
+  },
+  "tiles": 389
+}

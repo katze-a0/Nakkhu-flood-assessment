@@ -1,0 +1,32 @@
+{
+ "buildings": 6769,
+ "inputs": {
+  "buildings_sha256": "ec262ded643129be6199d09472928be6c29753c0cd3f60795ec74f7e424f11ef",
+  "change_map_file_sha256": "027e57fe52f120eb095833678c623336a66c14a76e03f98bf6a153ac05df4f4d",
+  "change_map_sha256": "027e57fe52f120eb095833678c623336a66c14a76e03f98bf6a153ac05df4f4d",
+  "inventory": "microsoft",
+  "inventory_sha256": "d2c8dcd4693d2d6a62b150b45e609515bc09574ee58448620ef11f7e941d3ceb"
+ },
+ "items": 300,
+ "items_sha256": "b7fca33fa9bb96cf5bbfea4061afd26652cfdc536fa05601a075b6226d16d190",
+ "pilot_items": 0,
+ "prereg_sha256": "284669fc745263f32f86b0868cdff15f673618f79637510b0bfe5d5a638be059",
+ "run": "audit/20261016T092651Z-e052dea2",
+ "seed": 0,
+ "split_sha256": "52786e81a91046ed4ca5e6db33c8767aeb9aa098b6d745b8e7c571f9957309ef",
+ "strata": {
+  "negative_far": {
+   "design_n": 86,
+   "frame_n": 3836
+  },
+  "negative_near": {
+   "design_n": 114,
+   "frame_n": 2581
+  },
+  "positive": {
+   "design_n": 100,
+   "frame_n": 352
+  }
+ },
+ "task": "flood_trace"
+}

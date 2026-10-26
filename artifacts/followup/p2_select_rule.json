@@ -1,0 +1,20 @@
+{
+ "best_auc": 0.9070377748306626,
+ "best_member": "hand_mr_d8 x glo30",
+ "pick": {
+  "auc": 0.9070377748306626,
+  "column": "hand_mr_d8__glo30",
+  "dem": "glo30",
+  "predictor": "hand_mr_d8"
+ },
+ "rule": "highest AUC; members within 0.005 of it are tied; ties prefer glo30 over fabdem, then hand_mr_d8, then hand_team_acc, then hand_mr_rem (prereg_v9_a3 phase2.candidates.hand_rule)",
+ "tie_margin": 0.005,
+ "tied_members": [
+  "hand_mr_d8 x glo30",
+  "hand_mr_d8 x fabdem",
+  "hand_mr_rem x glo30",
+  "hand_mr_rem x fabdem",
+  "hand_team_acc x glo30",
+  "hand_team_acc x fabdem"
+ ]
+}

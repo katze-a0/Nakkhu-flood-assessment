@@ -1,0 +1,145 @@
+[
+  {
+    "replaced": null,
+    "run": null,
+    "sha256": "472c9213111d023aecb7becfae6fac675cdc8b22bd69a69b66be7f208b59fff6",
+    "utc": null,
+    "version": "prereg_v1"
+  },
+  {
+    "replaced": "prereg_v1",
+    "run": "prereg/20261005T193247Z-51ed7e40",
+    "sha256": "aac2bf59826a46827467e5116e1b32d6aa8e455be81cc05749db8a5864e53a95",
+    "test_journal_entries": 0,
+    "utc": "2026-10-05T19:32:48Z",
+    "version": "prereg_v2"
+  },
+  {
+    "replaced": "prereg_v2",
+    "run": "prereg/20261005T205921Z-80a8cac6",
+    "sha256": "09685cbf703f61d2268e3ce256436afa7d0b6651b6734c4515aba280d68e709a",
+    "test_journal_entries": 0,
+    "utc": "2026-10-05T20:59:21Z",
+    "version": "prereg_v3"
+  },
+  {
+    "replaced": "prereg_v3",
+    "run": "prereg/20261012T164634Z-542b2335",
+    "sha256": "52cc20e9a4d262a8d6d4a6a66bfd5142c81dc2e6152d5d7fc28f865265bcdde4",
+    "test_journal_entries": 0,
+    "utc": "2026-10-12T16:46:35Z",
+    "version": "prereg_v4"
+  },
+  {
+    "replaced": "prereg_v4",
+    "run": "prereg/20261012T182649Z-e2659dd5",
+    "sha256": "65acaa4a4a9b034209fe1deeb62326fef9079931bcd38bf0a65b3d5aae2f8196",
+    "test_journal_entries": 0,
+    "utc": "2026-10-12T18:26:49Z",
+    "version": "prereg_v5"
+  },
+  {
+    "replaced": "prereg_v5",
+    "run": "prereg/20261012T192301Z-4a470523",
+    "sha256": "56793d7f2b9eecccc71aa5b52a06c000463431d36ddf831f2cd726693ea1a1f3",
+    "test_journal_entries": 0,
+    "utc": "2026-10-12T19:23:01Z",
+    "version": "prereg_v6"
+  },
+  {
+    "replaced": "prereg_v6",
+    "run": "prereg/20261012T193855Z-c6b09658",
+    "sha256": "d31e45d69dafd709e105be03cd7782d0d51b7eebd180bd63664adbe4991d32e9",
+    "test_journal_entries": 0,
+    "utc": "2026-10-12T19:38:55Z",
+    "version": "prereg_v7"
+  },
+  {
+    "allow": [
+      "version",
+      "change_map",
+      "audit.config.values.tasks.flood_trace.inventory",
+      "audit.config.values.tasks.precision_microsoft",
+      "audit_flood_trace",
+      "audit_precision_microsoft",
+      "detector_final.uses",
+      "validation.inventory",
+      "validation.c3",
+      "uncertainty_propagation",
+      "falsifiers.C5.outcome",
+      "exposure_baseline",
+      "test_access"
+    ],
+    "amends": "prereg_v7",
+    "changed_paths": [
+      "audit.config.values.tasks.flood_trace.inventory",
+      "audit.config.values.tasks.precision_microsoft",
+      "audit_flood_trace.redraw",
+      "audit_flood_trace.values.inventory",
+      "audit_precision_microsoft",
+      "change_map.buildings.values.audit_inventories",
+      "change_map.buildings.values.primary_inventory",
+      "change_map.config.sha256",
+      "change_map.detector_final_map",
+      "change_map.inventory",
+      "detector_final.uses",
+      "exposure_baseline.count_unit",
+      "exposure_baseline.microsoft",
+      "falsifiers.C5.outcome",
+      "test_access.amendment",
+      "test_access.analyses",
+      "uncertainty_propagation.access",
+      "uncertainty_propagation.config.sha256",
+      "uncertainty_propagation.count_units",
+      "uncertainty_propagation.d4",
+      "uncertainty_propagation.d4_baseline",
+      "uncertainty_propagation.inputs",
+      "uncertainty_propagation.main_inventory",
+      "uncertainty_propagation.u2.primary",
+      "uncertainty_propagation.u2.recall_correction",
+      "uncertainty_propagation.u3.c2",
+      "uncertainty_propagation.u3.estimand",
+      "uncertainty_propagation.u3.exposure_count",
+      "uncertainty_propagation.u3.inventories",
+      "uncertainty_propagation.u3.pooling",
+      "uncertainty_propagation.u3.primary_estimator",
+      "uncertainty_propagation.u3.secondary",
+      "uncertainty_propagation.u3.settings.values.estimators.primary",
+      "uncertainty_propagation.u3.settings.values.estimators.secondary",
+      "uncertainty_propagation.u3.settings.values.estimators.sensitivity",
+      "uncertainty_propagation.u3.settings.values.estimators.upper_bound",
+      "uncertainty_propagation.u3.settings.values.inventories",
+      "uncertainty_propagation.u3.settings.values.split_sample.gating_inventory",
+      "validation.c3",
+      "validation.inventory",
+      "version"
+    ],
+    "last_journal_utc": "2026-10-13T03:02:07Z",
+    "previous_sha256": "d31e45d69dafd709e105be03cd7782d0d51b7eebd180bd63664adbe4991d32e9",
+    "replaced": "prereg_v7",
+    "run": "prereg/20261016T092609Z-494f0549",
+    "sha256": "284669fc745263f32f86b0868cdff15f673618f79637510b0bfe5d5a638be059",
+    "test_journal_entries": 42,
+    "utc": "2026-10-16T09:26:09Z",
+    "version": "prereg_v8"
+  },
+  {
+    "allow": [
+      "version",
+      "audit.config.values.scenes.oam"
+    ],
+    "amends": "prereg_v8",
+    "changed_paths": [
+      "audit.config.values.scenes.oam",
+      "version"
+    ],
+    "last_journal_utc": "2026-10-13T03:02:07Z",
+    "previous_sha256": "284669fc745263f32f86b0868cdff15f673618f79637510b0bfe5d5a638be059",
+    "replaced": "prereg_v8",
+    "run": "prereg/20261016T170943Z-afcf85d3",
+    "sha256": "89baaed3e19554db599b510219c94285880820d4b840a7a0e76478d2150253ba",
+    "test_journal_entries": 42,
+    "utc": "2026-10-16T17:09:46Z",
+    "version": "prereg_v9"
+  }
+]

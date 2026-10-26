@@ -1,0 +1,177 @@
+{
+ "basis": "natural cubic spline df 4 per feature (nakkhu.followup.stats.ns_basis), knots = 1/25/50/75/99th percentiles of the training values, values clamped to the boundary knots; design = intercept then the 4 basis columns of each feature in this order",
+ "family": "M-C",
+ "features": [
+  {
+   "group": "hand",
+   "name": "hand_v9",
+   "prep_column": "hand_v9",
+   "transform": "id"
+  },
+  {
+   "group": "hand",
+   "name": "hand_any_0.05",
+   "prep_column": "hand_any__glo30__t0p05",
+   "transform": "id"
+  },
+  {
+   "group": "hand",
+   "name": "hand_any_0.1",
+   "prep_column": "hand_any__glo30__t0p1",
+   "transform": "id"
+  },
+  {
+   "group": "hand",
+   "name": "hand_any_0.25",
+   "prep_column": "hand_any__glo30__t0p25",
+   "transform": "id"
+  },
+  {
+   "group": "hand",
+   "name": "hand_any_0.5",
+   "prep_column": "hand_any__glo30__t0p5",
+   "transform": "id"
+  },
+  {
+   "group": "hand",
+   "name": "hand_any_1",
+   "prep_column": "hand_any__glo30__t1",
+   "transform": "id"
+  },
+  {
+   "group": "hand",
+   "name": "hand_any_2",
+   "prep_column": "hand_any__glo30__t2",
+   "transform": "id"
+  },
+  {
+   "group": "hand",
+   "name": "hand_mr_d8",
+   "prep_column": "hand_mr_d8__glo30",
+   "transform": "id"
+  },
+  {
+   "group": "hand",
+   "name": "hand_mr_rem",
+   "prep_column": "hand_mr_rem__glo30",
+   "transform": "id"
+  },
+  {
+   "group": "hand",
+   "name": "hand_mr_d8_fabdem",
+   "prep_column": "hand_mr_d8__fabdem",
+   "transform": "id"
+  },
+  {
+   "group": "distance",
+   "name": "log1p_distance",
+   "prep_column": "distance",
+   "transform": "log1p"
+  },
+  {
+   "group": "distance",
+   "name": "log1p_dist_stream_0.2",
+   "prep_column": "dist_stream__glo30__t0p2",
+   "transform": "log1p"
+  },
+  {
+   "group": "distance",
+   "name": "log1p_dist_stream_2",
+   "prep_column": "dist_stream__glo30__t2",
+   "transform": "log1p"
+  },
+  {
+   "group": "distance",
+   "name": "flowdist_main",
+   "prep_column": "flowdist_main__glo30",
+   "transform": "id"
+  },
+  {
+   "group": "elevation",
+   "name": "elev_glo30",
+   "prep_column": "elev_glo30",
+   "transform": "id"
+  },
+  {
+   "group": "elevation",
+   "name": "elev_fabdem",
+   "prep_column": "elev_fabdem",
+   "transform": "id"
+  },
+  {
+   "group": "elevation",
+   "name": "dsm_excess",
+   "prep_column": "dsm_excess",
+   "transform": "id"
+  },
+  {
+   "group": "terrain",
+   "name": "slope_deg",
+   "prep_column": "slope_deg",
+   "transform": "id"
+  },
+  {
+   "group": "terrain",
+   "name": "curv_plan",
+   "prep_column": "curv_plan",
+   "transform": "id"
+  },
+  {
+   "group": "terrain",
+   "name": "curv_profile",
+   "prep_column": "curv_profile",
+   "transform": "id"
+  },
+  {
+   "group": "terrain",
+   "name": "tpi_150",
+   "prep_column": "tpi_150",
+   "transform": "id"
+  },
+  {
+   "group": "terrain",
+   "name": "tpi_500",
+   "prep_column": "tpi_500",
+   "transform": "id"
+  },
+  {
+   "group": "terrain",
+   "name": "twi",
+   "prep_column": "twi",
+   "transform": "id"
+  },
+  {
+   "group": "flow",
+   "name": "log10_area_cell",
+   "prep_column": "log10_area_cell_km2",
+   "transform": "id"
+  },
+  {
+   "group": "flow",
+   "name": "log10_area_first_drop",
+   "prep_column": "log10_area_first_drop_km2",
+   "transform": "id"
+  },
+  {
+   "group": "flow",
+   "name": "log10_area_main",
+   "prep_column": "log10_area_main_km2",
+   "transform": "id"
+  },
+  {
+   "group": "building",
+   "name": "footprint_area_m2",
+   "prep_column": "area_m2",
+   "transform": "id"
+  },
+  {
+   "group": "building",
+   "name": "density_100m",
+   "prep_column": "density_100m",
+   "transform": "id"
+  }
+ ],
+ "link": "logistic",
+ "orientation": "probability (higher = more exposed)",
+ "schema": 1
+}

@@ -1,0 +1,183 @@
+{
+  "answered_per_tier": {
+    "0-3": 15,
+    "3-6": 15,
+    "6-9": 7,
+    "9-12": 9,
+    ">12": 86,
+    "on_drainage": 2
+  },
+  "coverage_band": [
+    0.93,
+    0.97
+  ],
+  "coverage_in_band": true,
+  "expected_split": {
+    "expected_a_ci_misses_b_rate": 0.2615,
+    "expected_miss_rate": 0.0515,
+    "mode": "stratified_random",
+    "samples": 1000,
+    "valid": 1000
+  },
+  "expected_split_by_mode": {
+    "block": {
+      "expected_a_ci_misses_b_rate": 0.394,
+      "expected_miss_rate": 0.1665,
+      "mode": "block",
+      "samples": 1000,
+      "valid": 1000
+    },
+    "stratified_random": {
+      "expected_a_ci_misses_b_rate": 0.2615,
+      "expected_miss_rate": 0.0515,
+      "mode": "stratified_random",
+      "samples": 1000,
+      "valid": 1000
+    }
+  },
+  "greenhouses_removed": {
+    "L2_seed0": 99,
+    "L2_seed1": 72,
+    "L2_seed2": 112,
+    "detector_final": 26,
+    "google_v3": 0,
+    "microsoft": 0,
+    "osm": 0,
+    "overture": 0,
+    "precision_units": 0,
+    "seed0": 39,
+    "seed1": 31,
+    "seed2": 19,
+    "seed3": 20,
+    "seed4": 39
+  },
+  "outside_not_in_any_source": {
+    "n": 49,
+    "yes": 0
+  },
+  "simulation": {
+    "coverage_pooled": 0.9535,
+    "groups": {
+      "0": {
+        "bias": 9.88165350478721,
+        "coverage": 0.955,
+        "mc_se": 24.588354480978612,
+        "mean_estimate": 8172.881653504787,
+        "truth": 8163.0
+      },
+      "1": {
+        "bias": 6.306487232352083,
+        "coverage": 0.952,
+        "mc_se": 36.62957231039953,
+        "mean_estimate": 24190.306487232352,
+        "truth": 24184.0
+      }
+    },
+    "replicates": 1000
+  },
+  "split_rates": [
+    {
+      "expected_a_ci_misses_b_rate": 0.2615,
+      "expected_miss_rate": 0.0515,
+      "inventory": "detector_final",
+      "mode": "stratified_random",
+      "observed_a_ci_misses_b_rate": 0.256,
+      "observed_miss_rate": 0.064,
+      "role": "gating",
+      "valid_repeats": 1000
+    },
+    {
+      "expected_a_ci_misses_b_rate": 0.394,
+      "expected_miss_rate": 0.1665,
+      "inventory": "detector_final",
+      "mode": "block",
+      "observed_a_ci_misses_b_rate": 0.4165,
+      "observed_miss_rate": 0.1715,
+      "role": "descriptive",
+      "valid_repeats": 1000
+    },
+    {
+      "expected_a_ci_misses_b_rate": 0.289,
+      "expected_miss_rate": 0.063,
+      "inventory": "microsoft",
+      "mode": "stratified_random",
+      "observed_a_ci_misses_b_rate": 0.5745,
+      "observed_miss_rate": 0.2105,
+      "role": "reported",
+      "valid_repeats": 1000
+    }
+  ],
+  "split_sample": {
+    "a_ci_misses_b_rate": 0.256,
+    "invalid": 0,
+    "miss_rate": 0.064,
+    "miss_rate_by_group": {
+      "0": 0.062,
+      "1": 0.066
+    },
+    "mode": "stratified_random",
+    "repeats": 1000,
+    "rule": "miss if |A - B| > z_0.975 sqrt(se_A^2 + se_B^2)",
+    "valid": 1000
+  },
+  "split_sample_by_mode": {
+    "block": {
+      "a_ci_misses_b_rate": 0.4165,
+      "invalid": 0,
+      "miss_rate": 0.1715,
+      "miss_rate_by_group": {
+        "0": 0.21,
+        "1": 0.133
+      },
+      "mode": "block",
+      "repeats": 1000,
+      "rule": "miss if |A - B| > z_0.975 sqrt(se_A^2 + se_B^2)",
+      "valid": 1000
+    },
+    "stratified_random": {
+      "a_ci_misses_b_rate": 0.256,
+      "invalid": 0,
+      "miss_rate": 0.064,
+      "miss_rate_by_group": {
+        "0": 0.062,
+        "1": 0.066
+      },
+      "mode": "stratified_random",
+      "repeats": 1000,
+      "rule": "miss if |A - B| > z_0.975 sqrt(se_A^2 + se_B^2)",
+      "valid": 1000
+    }
+  },
+  "split_sample_other_inventories": {
+    "microsoft": {
+      "expected_split": {
+        "expected_a_ci_misses_b_rate": 0.289,
+        "expected_miss_rate": 0.063,
+        "mode": "stratified_random",
+        "samples": 1000,
+        "valid": 1000
+      },
+      "split_sample": {
+        "a_ci_misses_b_rate": 0.5745,
+        "invalid": 0,
+        "miss_rate": 0.2105,
+        "miss_rate_by_group": {
+          "0": 0.223,
+          "1": 0.198
+        },
+        "mode": "stratified_random",
+        "repeats": 1000,
+        "rule": "miss if |A - B| > z_0.975 sqrt(se_A^2 + se_B^2)",
+        "valid": 1000
+      }
+    }
+  },
+  "tier_groups": {
+    "0-3": 0,
+    "3-6": 0,
+    "6-9": 0,
+    "9-12": 0,
+    ">12": 1,
+    "on_drainage": 0
+  }
+}

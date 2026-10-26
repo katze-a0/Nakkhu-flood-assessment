@@ -1,0 +1,79 @@
+# Named Sept 2024 flood sites (aoi_flood_reach_sites_2024). Coordinates are fixed here; the build
+# makes no live lookups. `lon`/`lat` are the registered values (WGS 84). The research run
+# (2026-10-05) did not record its Nominatim query strings, so every `nominatim` entry gives the
+# query and OSM object of a check made on 2026-10-05 around 18:40 UTC
+# (nominatim.openstreetmap.org/search, countrycodes=np, first hit) whose result rounds to the
+# stored coordinate at 4 decimals.
+# Sources [S6], [S10], [S12] are the research references (research-area-imagery.md).
+schema_version: 1
+sites:
+  - name: Nakkhu-Bagmati confluence (OSM way 518744798 end)
+    lon: 85.296452
+    lat: 27.6632326
+    method: osm_node
+    provenance: "last node of OSM way 518744798 'Nakhu River' (identical in the Overpass result of 2026-10-05 and in Geofabrik nepal-261003.osm.pbf)"
+  - name: Tikabhairab (Lele-Nallu junction, head of main stem)
+    lon: 85.3121
+    lat: 27.5746
+    method: nominatim
+    provenance: "Nominatim query 'Tikabhairab' -> node 2287580702 place=hamlet (27.5745866, 85.3121091)"
+  - name: Upstream end of UNOSAT-mapped water (map-read, +-100 m)
+    lon: 85.309
+    lat: 27.588
+    method: map_read
+    provenance: "map-read (+-100 m) from UNOSAT FL20240928NPL map, Charter MEDIA-1049-3 [S10], https://disasterscharter.org/cos-api/api/file/public/article-image/28588558"
+  - name: Khatiwada 2026 Nakkhu Breakpoint (map-read)
+    lon: 85.3036
+    lat: 27.6630
+    method: map_read
+    provenance: "map-read from the figures of Khatiwada et al. 2026, ISPRS Int. J. Geo-Inf. 15(7):285 [S6], https://doi.org/10.3390/ijgi15070285 (research: map-read coordinates +-50-100 m)"
+  - name: Nepal Mediciti
+    lon: 85.3027
+    lat: 27.6624
+    method: nominatim
+    provenance: "Nominatim query 'Nepal Mediciti' -> way 546246875 amenity=hospital (27.6624484, 85.3026543)"
+  - name: Nakhu Jail
+    lon: 85.3050
+    lat: 27.6634
+    method: nominatim
+    provenance: "Nominatim query 'Nakhu Jail' -> way 136441543 amenity=prison (27.6634070, 85.3050378)"
+  - name: Nakhu Bridge
+    lon: 85.3060
+    lat: 27.6625
+    method: nominatim
+    provenance: "Nominatim query 'Nakhu Bridge' -> way 136441544 bridge (27.6625238, 85.3060186)"
+  - name: Nakhu LMC-13
+    lon: 85.3070
+    lat: 27.6641
+    method: nominatim
+    provenance: "Nominatim query 'Nakhu' -> node 2313807894 place=neighbourhood, Lalitpur-13 (27.6640904, 85.3070119)"
+  - name: Bagdol LMC-4
+    lon: 85.3035
+    lat: 27.6697
+    method: nominatim
+    provenance: "Nominatim query 'Bagdol, Lalitpur' -> node 2313807655 place=locality, Lalitpur-04 (27.6696591, 85.3035220)"
+  - name: Kantipur Colony, Nakhipot
+    lon: 85.3130
+    lat: 27.6465
+    method: nominatim
+    provenance: "Nominatim query 'Kantipur Colony, Lalitpur' -> way 439654830 landuse=residential, Lalitpur-14 (27.6464559, 85.3130370)"
+  - name: Nakhipot LMC-14 (locality centroid)
+    lon: 85.3208
+    lat: 27.6504
+    method: nominatim
+    provenance: "Nominatim query 'Nakhipot' -> node 2313807892 place=neighbourhood, Lalitpur-14 (27.6503928, 85.3207649)"
+  - name: Nakhudol (locality centroid)
+    lon: 85.3178
+    lat: 27.6534
+    method: nominatim
+    provenance: "Nominatim query 'Nakhudol' -> node 2313807896 place=neighbourhood, Lalitpur-14 (27.6533808, 85.3178060)"
+  - name: Bhaisepati
+    lon: 85.3060
+    lat: 27.6562
+    method: nominatim
+    provenance: "Nominatim query 'Bhaisepati' -> node 3432933474 place=neighbourhood, Lalitpur-25 (27.6561677, 85.3060365)"
+  - name: UNOSAT AOI1 centre
+    lon: 85.3008
+    lat: 27.6628
+    method: stated_in_source
+    provenance: "centre stated as 27 39'46\"N 85 18'3\"E (= 27.662778, 85.300833) in UNOSAT VAP 1049-1 [S12], https://download.disasterscharter.org/documents/10180/27091977/vap-1049-1-product"

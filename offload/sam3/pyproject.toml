@@ -1,0 +1,20 @@
+[project]
+name = "nkdet-sam3"
+version = "0.1.0"
+description = "Plan 007 D3: SAM3 'building' zero-shot baseline (KerasHub port, JAX), Kaggle only"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "keras-hub==0.32.0",
+    "keras>=3.15",
+    "jax[cuda12]>=0.7",
+    "opencv-python-headless>=4.10",
+    "pandas>=2.2",
+    "pyarrow>=17",
+    "pillow>=11",
+    "numpy>=2.0",
+]
+
+[tool.uv]
+package = false
+# Kaggle GPU kernels only (Linux x86_64); never installed on the laptop.
+environments = ["sys_platform == 'linux' and platform_machine == 'x86_64'"]

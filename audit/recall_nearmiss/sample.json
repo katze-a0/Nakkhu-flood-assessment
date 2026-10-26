@@ -1,0 +1,31 @@
+{
+ "auditor": "author",
+ "inputs": {
+  "parent_items": "e677367bd652cd9fbc755d98a6020fed57ead23c5ffcb5b7d11b761f5ccb26cf",
+  "parent_responses": "cd0579773a664ce02db473f411c9423f5ce1a1c2055ef3363fe0cbb7b56336ae",
+  "registration_footprints": "5132e5ea29bc2ee770b288cf0a33d5a2fc8855afa2359072752531114fd9eb58"
+ },
+ "items": 156,
+ "items_sha256": "e024cd0c316513e747d68ea8045944c45beabe09c0965ea6b2b5fe6d6a8947d8",
+ "kinds": {
+  "nearmiss": 136,
+  "overlap": 20
+ },
+ "nearmiss_by_stratum": {
+  "--O": 21,
+  "-M-": 22,
+  "-MO": 18,
+  "G--": 24,
+  "G-O": 11,
+  "GM-": 22,
+  "GMO": 18
+ },
+ "parent": "recall_points",
+ "parent_auditor": "teammate_1",
+ "prereg_sha256": "09685cbf703f61d2268e3ce256436afa7d0b6651b6734c4515aba280d68e709a",
+ "radius_m": 8.0,
+ "run": "audit/20261012T163935Z-b09db6e3",
+ "seed": 0,
+ "split_sha256": "52786e81a91046ed4ca5e6db33c8767aeb9aa098b6d745b8e7c571f9957309ef",
+ "task": "recall_nearmiss"
+}

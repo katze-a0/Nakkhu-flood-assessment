@@ -1,0 +1,14 @@
+{
+  "buildings_sha256": "bb30bf91c31db62e38ded8975debb399c77e94da2d8c69ea05bc8f19b5fb1416",
+  "change_map": "change_map_buildings_google_v3.parquet",
+  "change_map_sha256": "0483d0eaaf32ec32fb8f4803f968b99a6f33f9f8da9e0a1f3679ffef94f861e3",
+  "config_sha256": "8cc5612b66fef11ded384ab4ae4cc971e4530d08516f417a8f16e178e52c1b03",
+  "inventory": "google_v3",
+  "inventory_sha256": "eb9151bdbd0fa22af5f07bedc4c416b06fb89aec400ebbd9ee8c59db493ea4fe",
+  "inventory_source": "data/raw/fp_google_v3/fp_google_v3.parquet",
+  "n_buildings": 14202,
+  "primary_strips": [
+    "0600"
+  ],
+  "run": "flood/20261005T203600Z-8cc5612b"
+}

@@ -1,0 +1,39 @@
+# Split rule (plan 005, Option A by user decision 2026-10-05). `nakkhu split build` applies it
+# to the plan 003 WV02 train-grid index and writes configs/splits/split_v1.yaml (generated; do
+# not edit by hand). Its SHA-256 is recorded in configs/prereg.yaml and in every eval run.
+schema_version: 1
+version: split_v1
+
+# Tile set the split is defined on (plan 003 index: stride 640, 320 m tiles, no overlap).
+tiles:
+  scene: maxar_wv02_20240113
+  purpose: train
+
+# Spatial blocks: block_tiles x block_tiles tiles (3 x 3 = 960 m) on the grid lattice, block
+# (col // 3, row // 3). Blocks are the resampling unit of every block bootstrap (val and test).
+block_tiles: 3
+
+# Test = every tile whose footprint overlaps the 13.34 km2 analysis extent with positive area.
+# Buffer = every other tile whose footprint lies closer than `buffer_m` to a test or a val tile
+# (a one-tile ring incl. diagonals). Buffer tiles are never trained on and never scored.
+buffer_m: 320.0
+
+# Val = whole blocks inside the training region. A block is eligible when none of its tiles is
+# test or test-buffer and all block_tiles^2 tiles are present and fully valid (valid_frac = 1),
+# so val needs no partial-tile masks. `val_fraction` of the eligible blocks (rounded) are drawn
+# with `seed`, stratified by Microsoft building density (terciles) x distance of the block
+# centre to the nearest OSM river line (halves), proportional allocation, largest remainder.
+val:
+  fraction_of_eligible_blocks: 0.12
+  seed: 0
+  density_quantiles: 3
+  distance_quantiles: 2
+
+# Train tiles below this valid fraction are kept in the split (split = train) but flagged
+# `usable: false` and never written into a training set (plan 003 `tiles.min_valid_frac`).
+min_valid_frac: 0.5
+
+# River lines for the distance-to-channel stratum (OSM waterway=river and the Nakkhu lines).
+rivers:
+  - configs/aoi/osm_waterways_rivers.json
+  - configs/aoi/osm_nakkhu_bagmati_lines.geojson

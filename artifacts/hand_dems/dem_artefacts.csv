@@ -1,0 +1,7 @@
+dem,native_res_m_or_deg,native_crs,native_cells_extent,native_void_cells_extent,native_void_share_extent,native_cells_routing_domain,native_void_cells_routing_domain,native_void_share_routing_domain,void_filled_cells_domain,void_filled_cells_extent,void_filled_buildings_microsoft,void_filled_buildings_detector_final,vertical_from,vertical_shift_median_m,cells_abs_diff_gt_20m_domain,cells_abs_diff_gt_20m_extent,buildings_abs_diff_gt_20m_microsoft,buildings_abs_diff_gt_20m_detector_final,cells_abs_diff_gt_50m_domain,cells_abs_diff_gt_50m_extent,buildings_abs_diff_gt_50m_microsoft,buildings_abs_diff_gt_50m_detector_final
+glo30,0.0002777777777777778,EPSG:4326,15821,0,0.0,700542,0,0.0,0,0,0,0,egm2008,,,,,,,,,
+fabdem,0.0002777777777777778,EPSG:4326,15821,0,0.0,700542,0,0.0,0,0,0,0,egm2008,,9283.0,0.0,0.0,0.0,3.0,0.0,0.0,0.0
+nasadem,0.0002777777777778147,EPSG:4326,15796,0,0.0,700234,0,0.0,0,0,0,0,egm96,-1.846942901611328,2455.0,2.0,0.0,0.0,116.0,0.0,0.0,0.0
+srtmgl1,0.0002777777777778146,EPSG:4326,15796,0,0.0,700234,0,0.0,0,0,0,0,egm96,-1.846942901611328,2474.0,5.0,0.0,0.0,82.0,0.0,0.0,0.0
+aw3d30,0.0002777777777778173,EPSG:4326,15843,0,0.0,700234,0,0.0,0,0,0,0,egm96,-1.846942901611328,473.0,0.0,0.0,0.0,13.0,0.0,0.0,0.0
+hma8m,8.0,custom (see manifest),208605,134,0.0006423623594832338,9227595,120357,0.013043160216719524,8613,10,0,1,ellipsoid,47.83210754394531,260405.0,7331.0,7915.0,7682.0,237729.0,6737.0,7311.0,7197.0

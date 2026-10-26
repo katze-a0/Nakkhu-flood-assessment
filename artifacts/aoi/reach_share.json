@@ -1,0 +1,56 @@
+{
+  "definition": "Reach = section of the OSM Nakkhu main stem (ways named Nakhu River, Nakhhu, Nallu Khola, merged into one line) between the stem points nearest the upstream site and the confluence; share = length inside the analysis extent / reach length, in EPSG:32645. main_stem: upstream end at Tikabhairab (head of the main stem). mapped_water: upstream end at the map-read upstream end of UNOSAT-mapped water (+-100 m). The upstream limit of the 2024 flooding is not established, so both are reported.",
+  "inputs": {
+    "extent": {
+      "path": "configs/aoi/aoi_recommended_analysis_extent.geojson",
+      "sha256": "1c02298a5f2242d5109d31931f6b4fecfcf922d589b01695a779bfef72517de7"
+    },
+    "lines": {
+      "path": "configs/aoi/osm_nakkhu_bagmati_lines.geojson",
+      "sha256": "86dbc6ce9513fb1f99974fbbcc8c7402bf89b40c469b58700ba905d70f7476ec"
+    },
+    "sites": {
+      "path": "configs/aoi/flood_reach_sites_2024.yaml",
+      "sha256": "d91f045bee504294fa6599931b3488b805525cb772c26ea4e334b3f60d0422e7"
+    }
+  },
+  "reaches": {
+    "main_stem": {
+      "downstream_position_m": 15517.599326016138,
+      "downstream_site": "Nakkhu-Bagmati confluence (OSM way 518744798 end)",
+      "inside_m": 12381.91038006674,
+      "length_m": 14895.068269819003,
+      "share": 0.8312758394773841,
+      "site_offset_from_stem_m": {
+        "downstream_site": 0.0,
+        "upstream_site": 61.781767755632266
+      },
+      "upstream_position_m": 622.5310561971698,
+      "upstream_site": "Tikabhairab (Lele-Nallu junction, head of main stem)"
+    },
+    "mapped_water": {
+      "downstream_position_m": 15517.599326016138,
+      "downstream_site": "Nakkhu-Bagmati confluence (OSM way 518744798 end)",
+      "end_uncertainty_m": 100.0,
+      "inside_m": 12381.91038006674,
+      "length_m": 13312.123583798184,
+      "length_m_range": [
+        13212.123583798046,
+        13412.12358379794
+      ],
+      "share": 0.9301228539627155,
+      "share_range": [
+        0.9231879129882374,
+        0.9371627733826686
+      ],
+      "site_offset_from_stem_m": {
+        "downstream_site": 0.0,
+        "upstream_site": 244.3538656835699
+      },
+      "upstream_position_m": 2205.475742218108,
+      "upstream_site": "Upstream end of UNOSAT-mapped water (map-read, +-100 m)"
+    }
+  },
+  "stem_length_m": 15517.599326016138,
+  "work_crs": "EPSG:32645"
+}

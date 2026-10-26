@@ -1,0 +1,305 @@
+{
+  "corrected": [
+    "glo30_elevation",
+    "asf_glo30_hand"
+  ],
+  "inputs": {
+    "asf_glo30_hand": "d86be7cb03fe2e8b5a35f43a01c75103dbe62e7969d0d9b4cd9d7018c08a225a",
+    "blocks": "702e6bcd93d96c1ad850d89a75959c79890b4745cb19d0933a769744f2428c69",
+    "change_map:L2_seed0": "dcb567770b9757aa15ab614fe751463dcb85389c92bb4e6c0cf333debb3910e9",
+    "change_map:L2_seed1": "b407b850922ecc7b15ceeeec7048d4ea9f6f9eb43a89211570e222614cfcee5b",
+    "change_map:L2_seed2": "05eb4c444ac118396055ea22429f6abf0ec0e412db6c5ca239fb49b1f76d01fc",
+    "change_map:detector_final": "93c29513aec3bae828580ebf52370b988889cb1f99654c15aaea0a6296ed907b",
+    "change_map:google_v3": "0483d0eaaf32ec32fb8f4803f968b99a6f33f9f8da9e0a1f3679ffef94f861e3",
+    "change_map:google_v3_uncut": "9e326c0d6443a21cd62ef1bd7dda3b974c3e9ab211d17e91832a08a5fef102f3",
+    "change_map:microsoft": "027e57fe52f120eb095833678c623336a66c14a76e03f98bf6a153ac05df4f4d",
+    "change_map:osm": "877965055ce80c8bd8cba328c7bf02ec6e7fd77c4bf95d1cc2f0ee7427b59326",
+    "change_map:overture": "b64b08e872b3b21f9b73f1ddaf0b86f537d6cd7fe6838d82e050390895853583",
+    "change_map:seed0": "30c37480e7b8e60ef3e929c4110732f988532625f7599453477af68d1625c428",
+    "change_map:seed1": "a367692a6649f91e98c4a62cec423e830d406af65ea4d33f9d92c3b6435a6e73",
+    "change_map:seed2": "4e59be6e14172e329fd9eaeecb558134c9a68e8917ff087d03781027e15f4fdc",
+    "change_map:seed3": "bf7496085488ae8a39dcb96d6b516d2d8ad0e98458fa59797ea477efa050dfe2",
+    "change_map:seed4": "2ef2139dc6209101f1385b17d5c661ddbf25bc32264dfab9e4597b17588cb18a",
+    "channel_lines": "86dbc6ce9513fb1f99974fbbcc8c7402bf89b40c469b58700ba905d70f7476ec",
+    "count_stability:L2_seed0": "87ed15d670e96084b2b21141ad914f66ef3bacd181677ba67e4f66d01502ed35",
+    "count_stability:L2_seed1": "87ed15d670e96084b2b21141ad914f66ef3bacd181677ba67e4f66d01502ed35",
+    "count_stability:L2_seed2": "87ed15d670e96084b2b21141ad914f66ef3bacd181677ba67e4f66d01502ed35",
+    "count_stability:detector_final": "fd1191d76a00680f0244dc022bfaf96cfbadfdbb7b16b285ee173b94cd5c6122",
+    "count_stability:google_v3": "ed6820c3a2095aa3a4efc5d87bb909795f414e736008857f4c6d0b522ce44af1",
+    "count_stability:google_v3_uncut": "ed6820c3a2095aa3a4efc5d87bb909795f414e736008857f4c6d0b522ce44af1",
+    "count_stability:microsoft": "ed6820c3a2095aa3a4efc5d87bb909795f414e736008857f4c6d0b522ce44af1",
+    "count_stability:osm": "ed6820c3a2095aa3a4efc5d87bb909795f414e736008857f4c6d0b522ce44af1",
+    "count_stability:overture": "87ed15d670e96084b2b21141ad914f66ef3bacd181677ba67e4f66d01502ed35",
+    "count_stability:seed0": "87ed15d670e96084b2b21141ad914f66ef3bacd181677ba67e4f66d01502ed35",
+    "count_stability:seed1": "87ed15d670e96084b2b21141ad914f66ef3bacd181677ba67e4f66d01502ed35",
+    "count_stability:seed2": "87ed15d670e96084b2b21141ad914f66ef3bacd181677ba67e4f66d01502ed35",
+    "count_stability:seed3": "33554f4f0886f32c108ab61c1c9cfc98ef8600c312b1c8c2a7752938bb4a5d3a",
+    "count_stability:seed4": "33554f4f0886f32c108ab61c1c9cfc98ef8600c312b1c8c2a7752938bb4a5d3a",
+    "flood_trace_estimates": "8b92e2b7060f2c6d6e425cd2a566c3b591a41c141045866a0ee8c184bbd9363d",
+    "flood_trace_items": "b7fca33fa9bb96cf5bbfea4061afd26652cfdc536fa05601a075b6226d16d190",
+    "flood_trace_responses": "b91606922289cae74149585952f70464663156af46adbec52f5b5fc38f95d51a",
+    "glo30_elevation": "3df82746a672ba99ed1fef770a3b698418e33bb826d7771a9035046ed146bbed",
+    "hand_table:L2_seed0": "7106bebd3c04ec9e55de055e9f004852b0c0d95e63016e23a900dce330addddc",
+    "hand_table:L2_seed1": "8aa2fbac8f04979f3a186ba01e69737c2c7a5536a67c681b61aa90639dd76695",
+    "hand_table:L2_seed2": "ba7e0787f86d253b2b14d23e1acbedc04242547aa8fb4c66eb024763e72078ba",
+    "hand_table:detector_final": "4c3e304340ff1b02d018a0abb4c3f0f2f514e34818bc37633e067f5c9660955f",
+    "hand_table:google_v3": "5d30f00d328f096b030d067cb362b6efce3060e4e962a22b8ef3e727b269adfd",
+    "hand_table:google_v3_uncut": "8ee1146a841ac8f83293edc6e32df388aba2bd27bb206dba5531e3986f700969",
+    "hand_table:microsoft": "da7c6a2777c555cef1eb7cfba8970ceebd462fea8e2902f89d402d613ab563e3",
+    "hand_table:osm": "784ff1973c276be39109b7d093e61c8d391f58a38033a4436574b3b527320508",
+    "hand_table:overture": "26856cd1b999f2963b5f586b076192f42f293c3c6bff0f3d74f83af32553c368",
+    "hand_table:seed0": "2f71fbb810e22a21f90c35d7fad31368976ed3836cc4d917e0e2de12967301ee",
+    "hand_table:seed1": "432412fecec238de3057d79e0e876ad647d2d4e9ebac316470284a9e183a2103",
+    "hand_table:seed2": "0ab1f897f24ce1036b09095fca5a646e7269f92ea9806fef9c179c72badde766",
+    "hand_table:seed3": "6c13423f89c721f7a0a3ced19f079205f1a86ed08407f7616746b989fdd9f320",
+    "hand_table:seed4": "1b946f11b2eec285898ec4ef354f018565865e5cfa6a60d78a14b08c246ae059",
+    "inventory:L2_seed0": "cb5febeda24a6be26f7a094e40c1796fa8c40e64f7933432a77c891198beb70a",
+    "inventory:L2_seed1": "7d7f1307767ef44ebbb26d4ea8eddb2e137abae818a5443a9b01510da1a88d4a",
+    "inventory:L2_seed2": "5364d6c5d5cbdc8028d5eb9229e2f1765f1e1a9c8be88afebcd05f4206ba40df",
+    "inventory:detector_final": "a5e291c42e5968f505cd5edfeef028f8c330e1441e77ec76b1c1d5acf7b21318",
+    "inventory:google_v3": "eb9151bdbd0fa22af5f07bedc4c416b06fb89aec400ebbd9ee8c59db493ea4fe",
+    "inventory:google_v3_uncut": "eb9151bdbd0fa22af5f07bedc4c416b06fb89aec400ebbd9ee8c59db493ea4fe",
+    "inventory:microsoft": "d2c8dcd4693d2d6a62b150b45e609515bc09574ee58448620ef11f7e941d3ceb",
+    "inventory:osm": "7e76a19d0059a66c30ef159e76122193e4409d037483963de1d3d3f22eef82d1",
+    "inventory:overture": "6db4ce9d52789a488e65c71dd7f247e72110bd1aae56791e5c8a7bfed3257851",
+    "inventory:seed0": "be30c1ae631b848ff021fcc322ca14282e7be83f5f500c0e22a624f903089e12",
+    "inventory:seed1": "d84f340b742c099e36370b2ded9092007c76b6e44c29fc106813dceb3a4c1c88",
+    "inventory:seed2": "c3e45c8085f7804e3d0227366675a239206681253bb1d63d1e67891afa5f4f76",
+    "inventory:seed3": "b1deefd710a2c69840f8f7b007c89bd40dd3855add01bd28bf7baa6409b80a65",
+    "inventory:seed4": "549ec59e4e7162bdc801229d5c4d3f7d118ed072e7da1d99cb08ff790a3058f3",
+    "sweep_config": "2ba435d14e0022fa9e6224d260dec624af7bc682d1e3dbba95b4898d07301662"
+  },
+  "inventories": [
+    "detector_final",
+    "google_v3",
+    "google_v3_uncut",
+    "microsoft",
+    "osm",
+    "seed0",
+    "seed1",
+    "seed2",
+    "seed3",
+    "seed4",
+    "L2_seed0",
+    "L2_seed1",
+    "L2_seed2",
+    "overture"
+  ],
+  "journal_entry": 51,
+  "journal_ref": "flood/validate-competitors:20261016T180632Z-90b19d17",
+  "n_boot": 2000,
+  "predictors": {
+    "L2_seed0": {
+      "asf_hand_m": {
+        "finite": 33139,
+        "max": 125.9484634399414,
+        "min": 0.0
+      },
+      "buildings": 33139,
+      "elev_glo30_m": {
+        "finite": 33139,
+        "max": 1500.951904296875,
+        "min": 1258.0
+      }
+    },
+    "L2_seed1": {
+      "asf_hand_m": {
+        "finite": 32575,
+        "max": 125.9484634399414,
+        "min": 0.0
+      },
+      "buildings": 32575,
+      "elev_glo30_m": {
+        "finite": 32575,
+        "max": 1500.951904296875,
+        "min": 1257.0
+      }
+    },
+    "L2_seed2": {
+      "asf_hand_m": {
+        "finite": 23925,
+        "max": 125.9484634399414,
+        "min": 0.0
+      },
+      "buildings": 23925,
+      "elev_glo30_m": {
+        "finite": 23925,
+        "max": 1500.951904296875,
+        "min": 1257.0
+      }
+    },
+    "detector_final": {
+      "asf_hand_m": {
+        "finite": 11853,
+        "max": 125.9484634399414,
+        "min": 0.0
+      },
+      "buildings": 11853,
+      "elev_glo30_m": {
+        "finite": 11853,
+        "max": 1500.951904296875,
+        "min": 1265.2698974609375
+      }
+    },
+    "google_v3": {
+      "asf_hand_m": {
+        "finite": 14202,
+        "max": 125.9484634399414,
+        "min": 0.0
+      },
+      "buildings": 14202,
+      "elev_glo30_m": {
+        "finite": 14202,
+        "max": 1500.951904296875,
+        "min": 1263.8594970703125
+      }
+    },
+    "google_v3_uncut": {
+      "asf_hand_m": {
+        "finite": 30436,
+        "max": 125.9484634399414,
+        "min": 0.0
+      },
+      "buildings": 30436,
+      "elev_glo30_m": {
+        "finite": 30436,
+        "max": 1500.951904296875,
+        "min": 1257.5
+      }
+    },
+    "microsoft": {
+      "asf_hand_m": {
+        "finite": 12925,
+        "max": 125.9484634399414,
+        "min": 0.0
+      },
+      "buildings": 12925,
+      "elev_glo30_m": {
+        "finite": 12925,
+        "max": 1500.951904296875,
+        "min": 1266.6239013671875
+      }
+    },
+    "osm": {
+      "asf_hand_m": {
+        "finite": 10154,
+        "max": 125.9484634399414,
+        "min": 0.0
+      },
+      "buildings": 10154,
+      "elev_glo30_m": {
+        "finite": 10154,
+        "max": 1500.951904296875,
+        "min": 1266.6239013671875
+      }
+    },
+    "overture": {
+      "asf_hand_m": {
+        "finite": 22460,
+        "max": 125.9484634399414,
+        "min": 0.0
+      },
+      "buildings": 22460,
+      "elev_glo30_m": {
+        "finite": 22460,
+        "max": 1500.951904296875,
+        "min": 1257.5
+      }
+    },
+    "seed0": {
+      "asf_hand_m": {
+        "finite": 15956,
+        "max": 125.9484634399414,
+        "min": 0.0
+      },
+      "buildings": 15956,
+      "elev_glo30_m": {
+        "finite": 15956,
+        "max": 1500.951904296875,
+        "min": 1257.0
+      }
+    },
+    "seed1": {
+      "asf_hand_m": {
+        "finite": 13229,
+        "max": 125.9484634399414,
+        "min": 0.0
+      },
+      "buildings": 13229,
+      "elev_glo30_m": {
+        "finite": 13229,
+        "max": 1500.951904296875,
+        "min": 1257.0
+      }
+    },
+    "seed2": {
+      "asf_hand_m": {
+        "finite": 12654,
+        "max": 125.9484634399414,
+        "min": 0.0
+      },
+      "buildings": 12654,
+      "elev_glo30_m": {
+        "finite": 12654,
+        "max": 1500.951904296875,
+        "min": 1257.0
+      }
+    },
+    "seed3": {
+      "asf_hand_m": {
+        "finite": 13438,
+        "max": 125.9484634399414,
+        "min": 0.0
+      },
+      "buildings": 13438,
+      "elev_glo30_m": {
+        "finite": 13438,
+        "max": 1500.951904296875,
+        "min": 1257.0
+      }
+    },
+    "seed4": {
+      "asf_hand_m": {
+        "finite": 15326,
+        "max": 125.9484634399414,
+        "min": 0.0
+      },
+      "buildings": 15326,
+      "elev_glo30_m": {
+        "finite": 15326,
+        "max": 1500.951904296875,
+        "min": 1257.0
+      }
+    }
+  },
+  "reason": "competitor CRS fix, user approved 2026-10-17",
+  "reproduction": {
+    "corrected_rows": 58,
+    "header_equal": true,
+    "kept_columns_differ": [],
+    "keys_equal": true,
+    "reproduced": true,
+    "rows": 116,
+    "source_sha256": "1157000b5eb8410b5b5b7e4db5de599b2f58ed4a7bd208b5c4478dae14467d0e",
+    "unchanged_rows": 58,
+    "unchanged_rows_differ": []
+  },
+  "run": "validation-competitors/20261017T042323Z-0f9d79f2",
+  "sampling": "nearest cell at the building centroid, points reprojected to the raster CRS (nakkhu 45bea9a)",
+  "seed": 0,
+  "source_journal_entry": 47,
+  "source_run": "validation/20261016T180632Z-90b19d17",
+  "test_access": {
+    "entry": {
+      "eval_cfghash": "0f9d79f2",
+      "note": "nakkhu flood validate --rerun-competitors validation/20261016T180632Z-90b19d17 (run validation-competitors/20261017T042323Z-0f9d79f2): competitor CRS fix, user approved 2026-10-17",
+      "prereg_sha256": "89baaed3e19554db599b510219c94285880820d4b840a7a0e76478d2150253ba",
+      "run": "flood/validate-competitors:20261016T180632Z-90b19d17",
+      "split_sha256": "52786e81a91046ed4ca5e6db33c8767aeb9aa098b6d745b8e7c571f9957309ef",
+      "utc": "2026-10-17T04:23:23Z"
+    },
+    "flag_reason": "",
+    "flagged": false,
+    "prior_accesses": 0
+  }
+}

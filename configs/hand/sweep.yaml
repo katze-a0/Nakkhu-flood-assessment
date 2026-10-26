@@ -1,0 +1,221 @@
+# Plan 008: Python HAND and the DEM x conditioning x threshold sweep (factors H1-H6).
+# `nakkhu hand sweep` runs every available DEM x conditioning x threshold; `nakkhu hand run
+# --config configs/hand/primary.yaml` runs one configuration. Paths resolve against nakkhu/.
+schema_version: 1
+
+# Step 1: one EPSG:32645 grid over the routing domain + buffer, origin snapped to `res`.
+grid:
+  crs: EPSG:32645
+  res_m: 30
+  buffer_m: 2000
+  resampling: bilinear
+  domain: configs/aoi/routing_domain_upper_bagmati_glo30.geojson
+
+analysis_extent: configs/aoi/aoi_recommended_analysis_extent.geojson
+
+# H2. `manifest_id` ties each DEM to configs/data/manifest.yaml; an entry with `status: pending`
+# there (or a missing file) is listed in config_grid.csv as skipped, so a DEM fetched later joins
+# the sweep without code changes. `apply_scale` must stay false for GEDTM30: its band carries a
+# 0.1 scale tag but the stored values are already metres (plan 002 Outcome).
+dems:
+  glo30:
+    manifest_id: dem_glo30
+    path: "{data_root}/raw/dem_glo30/dem_glo30_routing2km.tif"
+    surface: DSM
+    vertical_datum: EGM2008
+  fabdem:
+    manifest_id: dem_fabdem
+    path: "{data_root}/raw/dem_fabdem/dem_fabdem_routing2km.tif"
+    surface: DTM (buildings and forests removed from GLO-30)
+    vertical_datum: EGM2008
+    # Licence ambiguity (plan 002): data.bris metadata says "Non-Commercial Government Licence";
+    # description and shipped license.txt say CC BY-NC-SA 4.0. Analysis only; no FABDEM maps.
+  gedtm30:
+    manifest_id: dem_gedtm30
+    path: "{data_root}/raw/dem_gedtm30/dem_gedtm30_routing2km.tif"
+    surface: DTM (ensemble)
+    vertical_datum: EGM2008
+    apply_scale: false
+  nasadem:
+    manifest_id: dem_nasadem
+    path: "{data_root}/raw/dem_nasadem/dem_nasadem_routing2km.tif"
+    surface: DSM (SRTM reprocessed)
+    vertical_datum: EGM96 (product documentation; UNVERIFIED until fetched)
+  srtmgl1:
+    manifest_id: dem_srtmgl1
+    path: "{data_root}/raw/dem_srtmgl1/dem_srtmgl1_routing2km.tif"
+    surface: DSM (the 12.5 m ALOS-RTC DEM is resampled SRTM)
+    vertical_datum: EGM96 (product documentation; UNVERIFIED until fetched)
+  aw3d30:
+    manifest_id: dem_aw3d30
+    path: "{data_root}/raw/dem_aw3d30/dem_aw3d30_routing2km.tif"
+    surface: DSM (optical)
+    vertical_datum: EGM96 (product documentation; UNVERIFIED until fetched)
+  fathomdem:
+    manifest_id: null # not registered: access on request only (plan 002)
+    path: "{data_root}/raw/dem_fathomdem/dem_fathomdem_routing2km.tif"
+    surface: DTM (ViT-corrected GLO-30)
+    vertical_datum: EGM2008
+
+# Units guard: every prepared DEM must agree with this one to within `max_median_abs_diff_m`
+# (median over the routing domain). A wrongly applied 0.1 scale would differ by ~1000 m.
+reference_dem: glo30
+max_median_abs_diff_m: 50
+
+# External reference surface (H1): ASF GLO-30 HAND, reprojected bilinearly to the grid.
+reference_hand:
+  manifest_id: hand_asf_glo30
+  path: "{data_root}/raw/hand_asf_glo30/hand_asf_glo30_routing2km.tif"
+
+# Step 2. OSM lines burned into the DEM used for flow routing only; HAND uses the conditioned
+# elevations with burned cells restored to max(conditioned, original). Depth 60 m = the research
+# delineation (proposal for configs/prereg.yaml, plan 005).
+burn:
+  depth_m: 60
+  all_touched: true
+  lines:
+    - configs/aoi/osm_nakkhu_bagmati_lines.geojson
+    - configs/aoi/osm_waterways_rivers.json
+
+# H4. method: fill = pysheds fill_pits + priority-flood fill_depressions + resolve_flats;
+# breach = WhiteboxTools breach_depressions_least_cost (remaining depressions filled), then
+# resolve_flats. `diagnostic` levels are reported but never chosen as primary; `check_only`
+# levels are routed for the Step 2 burn check only (no HAND surfaces). fill_noburn reproduces
+# the research diagnostic (priority-flood fill without burning misroutes the lower Nakkhu).
+conditioning:
+  fill_burn: {method: fill, burn: true}
+  breach_burn: {method: breach, burn: true}
+  breach_noburn: {method: breach, burn: false, diagnostic: true}
+  fill_noburn: {method: fill, burn: false, diagnostic: true, check_only: true}
+breach:
+  max_dist_cells: 100
+
+# H3. Stream initiation by contributing area (km2), plus the Tarboton drop-analysis threshold
+# chosen per DEM x conditioning from `candidates_km2` (smallest with |t| < `t_critical`).
+thresholds_km2: [0.05, 0.1, 0.25, 0.5, 1, 2]
+drop_analysis:
+  candidates_km2: [0.05, 0.075, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.75, 1, 1.5, 2, 3, 4, 5]
+  t_critical: 2.0
+
+# Step 3: domain outlet = largest-accumulation cell within `line_buffer_m` of the OSM Bagmati and
+# within `max_dist_m` of the OSM Nakkhu-Bagmati confluence (rule of .tmp/data/scripts/basins.py).
+confluence_lonlat: [85.296452, 27.6632326]
+domain_outlet:
+  line_name_contains: Bagmati
+  line_buffer_m: 60
+  max_dist_m: 1500
+# Step 2 check: Nakkhu catchment outlet and the channel band whose share inside it is tested.
+nakkhu_outlet:
+  line_names: [Nakhu River, Nakhhu]
+  line_buffer_m: 90
+  max_dist_m: 300
+  area_km2: [20, 300]
+burn_check:
+  line_names: [Nakhu River, Nakhhu]
+  lat_band: [27.65, 27.665]
+# Routing gate (user decision 2026-10-05): a DEM x conditioning passes when >= 99 % of the channel
+# band lies in its Nakkhu catchment and that catchment's area is within 10 % of the reference
+# catchment (research c4, 55.82 km2). Failing surfaces are reported and flagged but excluded from
+# sensitivity ranges (`in_sensitivity_range`). The 10 % area tolerance is this plan's choice.
+routing_gate:
+  min_channel_share: 0.99
+  reference_catchment: configs/aoi/catchment_c4_glo30_osm_burned.geojson
+  max_catchment_rel_diff: 0.10
+
+# Step 8 / H5. Stage-equivalent tiers (m): on drainage (HAND <= 0), (0,3], (3,6], (6,9], (9,12],
+# > 12. Building statistics: centroid cell; minimum over footprint cells; minimum over the
+# footprint buffered by `buffer_m`. Cells count when the polygon touches them (exactextract).
+tiers_m: [0, 3, 6, 9, 12]
+statistics: [centroid, footprint_min, buffer_min]
+buffer_m: 10
+
+# Primary (user decision 2026-10-05): GLO-30, least-cost breach + 60 m OSM burn, the
+# drop-analysis threshold (0.2 km2, checked by `threshold_km2`), building centroid. Footprint
+# minimum and every other surface are sensitivity members. Proposed for configs/prereg.yaml
+# (plan 005 owns that file) before any event scoring.
+primary:
+  dem: glo30
+  conditioning: breach_burn
+  threshold: drop
+  threshold_km2: 0.2
+  statistic: centroid
+
+# Step 6 (H1): seeded draw of configurations, stratified by DEM and threshold.
+agreement:
+  n_configs: 10
+  seed: 0
+  tolerance_m: 0.5
+
+# Step 7. Building inventories (centroid inside the analysis extent). Footprints are the source
+# polygons. `detector_final` joins once plan 007 promotes it.
+# Greenhouses are not buildings (user decision 2026-10-05): every inventory drops footprints
+# overlapping an OSM greenhouse area (IoU >= iou_min, or centroid inside). Tags and rule live in
+# src/nakkhu/reference/greenhouse.py (GREENHOUSE_TAGS); greenhouses come from the fp_osm PBF.
+greenhouse_filter:
+  enabled: true
+  pbf: "{data_root}/raw/fp_osm/source/nepal-261003.osm.pbf"
+  iou_min: 0.3
+  bbox_pad_deg: 0.005
+
+# Google v3 (user decision 2026-10-05): the >= 90 %-precision confidence cut is the exposure
+# baseline; the uncut set is a sensitivity member. Same rule as src/nakkhu/labels/harmonise.py:
+# per-S2-level-4-cell threshold looked up at the polygon's published lat/lon, keep
+# confidence >= threshold.
+inventories:
+  google_v3:
+    manifest_id: fp_google_v3
+    path: "{data_root}/raw/fp_google_v3/fp_google_v3.parquet"
+    confidence_cut:
+      thresholds: "{data_root}/raw/fp_google_v3/score_thresholds_s2_level_4.csv"
+      column: confidence_threshold_90%_precision
+  google_v3_uncut:
+    manifest_id: fp_google_v3
+    path: "{data_root}/raw/fp_google_v3/fp_google_v3.parquet"
+    role: sensitivity
+  microsoft:
+    manifest_id: fp_microsoft
+    path: "{data_root}/raw/fp_microsoft/fp_microsoft.parquet"
+  osm:
+    manifest_id: fp_osm
+    path: "{data_root}/raw/fp_osm/fp_osm.parquet"
+  overture:
+    manifest_id: fp_overture
+    path: "{data_root}/raw/fp_overture/fp_overture.parquet"
+  detector_final:
+    manifest_id: null # pending plan 007
+    path: artifacts/detector/inventory_final.parquet
+  # Single-seed detector inventories for plan 009 D4 / plan 010 U2 (coordinator 2026-10-13):
+  # one unit's WV02 test-region run at its own val F1-max threshold (nakkhu.ensemble
+  # final_members). Written by `nakkhu hand inventories` (regenerable, data/interim).
+  seed0:
+    path: "{data_root}/interim/inventories/seed0.parquet"
+    detections: {arm: L5, model: yolo11n-obb, seed: 0}
+    role: d4
+  seed1:
+    path: "{data_root}/interim/inventories/seed1.parquet"
+    detections: {arm: L5, model: yolo11n-obb, seed: 1}
+    role: d4
+  seed2:
+    path: "{data_root}/interim/inventories/seed2.parquet"
+    detections: {arm: L5, model: yolo11n-obb, seed: 2}
+    role: d4
+  seed3:
+    path: "{data_root}/interim/inventories/seed3.parquet"
+    detections: {arm: L5, model: yolo11n-obb, seed: 3}
+    role: d4
+  seed4:
+    path: "{data_root}/interim/inventories/seed4.parquet"
+    detections: {arm: L5, model: yolo11n-obb, seed: 4}
+    role: d4
+  L2_seed0:
+    path: "{data_root}/interim/inventories/L2_seed0.parquet"
+    detections: {arm: L2, model: yolo11n-obb, seed: 0}
+    role: d4
+  L2_seed1:
+    path: "{data_root}/interim/inventories/L2_seed1.parquet"
+    detections: {arm: L2, model: yolo11n-obb, seed: 1}
+    role: d4
+  L2_seed2:
+    path: "{data_root}/interim/inventories/L2_seed2.parquet"
+    detections: {arm: L2, model: yolo11n-obb, seed: 2}
+    role: d4

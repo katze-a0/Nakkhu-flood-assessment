@@ -1,0 +1,7 @@
+# One configuration for `nakkhu hand run --config configs/hand/primary.yaml`: the recommended
+# primary of plan 008 (GLO-30, least-cost breach + OSM burn, drop-analysis threshold).
+schema_version: 1
+base: configs/hand/sweep.yaml
+dem: glo30
+conditioning: breach_burn
+threshold: drop

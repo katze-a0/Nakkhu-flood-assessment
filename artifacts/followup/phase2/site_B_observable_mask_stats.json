@@ -1,0 +1,27 @@
+{
+  "cell_m": 4.0,
+  "difference_points": -20.79,
+  "extent_cells": 1324800,
+  "mask_codes": {
+    "0": "no data / outside",
+    "1": "observable",
+    "2": "cloud",
+    "3": "shadow",
+    "4": "dilation halo"
+  },
+  "observable_share_either_strip": 0.6421490036231884,
+  "research_estimate": {
+    "clear_share_both_strips": 0.85,
+    "note": "rough brightness mask, shadows not removed",
+    "tolerance_points": 10
+  },
+  "strips": {
+    "0600": {
+      "cloud_share": 0.1266243961352657,
+      "observable_share": 0.6421490036231884,
+      "shadow_share": 0.007402626811594203,
+      "valid_share": 0.8226343599033816
+    }
+  },
+  "within_tolerance": false
+}

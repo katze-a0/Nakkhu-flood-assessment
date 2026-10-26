@@ -1,0 +1,3 @@
+inventory,n_buildings,n_valid_hand_team,share_valid_hand_team,n_centroid_in_team_basin,n_blocks,n_blocks_with_covered_building,note
+microsoft,12925,7907,0.6117601547388781,9952,30,24,all buildings of the analysis extent (no observability or label used); P1-9 reports coverage on the R1 rows
+detector_final,11853,6763,0.5705728507550831,9047,30,24,all buildings of the analysis extent (no observability or label used); P1-9 reports coverage on the R1 rows

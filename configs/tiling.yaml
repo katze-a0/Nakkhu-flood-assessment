@@ -1,0 +1,65 @@
+# Tiling, radiometry and georeferencing (plan 003). Every relative path resolves against nakkhu/.
+schema_version: 1
+
+# One fixed grid for every scene: tile t_{col:04d}_{row:04d} covers the same ground in WV02,
+# GE01 and WV03, and every mosaic has exactly this transform and shape.
+grid:
+  crs: EPSG:32645
+  # 0.5 m (frozen). A `0.30517578125` (native visual grid) ablation is possible later, only with
+  # the user's approval; it changes the tile size in metres and therefore the grid.
+  pixel_size_m: 0.5
+  tile_px: 640
+  # AOI key (configs/project.yaml `aoi`) whose bounds, rounded outward to multiples of the tile
+  # size in metres, give the grid. The training domain contains the analysis extent.
+  origin_from: training_domain
+  # Computed by `nakkhu tile --write-grid`; checked on every tiling run. Do not edit by hand.
+  origin: {west: 331200.0, north: 3074880.0}
+  width_px: 14080
+  height_px: 43520
+
+# Tile strides in px per purpose: train/evaluation without overlap, inference with 128 px overlap.
+strides:
+  train: 640
+  infer: 512
+
+# Domain each purpose tiles (AOI keys): tiles whose footprint overlaps the domain with positive area.
+domains:
+  train: training_domain
+  infer: analysis_extent
+
+# Tiles overlapping the analysis extent are `test`; tiles within this distance of it are `buffer`
+# (plan 005, Option A: one-tile buffer); the rest are `train`. Plan 005 owns the final split.
+test_buffer_m: 320.0
+
+mosaic:
+  resampling: average
+  # A 0.5 m pixel is valid when at least this share of its source footprint is valid.
+  min_valid_share: 0.5
+  block_px: 2048
+  workers: 4
+
+radiometry:
+  mode: global          # global | per_tile (per_tile reproduces the prototype; tests only)
+  percentiles: [2.0, 98.0]
+
+tiles:
+  jpeg_quality: 95
+  # Tiles below this valid fraction are flagged (`low_valid`) and excluded from training.
+  min_valid_frac: 0.5
+
+# Scene id (data manifest id) -> catalog id and allowed purposes.
+scenes:
+  maxar_wv02_20240113: {catalog: 10300100F5AB8000, purposes: [train, infer]}
+  maxar_ge01_20241006_0600: {catalog: 105001003E1F0600, purposes: [infer]}
+  maxar_ge01_20241006_0500: {catalog: 105001003E1F0500, purposes: [infer]}
+  maxar_wv03_20230404: {catalog: 1040010085132700, purposes: [infer]}
+
+georef:
+  # Frozen in configs/prereg.yaml (plan 005, `detection_postprocess`; the guard refuses test
+  # scoring if these differ). Cross-tile rotated-IoU NMS threshold = the prototype's within-tile
+  # NMS IoU (prototype.ipynb cell 19, IOU_THRESHOLD = 0.3).
+  dedup_iou: 0.3
+  # OBB polygon area filters in m2. min = the plan 004 label filter (configs/labels/common.yaml
+  # obb.min_area_m2), so no detection is scored below the smallest trainable label; no max.
+  min_area_m2: 9.0
+  max_area_m2: null

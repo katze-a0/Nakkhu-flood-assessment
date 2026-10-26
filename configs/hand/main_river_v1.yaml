@@ -1,0 +1,68 @@
+# Main-river HAND terrain ensemble, version 1 (recompute of plans 008-010 with main-river HAND;
+# plans/recompute_main_river.md). New file: configs/hand/sweep.yaml, configs/hand/sweep_dems.yaml
+# and the prereg / addenda stay untouched and pinned. Read by src/nakkhu/mainriver/.
+#
+# The paper's HAND is main-river HAND, hand_mr_d8 on GLO-30 breach + burn
+# (configs/prereg_addenda/prereg_v9_a3.yaml `definitions`):
+#   M          = cells of the sweep grid touched (all_touched) by the 11 ways of
+#                configs/aoi/osm_nakkhu_bagmati_lines.geojson AND with D8 contributing area
+#                >= 1 km2 on the same DEM x conditioning
+#   z_ref      = conditioned elevation with burned cells restored to the original (as sweep HAND)
+#   hand_mr_d8 = max(0, z_ref(c) - z_ref(m(c))), m(c) = first cell of M on the D8 path from c;
+#                NaN if the path ends (pit, flat, grid exit) before reaching M
+#
+# Terrain ensemble, in the spirit of the v9 one (plan 008/010: 28 in-gate surfaces = DEM x
+# conditioning x stream threshold, x 3 building statistics = 84 members). The drainage
+# definition (M above) is HELD FIXED, so the stream-threshold factor disappears:
+#   member = DEM x conditioning x building statistic, computed on that DEM x conditioning's own
+#   routing (its D8 directions, accumulation and z_ref), only for DEM x conditioning pairs that
+#   pass the plan 008 routing gate (burn_check.csv of the source sweep; >= 99 % of the Nakkhu
+#   channel band in the catchment and catchment area within 10 % of the reference). Diagnostic
+#   conditionings (breach_noburn, fill_noburn) are excluded, as in v9.
+schema_version: 1
+version: main_river_v1
+base_config: configs/hand/sweep.yaml       # grid, tiers_m, statistics, buffer_m, inventories,
+                                           # greenhouse filter, analysis extent
+stage: hand-mr                             # label-free runs: runs/hand-mr/<run_id>/
+
+drainage:
+  definition: hand_mr_d8
+  main_lines: configs/aoi/osm_nakkhu_bagmati_lines.geojson
+  main_lines_sha256: 86dbc6ce9513fb1f99974fbbcc8c7402bf89b40c469b58700ba905d70f7476ec
+  main_min_area_km2: 1.0
+  all_touched: true
+
+# Sweep runs whose interim routing rasters (fdir.tif, acc.tif, dem_ref.tif per DEM x
+# conditioning, grid/cell_index.tif) are reused. Both are on the same EPSG:32645 30 m grid.
+sources:
+  canonical: hand/20261005T191226Z-dc9658f5      # GLO-30, FABDEM, GEDTM30 (plan 008 sweep)
+  dem_extension: hand-dems/20261017T074042Z-c1b4c03a   # NASADEM, SRTM GL1, AW3D30 (+ GLO-30,
+                                                       # FABDEM, HMA 8 m), EGM2008-harmonised
+
+# The primary ensemble: the DEMs of the v9 ensemble (the canonical sweep). Members that fail
+# the routing gate are listed in surface_grid.csv with the reason and are never computed.
+ensemble:
+  source: canonical
+  dems: [glo30, fabdem, gedtm30]
+  conditioning: [fill_burn, breach_burn]
+  statistics: [centroid, footprint_min, buffer_min]   # buffer_min = footprint + buffer_m (10 m)
+
+# Descriptive extension (never in the primary ensemble, U2 or any CI): the later DEMs of the
+# DEM-extension sweep, gate-passing pairs only (HMA 8 m fails both: blunder strip).
+extended:
+  source: dem_extension
+  dems: [nasadem, srtmgl1, aw3d30]
+  conditioning: [fill_burn, breach_burn]
+  statistics: [centroid, footprint_min, buffer_min]
+
+primary: {dem: glo30, conditioning: breach_burn, statistic: centroid}
+tiers_m: [0, 3, 6, 9, 12]                  # = sweep.yaml tiers_m (checked)
+inventories: [microsoft, detector_final]   # per-building tables, tier export
+
+# Label-free consistency check: the primary centroid values must equal the promoted plan 014
+# prep column hand_mr_d8__<dem> (same definition, same rasters) for both inventories.
+prep_check:
+  glo30__breach_burn: {file: "artifacts/followup/prep_glo30_{inventory}.parquet",
+                       column: hand_mr_d8__glo30}
+  fabdem__breach_burn: {file: "artifacts/followup/prep_fabdem_{inventory}.parquet",
+                        column: hand_mr_d8__fabdem}

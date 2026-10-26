@@ -1,0 +1,35 @@
+{
+  "footprints": {
+    "file": "artifacts/followup/phase2/site_N_registration_shifts.csv",
+    "n_ok": 225,
+    "reasons": {
+      "low_peak": 159,
+      "no_footprints": 2,
+      "ok": 225,
+      "shift_too_large": 53
+    },
+    "sha256": "960edf2fd12b0332b839bf18beafe0166ac9d18fb9bbaecde19c004eeaaf5417",
+    "threshold": 1.2161,
+    "threshold_from": "artifacts/labels/registration_shifts.csv"
+  },
+  "osm": {
+    "file": "artifacts/followup/phase2/site_N_osm_registration_shifts.csv",
+    "n_ok": 164,
+    "reasons": {
+      "low_peak": 163,
+      "no_footprints": 5,
+      "ok": 164,
+      "shift_too_large": 107
+    },
+    "sha256": "475ed77a77f8c04a5a0585a14f8850f46a29aaf7920a460a47a02978f3318222",
+    "threshold": 1.2247,
+    "threshold_from": "artifacts/labels/osm_registration_shifts.csv"
+  },
+  "run": "followup-p2/20261017T155610Z-538cd2c3",
+  "site": "N",
+  "tile_index": {
+    "file": "artifacts/followup/phase2/site_N_tiles.parquet",
+    "sha256": "edf64d29600db49d613b7fe6bb5b7ff728bdc7f6f6fd98b5bbeebdcea3dff584"
+  },
+  "tiles": 439
+}

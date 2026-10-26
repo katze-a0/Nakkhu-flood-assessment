@@ -1,0 +1,8 @@
+# Plan 014 Phase 2, G6 (2026-10-17): the site change maps built by `nakkhu followup p2 change`
+# on the VPS after prereg_v9_a4 was frozen (resolved site configs = the a4 pins). The tables
+# live in the VPS project root (/opt/nakkhu-xm/p2/root/runs/...); they were not opened and not
+# copied to the laptop. Read by `nakkhu audit sample --task flood_trace_p2` (not run yet).
+sites:
+  A: {run: flood/20261017T175413Z-5038a183, file: runs/flood/20261017T175413Z-5038a183/change_map_buildings_microsoft.parquet, sha256: 79093144b8b5711f151c0078eeb6ea7179038d348c02ddef8449b438062118dd}
+  B: {run: flood/20261017T175909Z-2e0cc6bf, file: runs/flood/20261017T175909Z-2e0cc6bf/change_map_buildings_microsoft.parquet, sha256: dcfd37b4fc60302e9c27e5a84c8777b492f8ae328b155579a23352f74c7f81e8}
+  N: {run: flood/20261017T180202Z-34d49e0c, file: runs/flood/20261017T180202Z-34d49e0c/change_map_buildings_microsoft.parquet, sha256: fb9a1d8df512cc903ca0b81aa79d025c54a296ad0924ec74000d609c0a6497b9}

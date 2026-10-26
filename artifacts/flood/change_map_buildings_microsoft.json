@@ -1,0 +1,14 @@
+{
+  "buildings_sha256": "ec262ded643129be6199d09472928be6c29753c0cd3f60795ec74f7e424f11ef",
+  "change_map": "change_map_buildings_microsoft.parquet",
+  "change_map_sha256": "027e57fe52f120eb095833678c623336a66c14a76e03f98bf6a153ac05df4f4d",
+  "config_sha256": "7875d1a9a85689fdb7453770ba46d2cdefaf1fde8533ab60bfcd52a35fa445b4",
+  "inventory": "microsoft",
+  "inventory_sha256": "d2c8dcd4693d2d6a62b150b45e609515bc09574ee58448620ef11f7e941d3ceb",
+  "inventory_source": "data/raw/fp_microsoft/fp_microsoft.parquet",
+  "n_buildings": 12925,
+  "primary_strips": [
+    "0600"
+  ],
+  "run": "flood/20261016T090641Z-7875d1a9"
+}

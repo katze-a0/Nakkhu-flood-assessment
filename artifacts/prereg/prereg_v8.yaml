@@ -1,0 +1,927 @@
+# Pre-registration v8 (plan 013): ONE audited amendment of v7 (d31e45d6...) after the detector
+# test scoring, frozen with `nakkhu prereg freeze --amend` before any sitting-2 or sitting-3
+# answer, any flood validation, the uncertainty run and the G1 test run. It applies v7's own C5
+# fallback (C5 failed under v7, journal entry 39: Microsoft matches the final model on 5 of 5
+# seeds): Microsoft footprints become the main inventory and detector_final the secondary one.
+# It also fixes the count unit of every exposure number (uncertainty_propagation.count_units:
+# real objects; recall-frame point totals only as upper bounds; mixed-unit ratios only as
+# sensitivity rows). No section used by the 42 earlier test accesses changed (the guard refuses
+# locked sections); changed paths, allow list and reasons in artifacts/prereg/changelog.md and
+# history.json, the v7 file in artifacts/prereg/prereg_v7.yaml.
+# v7 (plan 005 Step 2): v6 with the plan 010 section renamed to
+# `uncertainty_propagation` (v5/v6 reused the top-level key `uncertainty`, so YAML kept only the
+# last one and dropped the plan 005 `uncertainty.block_bootstrap`); no analysis setting changed.
+# The guard now refuses duplicate keys at any level.
+# v6 = v5 with the C2.ppi split-sample check halving audit units
+# at random within the audit strata (v5 halved plan 005 blocks; kept as a descriptive row).
+# v5 = v4 plus the plan 010 uncertainty analysis (U1-U3, D4)
+# and every remaining rule that will touch test tiles or test-region audit answers (final
+# detector selection and its 5-seed inventory, the sitting-2 pool, V-metrics / H6 / C3 settings,
+# the D5 cross-sensor test, G1's confirmatory audit rho, C4 reruns, C5), so that the test tiles
+# are opened exactly once. Frozen before any test access (test journal empty), any sitting-2 or
+# sitting-3 sample and any audit estimate. Frozen by `nakkhu prereg freeze` (SHA-256 of this
+# file in artifacts/prereg/prereg_v7.sha256; v1-v6 kept; what changed and why in
+# artifacts/prereg/changelog.md). `nakkhu eval --split test` (and every other test access)
+# refuses if this file, the split file or any `mirror_of` / `sha256_of` / `constant_of` section
+# differs from what was frozen. Sources: plans/README.md Decisions and Orchestrator decision log
+# (2026-10-05/06/12) and plans 003-010. Thresholds are the researched defaults the user chose to
+# freeze (Decisions, "Pass/fail thresholds").
+schema_version: 1
+version: prereg_v8
+
+# --- split (plan 005 Step 1, Option A) ------------------------------------------------------
+split:
+  file: configs/splits/split_v1.yaml
+  sha256: 52786e81a91046ed4ca5e6db33c8767aeb9aa098b6d745b8e7c571f9957309ef
+  rule: configs/splits/split.yaml
+  test: every WV02 train-grid tile overlapping the 13.34 km2 analysis extent; scored region =
+    the extent itself
+  train: WV02 tiles outside the extent, at least 320 m from any test or val tile
+  val: 12 seeded, stratified 3 x 3-tile blocks of the training region, 320 m buffer
+  buffer_m: 320
+  bootstrap_unit: 3 x 3-tile block (960 m) of split_v1.yaml
+  augmentation: Ultralytics online augmentation on train tiles only; no offline augmentation
+  training_tiles: split == train and usable (valid fraction >= 0.5); val/test/buffer never
+    written into a training set
+
+seeds:
+  mirror_of: configs/project.yaml#seeds
+  values: {arms: [0, 1, 2], final: [0, 1, 2, 3, 4]}
+  sets: Ultralytics `seed`, data order and any sampling; deterministic=True
+  harness_seed: 0
+
+# --- references -----------------------------------------------------------------------------
+references:
+  r_osm:
+    source: fp_osm (OpenStreetMap buildings); never used in any label arm
+    alignment: per-tile registration to the WV02 imagery before any scoring
+      (`nakkhu labels osm-register`, nakkhu.labelqa.aligned_osm); tiles that fail registration
+      keep shift 0 and are flagged; shifts are reported
+    registration:
+      note: same method and settings as the label footprints (24 px = 12 m cap, own null)
+      mirror_of: configs/labels/common.yaml#registration
+      values: {max_shift_px: 24}
+    greenhouses: removed before scoring (shared greenhouse rule, section `greenhouses`;
+      nakkhu.labelqa.aligned_osm default)
+    geometry: oriented envelope (minimum rotated rectangle) of each aligned OSM polygon
+    wording: every R-OSM number is reported as "against OSM" (OSM completeness unknown)
+    primary_subset: all tiles of the scored region
+    sensitivity_subset: tiles whose OSM registration succeeded (reg_ok)
+    osm_as_inventory: OSM is scored only against R-AUD, never against R-OSM (plan 007)
+  r_aud:
+    what: yes/no audit (plan 006); design-weighted estimators, Wilson 95 % intervals. Sitting 1
+      was answered by one teammate (teammate_1), sitting 1b and sittings 2-3 by the author
+      (section audit_recall)
+    greenhouse: a greenhouse is answered No (not a building; instruction card)
+    estimates: computed only after this prereg is frozen; every estimate is a journalled test
+      access
+  overture: descriptive baseline only (a conflation of OSM, Google and Microsoft here); never a
+    reference, never an audit stratum, never in a falsifier
+
+# --- matching and metrics (plan 005 Step 3) -------------------------------------------------
+matching:
+  iou: rotated-polygon IoU (shapely polygons)
+  rule: greedy by confidence (COCO); predictions in descending confidence each take the
+    unmatched reference of highest IoU >= threshold; one-to-one
+  iou_primary: 0.5
+  iou_secondary: 0.3
+  region_membership: object centroid in the scored region; matching over objects with
+    centroid within the region buffered by region_margin_m
+  region_margin_m: 20.0
+  units: plan 003 train-grid tile (count errors) and its block (bootstrap), by centroid
+  ap: COCO 101-point interpolated AP; AP50 and AP50:95 (IoU 0.50:0.05:0.95), threshold-free
+
+conf_threshold:
+  rule: per model, the confidence cut maximising F1 against aligned OSM on val tiles
+  iou: 0.5
+  ties: higher threshold
+  frozen: chosen once per model on val before its test scoring (`--threshold-from`)
+  fixed_inventories: Google v3 >= t90 cut primary, uncut sensitivity; Microsoft uncut (no
+    score); scored as-is (`--fixed`); Overture descriptive only
+
+detection_postprocess:
+  mirror_of: configs/tiling.yaml#georef
+  values: {dedup_iou: 0.3, min_area_m2: 9.0, max_area_m2: null}
+  rule: centre ownership over the 512 px tile cores, then greedy rotated-IoU NMS across tiles
+    at dedup_iou; OBB area filter in m2 (min = label filter obb.min_area_m2; no max)
+
+metrics:
+  primary:
+    - F1, precision, recall at IoU 0.5 and the frozen threshold, against OSM
+    - AP50 and AP50:95 against OSM
+    - per-tile count MAE and bias against OSM
+    - R-AUD precision and recall (plan 006 estimators)
+  secondary:
+    - the same at IoU 0.3
+
+uncertainty:
+  block_bootstrap:
+    unit: block
+    n_resamples: 2000
+    seed: 0
+    level: 0.95
+    interval: percentile
+    estimator: ratio of resampled block sums (TP, counts), AP recomputed with block weights
+    paired: model differences on the same resamples
+  seeds: mean and sample SD (ddof 1) over the seed list
+  proportions: Wilson 95 % interval
+  secondary_test: two-sided Wilcoxon signed-rank on per-block F1 (IoU 0.5)
+  language: no significance language beyond these intervals and this test
+
+# --- labels (plan 004) ----------------------------------------------------------------------
+labels:
+  convention: split per-house units (Google), decided from data on train tiles
+  arms:
+    L1: Google v3 confidence >= t90
+    L2: Microsoft only
+    L3: union (L1 + Microsoft instances matching no L1 instance)
+    L4: Google v3 instances (all) matching >= 1 Microsoft instance; Google geometry
+    L5: split + drop lone (agree -> keep, Google geometry; split/merge/complex conflict ->
+      Google per-house units; lone Google >= t90 -> keep; lone Google < t90 and lone Microsoft
+      -> drop)
+    L6: L5 + SAM2 box-prompt refinement; the SAM2 mask geometry replaces the registered
+      footprint where mask/footprint IoU >= sam2.min_mask_iou (0.5); otherwise the registered
+      footprint is kept (not ignored)
+    L7: L6 + tile quality gate. The admit fraction was chosen on val-split tiles only (pooled
+      L6 F1 vs aligned, greenhouse-free OSM as rotated rectangles, IoU 0.5, over
+      admit_candidates) and resolved to 1.0, so L7 = L6. This is a frozen fact, not retuned.
+    L8: L7 + one self-training round (add conf = 90 % precision vs OSM on val; drop footprint
+      labels without a detection >= 0.1); one round only
+  L5_rule:
+    mirror_of: configs/labels/L5.yaml#rule
+    values: consensus
+  google_fallback_thresholds:
+    mirror_of: configs/labels/common.yaml#fallback_thresholds
+    values: {t80: 0.75, t85: 0.75, t90: 0.75}
+  match:
+    mirror_of: configs/labels/common.yaml#match
+    values: {iou_min: 0.3, contain_min: 0.5}
+  registration:
+    mirror_of: configs/labels/common.yaml#registration
+    values:
+      max_shift_px: 24
+      sigma_px: 1.0
+      exclusion_px: 4
+      min_peak_ratio: {null_quantile: 0.95, null_pairs: 600, seed: 0}
+  obb:
+    mirror_of: configs/labels/common.yaml#obb
+    values: {min_area_m2: 9.0, min_inside_frac: 0.5, min_rectangularity: 0.6,
+             max_ignore_frac: 0.15}
+  sam2:
+    mirror_of: configs/labels/common.yaml#sam2
+    values: {model: facebook/sam2.1-hiera-small, box_dilate_m: 2.0, min_mask_iou: 0.5,
+             mask_threshold: 0.0}
+  split_section:
+    mirror_of: configs/labels/common.yaml#split
+    values: {file: configs/splits/split_v1.yaml, train: train, val: val}
+  greenhouse_filter:
+    mirror_of: configs/labels/common.yaml#greenhouse_filter
+    values: {pbf: "{data_root}/raw/fp_osm/source/nepal-261003.osm.pbf", iou_min: 0.3,
+             bbox_pad_deg: 0.005}
+  gate:
+    mirror_of: configs/labels/common.yaml#gate
+    values:
+      features: {peak_ratio: higher, mean_iou: higher, conflict_frac: lower,
+                 sam2_mean_iou: higher, valid_frac: higher}
+      admit_candidates: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+      admit_iou: 0.5
+      admit_fraction: 1
+  gate_score: unweighted mean of per-feature percentile ranks (no learning)
+
+# --- greenhouses (Decisions 2026-10-05: greenhouses are not buildings) ----------------------
+greenhouses:
+  rule: OSM greenhouse areas (tags below) from the fp_osm PBF; a footprint overlapping one
+    (IoU >= 0.3 with any greenhouse, or centroid inside) is dropped. Applies to every label arm,
+    to the aligned-OSM reference (R-OSM, G1, set-point) and to every exposure count (plan 008).
+    Untagged greenhouses remain a reported limitation
+  tags:
+    constant_of: nakkhu.reference.greenhouse:GREENHOUSE_TAGS
+    values:
+      building: [greenhouse, glasshouse]
+      landuse: [greenhouse_horticulture, greenhouse]
+      "disused:building": [greenhouse]
+      "abandoned:building": [greenhouse]
+  iou_min:
+    constant_of: nakkhu.reference.greenhouse:DEFAULT_IOU
+    values: 0.3
+  exposure:
+    mirror_of: configs/hand/sweep.yaml#greenhouse_filter
+    values: {enabled: true, pbf: "{data_root}/raw/fp_osm/source/nepal-261003.osm.pbf",
+             iou_min: 0.3, bbox_pad_deg: 0.005}
+  osm_pbf:
+    sha256_of: "{data_root}/raw/fp_osm/source/nepal-261003.osm.pbf"
+    sha256: 36d6142de5e554b32bc7250289dd17b4fc6f98ef52b4d2bf205c7953d1224ea1
+  osm_reference:
+    sha256_of: "{data_root}/raw/fp_osm/fp_osm.parquet"
+    sha256: 7e76a19d0059a66c30ef159e76122193e4409d037483963de1d3d3f22eef82d1
+
+# --- HAND (plan 008) ------------------------------------------------------------------------
+hand:
+  primary_run: hand/20261005T191856Z-b3228d98 (`nakkhu hand run`; primary identical to sweep
+    hand/20261005T191226Z-dc9658f5), burn lines with 11 Nakkhu/Bagmati ways (OSM way 591536939
+    added, orchestrator log 2026-10-06); HAND inside the extent unchanged on all 63 surfaces
+  primary:
+    mirror_of: configs/hand/sweep.yaml#primary
+    values: {dem: glo30, conditioning: breach_burn, threshold: drop, threshold_km2: 0.2,
+             statistic: centroid}
+  conditioning:
+    mirror_of: configs/hand/sweep.yaml#conditioning.breach_burn
+    values: {method: breach, burn: true}
+  breach:
+    mirror_of: configs/hand/sweep.yaml#breach
+    values: {max_dist_cells: 100}
+  drop_analysis:
+    mirror_of: configs/hand/sweep.yaml#drop_analysis
+    values:
+      candidates_km2: [0.05, 0.075, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.75, 1, 1.5, 2, 3, 4, 5]
+      t_critical: 2.0
+  burn:
+    mirror_of: configs/hand/sweep.yaml#burn
+    values:
+      depth_m: 60
+      all_touched: true
+      lines: [configs/aoi/osm_nakkhu_bagmati_lines.geojson, configs/aoi/osm_waterways_rivers.json]
+  line_files:
+    nakkhu_bagmati_lines:
+      sha256_of: configs/aoi/osm_nakkhu_bagmati_lines.geojson
+      sha256: 86dbc6ce9513fb1f99974fbbcc8c7402bf89b40c469b58700ba905d70f7476ec
+    waterways_rivers:
+      sha256_of: configs/aoi/osm_waterways_rivers.json
+      sha256: 4dc9a7f9e2ff8240f508937085926ad90520caa081203c4b5d56adbcfad49356
+  aoi_files:
+    analysis_extent:
+      sha256_of: configs/aoi/aoi_recommended_analysis_extent.geojson
+      sha256: 1c02298a5f2242d5109d31931f6b4fecfcf922d589b01695a779bfef72517de7
+    routing_domain:
+      sha256_of: configs/aoi/routing_domain_upper_bagmati_glo30.geojson
+      sha256: 82d5be4f5ee1afa8846ae5ea2d6d0375ca5b57d6e283996c5839724103d66d56
+    reference_catchment:
+      sha256_of: configs/aoi/catchment_c4_glo30_osm_burned.geojson
+      sha256: 0bae9194bfd7cb351028a49ab60d31cb33625d3c0b3aaba7064de14408dbd08e
+  routing_gate:
+    mirror_of: configs/hand/sweep.yaml#routing_gate
+    values: {min_channel_share: 0.99, max_catchment_rel_diff: 0.1,
+             reference_catchment: configs/aoi/catchment_c4_glo30_osm_burned.geojson}
+    rule: a DEM x conditioning passes if >= 99 % of the Nakkhu channel band lies in its
+      catchment and the catchment area is within 10 % of the reference c4 catchment
+      (55.82 km2); failing surfaces are reported in the supplement, flagged and excluded from
+      sensitivity ranges
+  tiers:
+    mirror_of: configs/hand/sweep.yaml#tiers_m
+    values: [0, 3, 6, 9, 12]
+    lead: fixed tiers (on drainage, 0-3, 3-6, 6-9, 9-12, > 12 m); event-calibrated H6 second
+  sensitivity: footprint minimum, footprint + 10 m and every other routing-gate-passing surface
+  h6_classes: P(affected | HAND) >= 0.5, 0.25-0.5, 0.1-0.25, < 0.1 (plan 009 Step 9), fitted in
+    spatial-block CV
+
+exposure_baseline:
+  microsoft: main inventory (prereg v8; falsifiers.C5.outcome) - every Microsoft polygon with
+    centroid in the extent, greenhouses removed, uncut (no score), the units of its HAND table
+  count_unit: exposure is counted in real objects (Microsoft polygons, detector boxes);
+    recall-frame point totals are reported only as upper bounds (uncertainty_propagation.count_units)
+  google_v3: "t90 (>= 90 %-precision) confidence cut primary; uncut reported as sensitivity"
+  greenhouses: excluded from every inventory's exposure counts (section `greenhouses`)
+  overture: descriptive row only
+
+# --- audit (plan 006): configs/audit/audit.yaml is mirrored ---------------------------------
+# Every key is mirrored except two that are filled or measured later without changing the
+# design: tasks.precision_pool.runs (plan 007 detection runs with their frozen val thresholds)
+# and tasks.flood_trace.time_factor (set from sitting-3 timing). tasks.recall_points.sources is
+# left out because Overture may not be a stratum (rule below) and the live file still lists it.
+audit:
+  overture_rule: Overture is never an audit stratum. recall_points strata are membership
+    patterns of Google, Microsoft and OSM only; an Overture-only point is not a unit
+  config:
+    mirror_of: configs/audit/audit.yaml
+    values:
+      schema_version: 1
+      seed: 0
+      region: analysis_extent
+      channel_lines: [configs/aoi/osm_nakkhu_bagmati_lines.geojson]
+      scenes:
+        pre: maxar_wv02_20240113
+        post: [maxar_ge01_20241006_0600, maxar_ge01_20241006_0500]
+        oam: [oam_dukuchhap_1, oam_dukuchhap_2, oam_dukuchhap_3]
+      chips: {context_m: 64.0, upscale: 2, jpeg_quality: 90, crosshair_gap_px: 7, crosshair_arm_px: 26,
+        prefetch: 10, examples: 3}
+      time: {cap_min: 120, sitting_max_min: 35, sitting_budget_min: 30, pilot_items: 40, floor_per_task: 150,
+        repeat_frac: 0.05, repeat_min_gap: 20}
+      registration: {footprints: labels/registration_shifts.csv, osm: labels/osm_registration_shifts.csv}
+      tasks:
+        recall_points:
+          sitting: 1
+          auditor: teammate_1
+          question: Is the crosshair on a building roof?
+          keys: {'yes': 'Yes', 'no': 'No', unsure: Unsure}
+          dedup_m: 3.0
+          membership_tol_m: 1.0
+          design_n: 300
+          min_per_stratum: 10
+          outside_n: 50
+          outside_buffer_m: 5.0
+        recall_nearmiss:
+          sitting: 1b
+          auditor: author
+          parent: recall_points
+          question: Is there a building roof within the circle?
+          keys: {'yes': 'Yes', 'no': 'No', unsure: Unsure}
+          include_answers: ['no', unsure]
+          exclude_strata: [outside]
+          overlap_n: 20
+          radius_m: 8.0
+          sensitivity_radius_m: 4.0
+          mark_gap_px: 3
+          mark_arm_px: 8
+        precision_pool:
+          sitting: 2
+          auditor: author
+          question: Does the box mark a real building or attached building block?
+          keys: {'yes': 'Yes', 'no': 'No', unsure: Unsure}
+          cluster_iou: 0.5
+          run_share_bands: [0.0, 0.34, 0.67, 1.0]
+          channel_bands_m: [0, 100, 300, .inf]
+          design_n: 300
+          min_per_stratum: 10
+        precision_microsoft:
+          sitting: 2
+          auditor: author
+          question: Does the outline mark a real building or attached building block?
+          keys: {'yes': 'Yes', 'no': 'No', unsure: Unsure}
+          inventory: microsoft
+          agree_with: detector_final
+          channel_bands_m: [0, 100, 300, .inf]
+          design_n: 150
+          min_per_stratum: 10
+        flood_trace:
+          sitting: 3
+          auditor: author
+          question: Fresh water, mud or debris touching this building that is absent before?
+          keys: {'yes': 'Yes', 'no': 'No', unsure: Not observable}
+          inventory: microsoft
+          change_map: artifacts/flood/change_map_buildings_{inventory}.parquet
+          change_map_meta: artifacts/flood/change_map_buildings_{inventory}.json
+          near_channel_m: 300
+          design_n: 300
+          min_per_stratum: 10
+          rebalance: {stratum: positive, n: 100, from: negative_far}
+          followup: damage
+        damage:
+          sitting: 3
+          auditor: author
+          parent: flood_trace
+          question: Visible structural damage (collapse, missing wall or roof)?
+          keys: {'yes': 'Yes', 'no': 'No', unsure: Unsure}
+
+# --- recall audit protocol (plan 006 sitting 1b; prereg v4) ---------------------------------
+audit_recall:
+  why: a sitting-1 point is a footprint's representative point. On test tiles where the
+    Google/Microsoft footprints did not register (71 of 180) they keep an offset of metres, so a
+    real building's point often lands beside its roof (stratum GMO, in all three sources, 46 of 64
+    Yes in sitting 1). Sitting-1 recall and building-existence estimates are biased low. Fixed
+    before any sitting-1b answer and before any recall estimate (none has been run)
+  auditors: sitting 1 (recall_points) = teammate_1, one teammate, not the author; sitting 1b
+    (recall_nearmiss) and sittings 2-3 = author. Set in audit.yaml (tasks.<task>.auditor) and
+    written into every response event (sitting-1 events via an appended `auditor` event of the
+    same sitting); every estimate carries the auditors and refuses if a task's logged auditor
+    differs from audit.yaml. The 120 min cap counts author time only
+  sitting_1b:
+    items: every sitting-1 primary item whose effective answer (undo honoured) is No or Unsure
+      in a footprint-derived stratum (not `outside`), 136 items; plus a seeded simple random
+      sample of 20 sitting-1 primary items (any answer, any stratum, overlap_n) asked the
+      original question; 156 items in one seeded random order with opaque ids; no repeats
+    question: '"Is there a building roof within the circle?" on the sitting-1 view (same chip
+      geometry and imagery) with a circle of radius R around a small centre mark; Yes needs a click
+      on that roof inside the circle (the one nearest the centre if several); the offset east and
+      north and the distance in metres are logged; a click outside the circle is refused. Keys
+      Yes / No / Unsure'
+    overlap: the sitting-1 question and crosshair chip, unchanged
+  radius:
+    r_m: 8.0
+    rule: 95th percentile of the Google/Microsoft footprint registration shift magnitude over the
+      109 registered test-region tiles (7.91 m, plan 004 promoted shifts), rounded up to 0.5 m.
+      The shift found where registration succeeds is the offset that unregistered tiles keep. No
+      audit answer was used. Robustness, all 739 registered tiles 7.65 m, train tiles only 7.21 m
+    cap: R stays below the median nearest-neighbour spacing of Google split-unit points in the
+      extent (8.24 m; Microsoft 13.78 m, OSM 12.89 m), so the circle does not typically reach the
+      next unit's centre. In contiguous row-house blocks (69 % of Google units touch another
+      footprint) a circle of any useful radius also holds attached neighbours; that is reported as
+      a limitation together with the sensitivity radius
+    sensitivity_r_m: 4.0
+    sensitivity_rule: median of the same shift distribution (3.81 m) rounded up to 0.5 m, applied
+      to the logged click distances
+  estimators:
+    primary: protocol v2. A sitting-1 unit is Yes (a building) if its sitting-1 answer is Yes, or
+      if that answer is No/Unsure and its near-miss answer is Yes with click distance <= r_m; No if
+      the near-miss answer is No (or a Yes clicked beyond r_m); Unsure if it is Unsure. outside
+      items keep their sitting-1 answer. Roof share, the Horvitz-Thompson total of building units,
+      source completeness and point precision and model recall use these answers with the plan 006
+      design weights, Wilson per stratum and the Rao-Wu stratified bootstrap
+    model_recall_point: a near-miss Yes unit is tested for detection membership (1 m OBB
+      tolerance) at its clicked roof point; every other unit at its own point
+    secondary: protocol v1 = sitting-1 answers only, same estimators
+    unsure: excluded and counted in both protocols (as before); bounds for both with every
+      Unsure coded Yes and with every Unsure coded No
+    sensitivity: protocol v2 at sensitivity_r_m
+    agreement: inter-rater Cohen's kappa and raw agreement, over the three answers and over pairs
+      without Unsure, between teammate_1 (sitting 1) and the author (the 20 overlap items);
+      self-agreement of teammate_1 on the 18 sitting-1 repeats, same statistics. Reported, not
+      gating
+    order: estimates only after sittings 1 and 1b are complete (`nakkhu audit estimate --task
+      recall_points` refuses otherwise and reports v1 and v2 together); a journalled test access
+  files:
+    recall_points_items:
+      sha256_of: audit/recall_points/items.parquet
+      sha256: e677367bd652cd9fbc755d98a6020fed57ead23c5ffcb5b7d11b761f5ccb26cf
+    recall_points_responses:
+      sha256_of: audit/recall_points/responses.jsonl
+      sha256: cd0579773a664ce02db473f411c9423f5ce1a1c2055ef3363fe0cbb7b56336ae
+    allocation:
+      sha256_of: audit/allocation.yaml
+      sha256: 9b51db02c9cdfc6a2068ed5707918722a05d8f2a41e10ed1a4f41ba09ea9b0fb
+    recall_nearmiss_items:
+      sha256_of: audit/recall_nearmiss/items.parquet
+      sha256: e024cd0c316513e747d68ea8045944c45beabe09c0965ea6b2b5fe6d6a8947d8
+    registration_footprints:
+      sha256_of: artifacts/labels/registration_shifts.csv
+      sha256: 5132e5ea29bc2ee770b288cf0a33d5a2fc8855afa2359072752531114fd9eb58
+    recall_nearmiss_responses:              # v5: sitting 1b complete (156 of 156 answered)
+      sha256_of: audit/recall_nearmiss/responses.jsonl
+      sha256: 642dffd082a50bbb1329c4e7b6c94df82ba7dbabb3083d728481173d810092a7
+
+# --- change map (plan 009; prereg v3) ------------------------------------------------------
+change_map:
+  config:
+    sha256_of: configs/flood/change.yaml     # pins every value below
+    sha256: e720af6c25a1cb48be8dc5f3a0b1c140d487e69e03ba833c983ead0fcf8da5a0
+  signs:
+    mirror_of: configs/flood/change.yaml#score
+    values:
+      flood: {ring_d_brightness: 1, ring_d_saturation: -1, ring_d_sediment: 1, ring_d_texture: 1, s2_d_mndwi: 1,
+        s2_d_bsi: 1, s2_d_ndvi: -1}
+      damage: {roof_d_brightness: abs, roof_d_texture: 1}
+      required: [ring_d_brightness, ring_d_saturation, ring_d_sediment, ring_d_texture]
+      gmm:
+        components: 2
+        init_quantiles: [0.25, 0.75]
+        max_iter: 1000
+        tol: 1.0e-10
+  scoring: features are post - pre medians over usable ring / roof pixels (S2 3 x 3 mean at the
+    centroid, 1 Oct - 23 Sep); robust z per feature and strip, (x - median) / (1.4826 MAD) over
+    the buildings observable in that strip; signed z (abs = z of |x|); score = mean of the
+    available signed z (the four ring features required, S2 optional)
+  classes: positive if score > the upper posterior-0.5 point of the larger-weight component of a
+    2-component 1-D Gaussian mixture (EM, deterministic quantile start) fitted on the observable
+    scores; else negative; not_observable is its own class, never negative; damage_class is
+    evidence only, never a reference (V2 uses the audit damage answers)
+  strips:
+    order: [GE01 0600, GE01 0500]            # first observable strip per building
+    gate: a strip whose held-back median co-registration residual exceeds 1 px is not used in
+      the primary; its gap-fill buildings are not_observable there. Outcome on this data (run
+      flood/20261005T203600Z-8cc5612b) 0600 passes (0.38 px), 0500 fails (1.03 px) -> primary =
+      0600 only; the both-strip result (*_all_strips) is reported as a sensitivity
+    coregistration:
+      mirror_of: configs/flood/change.yaml#coregistration
+      values:
+        {block_m: 1000, holdout_offset_m: 500, max_shift_px: 40, min_ground_frac: 0.05, min_peak_ratio: 1.5,
+          footprint_buffer_m: 2.0, verify_max_median_px: 1.0, gate: true}
+  observable: no cloud / shadow cell and only valid post pixels within 6 m of the footprint, and
+    >= 8 usable ground-ring pixels
+  mask:
+    mirror_of: configs/flood/change.yaml#mask
+    values:
+      agg_px: 8
+      cloud: {bright_min: 200, sat_max: 0.12, pre_bright_max: 170, min_area_m2: 1000, grow_delta_min: 25,
+        grow_sat_max: 0.2}
+      shadow: {ratio_max: 0.6, bright_max: 60, sat_max: 0.25, min_area_m2: 2500}
+      dilate_m: 12
+      pixel_dark_max: 30
+  normalise:
+    mirror_of: configs/flood/change.yaml#normalise
+    values: {method: histogram_match, bins: 256}
+  buildings:
+    mirror_of: configs/flood/change.yaml#buildings
+    values: {ring_m: [1.0, 6.0], min_ring_px: 8, observable_buffer_m: 6.0,
+             ground_mask_from: [google_v3_uncut, microsoft, osm],
+             primary_inventory: microsoft,
+             audit_inventories: [microsoft, detector_final, google_v3]}
+  sentinel2:
+    mirror_of: configs/flood/change.yaml#sentinel2
+    values:
+      pre: '{data_root}/raw/s2_l2a_45RUL/2024-09-23'
+      post: '{data_root}/raw/s2_l2a_45RUL/2024-10-01'
+      scl_unusable: [0, 1, 3, 8, 9, 10]
+      window_px: 3
+      min_clear_px: 5
+  features:
+    constant_of: nakkhu.flood.features:PIXEL_FEATURES
+    values: [brightness, saturation, sediment, texture]
+  inventory: primary = Microsoft footprints (prereg v8, the v7 C5 fallback; falsifiers.C5.outcome)
+    for sitting 3 and the headline V-metrics; detector_final (the final detector, prereg rule) =
+    secondary inventory; Google v3 t90 cut = comparison; Google uncut and OSM = by-inventory
+    sensitivity (D4). primary_inventory and audit_inventories only label and promote outputs; no
+    computed value depends on them
+  detector_final_map: the detector_final change map stays as built under v7
+    (change_map_sha256 93c29513aec3bae828580ebf52370b988889cb1f99654c15aaea0a6296ed907b, run
+    flood/20261012T194555Z-f8829570); it is not rebuilt or re-promoted under v8
+  hashes: the sitting-3 sample records the inventory id, change_map_sha256, inventory_sha256 and
+    buildings_sha256 of change_map_buildings_<inv>.json; audit serve / estimate and flood
+    validate refuse if any differs
+  forbidden_inputs: HAND, any DEM, channel lines or distances, audit answers
+  drop_rule: the change map is not used as a reference (V3 runs on audited items only) if the
+    Wilson 95 % lower bound of its audited precision (PPV) is < 0.5
+audit_flood_trace:
+  mirror_of: configs/audit/audit.yaml#tasks.flood_trace
+  values: {inventory: microsoft,
+           change_map: "artifacts/flood/change_map_buildings_{inventory}.parquet",
+           change_map_meta: "artifacts/flood/change_map_buildings_{inventory}.json",
+           near_channel_m: 300, design_n: 300, min_per_stratum: 10,
+           rebalance: {stratum: positive, n: 100, from: negative_far}}
+  rule: sqrt(N_h) allocation (min 10), then the positive stratum is raised to 100 (or all of it)
+    by taking items from negative_far; total 300 (dry run on Google cut 100 / 118 / 82)
+  redraw: prereg v8 - drawn on the Microsoft change map (the main inventory); the earlier draw on
+    detector_final (items sha256 0cf83866b1f201c0ef606a1a82eb393f7ae338a3efda04fe7e75b94c89633268,
+    run audit/20261012T195240Z-5dbdead4) was never answered and is replaced (`audit sample
+    --replace` refuses once an answer exists); same design and allocation entry (280 active items
+    + 14 repeats)
+audit_precision_microsoft:
+  mirror_of: configs/audit/audit.yaml#tasks.precision_microsoft
+  values: {inventory: microsoft, agree_with: detector_final, channel_bands_m: [0, 100, 300, .inf],
+           design_n: 150, min_per_stratum: 10}
+  why: prereg v8 - the precision of a Microsoft polygon is the precision of the unit counted in
+    Microsoft exposure; sitting 1 gives only the point precision of Microsoft (in_microsoft)
+  units: the Microsoft exposure units (nakkhu.hydro.sweep.load_inventory "microsoft" - centroid in
+    the extent, greenhouses removed; the ids of its HAND table and D_t), each shown moved by the
+    joint Google/Microsoft footprint registration shift (labels/registration_shifts.csv); the
+    unmoved centroid is the unit's HAND point
+  strata: agree (a detector_final box centroid lies inside the moved polygon) or ms_only, x the
+    channel bands [0, 100, 300, inf) m of the moved polygon centroid; sqrt(N_h) allocation, at
+    least 10 per stratum, 150 items; its own sampling stream (task index 3, appended, so no
+    earlier sample moves)
+  size: absent from the pinned audit/allocation.yaml, so all 150 design items are asked, plus
+    ceil(0.05 x 150) = 8 self-agreement repeats; sitting 2 with precision_pool, author
+  question: '"Does the outline mark a real building or attached building block?" The card adds
+    that an outline shifted a few metres that clearly belongs to one building or block is Yes
+    (71 of the 180 test tiles have unregistered footprints). Yes / No / Unsure; Unsure excluded
+    and counted, bounds with every Unsure coded Yes and coded No'
+  estimate: design-weighted (HT) share of Yes overall and per stratum with Rao-Wu stratified
+    bootstrap 95 % CIs (2000, seed 0) and a per-stratum Wilson table (`nakkhu audit estimate
+    --task precision_microsoft`), once, after the task is complete; a journalled test access
+
+# --- final detector (plan 007; prereg v5) --------------------------------------------------
+detector_selection:
+  arm: L5 = best of L5-L8 by seed-mean (seeds 0-2) val F1@0.5 against aligned OSM (L5 0.190;
+    L6 = L7 0.141; L8 deferred, decision log 2026-10-06). Best single source for C1 = L1 (0.162;
+    L2 0.062). Chosen on val only
+  model_rule: among the Phase B models trained on L5 (YOLO11n-OBB, YOLOv8n-OBB, YOLO11s-OBB,
+    YOLO11s-HBB; RTMDet-R-s not run, plan 007 fallback) the final model has the highest
+    seed-mean (seeds 0-2) val F1@0.5 against aligned OSM; ties -> fewer parameters. Never
+    revisited on test
+  outcome: L5 + YOLO11n-OBB (0.190 vs 0.183 YOLOv8n-OBB, 0.180 YOLO11s-OBB, 0.153 YOLO11s-HBB;
+    lead about one seed SD, so "no better baseline" is the claim), decision log 2026-10-12
+  source:
+    sha256_of: runs/detector/20261012T165333Z-c913b69d/val_seed_summary.csv
+    sha256: 097890f4c356736f988c024a7c1daa12d092edd23267b43a6babdb3633abdb9b
+detector_final:
+  members: the five units train/L5/yolo11n-obb/seed0..seed4 (seeds.values.final), WV02
+    test-region inference (plan 003 overlap tiling, detection_postprocess), each seed's boxes at
+    conf >= its own val F1-max threshold (conf_threshold; its own val eval)
+  clustering: plan 007 rule (nakkhu.ensemble, set on val only) - greedy, at most one box per
+    seed per cluster; boxes visited in descending confidence join the open cluster whose anchor
+    (its first, highest-confidence box) has the highest rotated IoU with them, if that IoU >=
+    0.5 and the cluster has no box of the same seed yet; otherwise they open a new cluster (no
+    single-linkage chaining of row houses)
+  geometry: the cluster medoid (largest summed IoU to the other members; ties higher confidence,
+    then input order), an unmodified detector box
+  score: conf = sum of the member confidences / 5 (an absent seed adds 0) = seeds detecting / 5
+    x their mean confidence; per-seed confidences and n_seeds kept. This is the U1 raw score
+  cut: the ensemble is one model for conf_threshold - its val run (same rule on the val windows)
+    is scored on val and its F1-max threshold (ties higher) is applied to the test-region
+    clusters; detector_final = test-region clusters with conf >= that threshold and centroid in
+    the analysis extent. Model key ensemble:L5/yolo11n-obb/seeds0-1-2-3-4; scored on test once
+    like any detector (detector_comparisons)
+  iou_min:
+    constant_of: nakkhu.ensemble:IOU_MIN
+    values: 0.5
+  file:
+    mirror_of: configs/hand/sweep.yaml#inventories.detector_final
+    values: {path: artifacts/detector/inventory_final.parquet}
+  uses: prereg v8 - the secondary inventory (Microsoft is the main one, falsifiers.C5.outcome) -
+    its flood change map and V-metrics (R1 under the Microsoft-audited drop rule; no R1-aud, no
+    V2), HAND exposure, U1, the U2 primary and the detector_final U3 row; single seeds 0-4 and
+    the ensemble expected count are U2 inventories
+audit_precision_pool:
+  runs: tasks.precision_pool.runs (filled by plans 006/007, not mirrored) is exactly six WV02
+    test-region runs - the five final seed runs and the detector_final ensemble run - each with
+    `threshold_from` the val eval of the same model (so the ensemble run is cut at the
+    detector_final threshold); no other arm, model or inventory. `nakkhu uncertainty check`
+    refuses otherwise
+  units: the plan 006 single-linkage clusters of those runs (cluster_iou 0.5, medoid shown,
+    run-share x channel-band strata); a unit is in the detector_final domain if it holds an
+    ensemble-run box, and in seed k's domain if it holds a box of seed k (the plan 006 per-run
+    precision domain); model recall per run as in plan 006 (1 m OBB tolerance)
+  why: U1 calibrates and U3 corrects detector_final, and the U2 decomposition needs each seed's
+    precision and recall; one pool gives all of them without a second sitting
+  consequence: R-AUD precision and recall exist for detector_final and the five final seeds
+    (seeds 0-2 are the C1 consensus arm L5); the single-source arm L1 and the Phase B baselines
+    have no R-AUD row (falsifiers.C1)
+
+# --- event validation settings (plan 009; prereg v5) ----------------------------------------
+validation:
+  inventory: prereg v8 - Microsoft footprints primary (the v7 C5 fallback); detector_final
+    secondary; Google v3 t90 cut comparison; Google uncut and OSM by-inventory (D4). Every
+    inventory uses the one sitting-3 PPV (audited on Microsoft) and its drop rule; R1-aud and V2
+    exist only for the audited inventory (Microsoft). `flood validate` lists the inventories
+  primary_reference: R1 (gated 0600 change-map class on observable buildings) if the drop rule
+    keeps it, else R1-aud (audited items, design weights); R1-all-strips is a sensitivity and
+    R1-aud is reported next to R1
+  primary_surface: the HAND primary (hand.primary), building centroid; never changed after event
+    skill is seen
+  clusters: plan 005 blocks (artifacts/splits/blocks.geojson, centroid within) for CR1
+    cluster-robust odds-ratio SEs, the trend test, the delta-AUC block bootstrap and the H6 folds
+  blocks:
+    sha256_of: artifacts/splits/blocks.geojson
+    sha256: 702e6bcd93d96c1ad850d89a75959c79890b4745cb19d0933a769744f2428c69
+  level:
+    constant_of: nakkhu.flood.validate:LEVEL
+    values: 0.95
+  cumulative_cuts_m:
+    constant_of: nakkhu.flood.validate:CUTS_M
+    values: [0.0, 3.0, 6.0, 9.0, 12.0]
+  bootstrap: 2000 block resamples, seed 0, percentile (`nakkhu flood validate` defaults)
+  bootstrap_defaults:
+    constant_of: nakkhu.flood.validate:run_validate.__kwdefaults__
+    values: {n_boot: 2000, seed: 0, sweep_config: configs/hand/sweep.yaml}
+  delta_auc_defaults:
+    constant_of: nakkhu.flood.validate:block_bootstrap_delta_auc.__defaults__
+    values: [2000, 0, null]
+  competitors: distance to the OSM Nakkhu/Bagmati lines, GLO-30 elevation, 100 m river buffer,
+    ASF GLO-30 HAND (each lower = more exposed except the buffer indicator); DeLong on R1
+    (unweighted) only; block bootstrap on every reference
+  odds_ratios: logistic on tier dummies, reference > 12 m, tiers without buildings left out;
+    monotone = point ORs non-increasing from the lowest present tier (on drainage) to > 12 m,
+    ties allowed
+  morans_i: k = 8 nearest neighbours, row-standardised, 999 permutations, seed 0, on the
+    trend-model residuals; reported. p_perm < 0.05 is reported as residual autocorrelation beyond
+    the block clustering (a limitation of the OR intervals); C3 uses the block bootstrap anyway
+  morans_defaults:
+    constant_of: nakkhu.flood.validate:morans_i.__defaults__
+    values: [8, 999, 0]
+  v2_damage: binary logistic on HAND only if both classes have >= 10 audited items, else
+    descriptive (Wilson share)
+  v2_defaults:
+    constant_of: nakkhu.flood.validate:damage_model.__defaults__
+    values: [10]
+  h2_h5: ROC-AUC and PR-AUC of every HAND column; ranges only over routing-gate members
+    (in_sensitivity_range, 28 surfaces x 3 statistics); failing surfaces reported, flagged
+  h6:
+    folds: leave-one-block-out over plan 005 blocks (nakkhu.hazard.calibrate_out_of_fold)
+    methods: logistic (Newton-IRLS, l2 1e-6) and isotonic (non-increasing PAV)
+    primary: the method with the lower out-of-fold Brier score on the primary reference; tie ->
+      logistic; both reported
+    classes: likelihood classes on the primary method's out-of-fold P(affected | HAND); Youden-J
+      HAND cut reported; presented as calibrated to one event, never a return-period hazard
+    reliability: 10 equal-count bins
+    likelihood_edges:
+      constant_of: nakkhu.hazard:LIKELIHOOD_EDGES
+      values: [0.1, 0.25, 0.5]
+    logistic_defaults:
+      constant_of: nakkhu.hazard:fit_logistic.__kwdefaults__
+      values: {l2: 1.0e-6, max_iter: 100, tol: 1.0e-10}
+    reliability_defaults:
+      constant_of: nakkhu.flood.validate:reliability.__defaults__
+      values: [10]
+  c3: evaluated once, on Microsoft x the primary reference x the primary surface (prereg v8; v7
+    named detector_final); the other inventories and references are reported, not gating
+
+# --- D5 cross-sensor test (plan 007 Phase D; falsifier C4; prereg v5) ------------------------
+cross_sensor:
+  scene: maxar_wv03_20230404 (WorldView-3, 4 Apr 2023), the plan 003 grid; test-region tiles
+  units: the five detector_final members (L5 + YOLO11n-OBB seeds 0-4), same tiling and
+    detection_postprocess, each at its own WV02 val threshold (no WV03 tuning)
+  reference: OSM registered per tile to the WV03 imagery by the same method and settings as
+    R-OSM (labels/common.yaml#registration, 24 px cap, own null; failing tiles keep shift 0 and
+    are flagged); greenhouse-free, oriented envelopes. Sensitivity - WV02-aligned OSM unchanged
+  tiles: test tiles with WV03 valid fraction >= 0.5; the WV02 F1 of the drop is recomputed on
+    exactly the same tiles
+  metric: F1 at IoU 0.5 per seed; drop = WV02 minus WV03 in percentage points; seed mean and SD
+    over the five seeds; per seed a paired block-bootstrap 95 % CI (2000 resamples, seed 0)
+  pass: seed-mean drop <= 20 percentage points
+  note: WV03 predates WV02 by 9 months (buildings built in between count as misses against the
+    2026 OSM extract); reported, not corrected
+
+# --- detector test scoring and comparisons (plan 007 Step 6; prereg v5) ----------------------
+detector_comparisons:
+  scoring: every Phase A and B unit and every final seed is scored once on test against aligned
+    OSM at its own frozen val threshold, and every D3 inventory as-is (`--fixed`), by the guarded
+    one-shot command (journalled per run); nothing is selected, re-tuned or re-thresholded on test
+  claims: a difference between two models or arms is claimed only under the C1 rule (paired
+    block-bootstrap 95 % CI of the difference above 0 and larger than the larger seed SD);
+    otherwise the rows are reported as ties
+  efficiency: params, GFLOPs and ms per window come from the run manifests (val and test-region
+    inference); reported, never used to select
+
+# --- uncertainty propagation (plan 010; contribution C2; prereg v5; key renamed in v7) -----
+uncertainty_propagation:
+  config:
+    sha256_of: configs/uncertainty/uncertainty.yaml     # pins every value below and the rest
+    sha256: 0eb4d59637e3a2b809c540b00c6fa5e212464f318686901daa92749df612eda5
+  main_inventory:
+    mirror_of: configs/uncertainty/uncertainty.yaml#inputs.main_inventory
+    values: microsoft
+  count_units:
+    rule: prereg v8 (user 2026-10-16) - exposure is counted in real objects (Microsoft polygons,
+      detector boxes). A recall-frame unit is a footprint POINT and one building can carry
+      several (Google / Microsoft / OSM points more than dedup_m apart, Google part splits), so a
+      total over frame points (PPI++ or HT T_g) is reported only as an upper bound on buildings,
+      labelled as such. A ratio of an object count to a point-level recall or completeness
+      (D_t p_g / r_g, the U2 ratio response) mixes units and is a sensitivity row, never primary
+    settings:
+      mirror_of: configs/uncertainty/uncertainty.yaml#u3.count_units
+      values: {precision_only: objects, naive: objects, ensemble_expected: objects,
+               ppi_pp: frame_points, ht: frame_points, ratio: mixed}
+  inputs: Microsoft footprints (main inventory, exposure_baseline.microsoft) with sitting-2
+    precision_microsoft (audit_precision_microsoft); detector_final and its five members
+    (sections above); HAND primary and the 28
+    routing-gate-passing centroid surfaces (84 members with the footprint statistics as
+    sensitivity); audit recall_points + recall_nearmiss (sittings 1 and 1b, pinned in
+    audit_recall.files) and precision_pool (sitting 2, audit_precision_pool); plan 005 blocks
+    (validation.blocks); plan 009 by_inventory.csv for D4
+  answers:
+    mirror_of: configs/uncertainty/uncertainty.yaml#answers
+    values:
+      primary: {protocol: v2, radius_m: 8.0, unsure: excluded}
+      sensitivities:
+        - {name: v1, protocol: v1, unsure: excluded}
+        - {name: v2_r4, protocol: v2, radius_m: 4.0, unsure: excluded}
+        - {name: v2_unsure_yes, protocol: v2, radius_m: 8.0, unsure: as_yes}
+        - {name: v2_unsure_no, protocol: v2, radius_m: 8.0, unsure: as_no}
+      precision_unsure: excluded
+      detection_tolerance_m: 1.0
+  u1:
+    estimand: P(real building | detector_final cluster), calibrated from the ensemble conf (raw
+      score) on the audited sitting-2 units of the detector_final domain with design weights;
+      ensemble expected count = sum of calibrated probabilities over detector_final clusters
+    settings:
+      mirror_of: configs/uncertainty/uncertainty.yaml#u1
+      values: {methods: [temperature, isotonic], weights: design,
+               cross_fit: leave_one_block_out,
+               ece: {bins: 10, binning: equal_count_pooled_out_of_fold, weighted: true},
+               pass_ece_max: 0.1}
+    choose: the method with the lower pooled out-of-fold weighted ECE (tie -> temperature);
+      both reported with Brier and reliability curves
+  u3:
+    inventories: prereg v8 - U3 runs per inventory, microsoft (primary, the main inventory) then
+      detector_final; one tier grouping for both
+    exposure_count: prereg v8 primary - per tier t of the primary surface, the main inventory's
+      objects D_t (Microsoft polygons of its HAND table, by centroid HAND) times their audited
+      polygon precision p_g in the tier group g (precision_microsoft design proportion), with a
+      Rao-Wu percentile 95 % CI over the precision audit (2000, seed 0); the same for
+      detector_final (boxes x detector_final-domain precision, precision_pool) as the secondary
+      inventory; raw D_t (naive) beside both
+    estimand: T_g = real buildings among the recall-frame units (Google v3 / Microsoft / OSM
+      points, de-duplicated, greenhouses removed, `outside` stratum excluded) in tier group g of
+      the primary HAND surface, recall answers coded by protocol v2 (R = 8 m); the outside
+      stratum's Yes share is reported as the not-in-any-source rate, never added. prereg v8 -
+      a total over frame points, reported only as an upper bound on buildings (count_units)
+    primary_estimator: of T_g (an upper bound, see count_units) - PPI++ total lambda F_U + sum_S
+      w (Y - lambda f), per inventory with f = 1 if a detector_final OBB lies within 1 m of the
+      unit's own point, or (Microsoft) if the unit is in_microsoft, F_U = sum of f over the frame
+      group, w = N_h / n_h (answered), lambda = Cov(HT_Y, HT_f) / Var(HT_f) clipped to [0, 1]
+      (stratified design variances), fixed in the bootstrap; Rao-Wu stratified bootstrap 2000,
+      seed 0, percentile 95 %
+    secondary: ratio N_t = D_t p_g / r_g per inventory (precision from sitting 2; recall from
+      sittings 1 + 1b - detector_final at the clicked roof point, Microsoft by in_microsoft at the
+      unit point; independent Rao-Wu replicates of the two audits) - prereg v8 - mixed units, a
+      sensitivity row only; HT (lambda = 0, an upper bound like PPI++); naive D_t;
+      precision-only D_t p_g (the exposure count above); every answer-coding sensitivity
+    pooling: tier groups from answered-unit counts only (min 20 per group;
+      nakkhu.uncertainty.ppi.pool_tiers; v8 - answered = min of recall, detector_final-domain
+      precision and Microsoft polygon precision per tier), fixed before any estimate and used
+      for every estimator, inventory and surface
+    c2: the split-sample check gates on detector_final as frozen (falsifiers.C2); the same check
+      with Microsoft as f is reported beside it (observed and expected miss rate), never gating
+    settings:
+      mirror_of: configs/uncertainty/uncertainty.yaml#u3
+      values:
+        pooling: {min_answered: 20}
+        inventories: [microsoft, detector_final]
+        estimators: {primary: precision_only, secondary: [naive], upper_bound: [ppi_pp, ht],
+                     sensitivity: [ratio]}
+        bootstrap: {method: rao_wu, n_boot: 2000, seed: 0, level: 0.95, interval: percentile}
+        split_sample: {repeats: 1000, seed: 0, unit: stratified_random, min_per_stratum: 2,
+                       secondary_descriptive: [block], estimate_a: ppi_pp, estimate_b: ht,
+                       n_boot: 2000, pass_miss_max: 0.1, gating_inventory: detector_final}
+        simulation: {replicates: 1000, seed: 0, n_boot: 2000, coverage_band: [0.93, 0.97]}
+  u2:
+    primary: prereg v8 - precision-corrected count (seed boxes x their audited precision, D p;
+      unit-consistent) of HAND <= 3 m (on drainage + 0-3) and of every tier, single
+      seed s x HAND surface h (28) x audit replicate b (200 joint Rao-Wu replicates);
+      balanced 3-way ANOVA; first-order and total shares; share CIs by resampling surfaces
+      within DEMs (2000, seed 0). The v7 ratio response D p / r (boxes over a point-level recall)
+      is decomposed the same way as a mixed-unit sensitivity (u2.sensitivity)
+    recall_correction:
+      mirror_of: configs/uncertainty/uncertainty.yaml#u2.primary.recall_correction
+      values: false
+    descriptive: raw tier counts, inventories {detector_final, ensemble expected count, seeds
+      0-4, worst arm L2 seeds 0-2, Google v3 t90, Microsoft, Overture (descriptive), OSM} x 84
+      HAND members; balanced 2-way ANOVA per tier; totals checked constant across HAND members
+    settings:
+      mirror_of: configs/uncertainty/uncertainty.yaml#u2.primary.factors
+      values: {seed: [0, 1, 2, 3, 4], surface: in_sensitivity_range, audit: 200}
+  d4: each u2 descriptive inventory's primary-surface raw tier counts (objects), delta % vs the
+    main inventory Microsoft (prereg v8; v7 - vs detector_final) and event ROC-AUC / PR-AUC (plan
+    009 by_inventory.csv, primary reference); no falsifier
+  d4_baseline:
+    mirror_of: configs/uncertainty/uncertainty.yaml#d4.baseline
+    values: microsoft
+  intervals: the detection interval (U1/U3, primary surface) and the terrain range (U2 spread
+    over surfaces) are reported side by side, never merged
+  access: one `nakkhu uncertainty run` computes U1-U3 and D4 as one journalled test access,
+    after sittings 1, 1b and 2 (precision_pool and precision_microsoft) are complete and detector_final, the HAND tables and plan 009
+    by_inventory.csv exist (`nakkhu uncertainty check` lists what is missing)
+
+# --- falsifiers (research-venue-novelty.md section 3) ---------------------------------------
+falsifiers:
+  C1:
+    statement: consensus labels beat the best single source
+    metric: test F1 at IoU 0.5 against OSM, seed mean (seeds 0-2); also reported at IoU 0.3, and
+      vs R-AUD for the arms in the sitting-2 pool (the consensus arm L5 only - the pool is the
+      five final seeds and detector_final, section audit_precision_pool)
+    arms_compared: best of L5-L8 vs best of L1/L2, each chosen by mean val F1 (never by test)
+    pass: the difference exceeds the block-bootstrap 95 % CI of the difference (paired, CI
+      lower bound > 0) and exceeds the larger seed SD of the two arms
+  G1:
+    statement: the tile gate predicts label quality
+    statistic: Spearman rho(gate score, label quality) on held-out test tiles
+    primary: Spearman rho(gate score, label quality) on held-out test tiles whose OSM
+      registration succeeded (reg_ok); an unaligned reference measures shift, not quality
+      (orchestrator log 2026-10-05)
+    quality: per-tile F1 of the L6 (= L7) labels against aligned, greenhouse-free OSM as
+      rotated rectangles (oriented envelopes), rotated-polygon IoU 0.5; IoU 0.3 reported
+    confirmatory: rho against the audit on test tiles with >= 5 answered recall_points units
+      (outside stratum excluded); audit quality of a tile = design-weighted share of its
+      protocol-v2 Yes units whose point (clicked roof point for near-miss Yes) lies within 1 m of
+      an L6 label OBB
+    pass: primary rho >= 0.3 (a negative rho fails); the confirmatory rho is reported, not gating
+    evaluated: once, with the final gate feature set, after this prereg is frozen; F1 vs
+      rejected fraction also reported
+  C2:
+    ece: calibrated existence probabilities, 10 equal-mass bins, held-out blocks; pass ECE <= 0.1.
+      v5 definition (section uncertainty_propagation.u1) - design-weighted ECE of the chosen method over the
+      pooled leave-one-block-out predictions of the audited sitting-2 units
+    ppi: split-sample miss rate of PPI intervals for audited counts; pass <= 10 %. v5
+      definition (section uncertainty_propagation.u3), v6 - 1000 seeded random halvings of the answered
+      audit units within each audit stratum (the stratified random design the audit was drawn
+      under; nakkhu.uncertainty.ppi.halve); PPI++ on half A, HT on half B, per tier group; a
+      miss is |A - B| > 1.96 sqrt(se_A^2 + se_B^2) (bootstrap SDs); the rate is pooled over
+      groups and valid repeats; pass <= 10 % (unchanged). The simulated expected miss rate (same
+      frozen settings, plug-in population) is reported beside the observed one. The v5 block
+      halving is reported as a descriptive row (observed and expected), not gating, so the
+      spatial-clustering effect stays visible. "A's CI misses B's point" is reported too, with
+      its expected value, but does not gate (it misses well above 10 % even when the intervals
+      are exact)
+    decomposition: terrain vs detector variance in tiers <= 3 m is a finding either way. v5
+      definition (section uncertainty_propagation.u2) - terrain dominates if the first-order share of the
+      HAND surface exceeds the summed shares of seed, audit and seed x audit
+    fails_if: intervals are not computable, or ece or ppi fails
+  C3:
+    statement: event-calibrated HAND beats distance to the channel
+    pass: block-bootstrap 95 % CI of delta AUC (HAND - distance) excludes 0 in HAND's favour
+      (DeLong reported), and tier odds ratios are monotone
+  C4:
+    cross_sensor: F1 drop (WV02 test minus cross-sensor scene, same reference, IoU 0.5) <= 20
+      percentage points; protocol in section cross_sensor (WV03 2023-04-04, five final seeds,
+      seed-mean drop)
+    reruns: tier counts of reruns within seed CIs. v5 definition - three full CPU reruns of
+      detector_final -> HAND attribution -> U3 from the same pinned inputs; pass if every rerun's
+      primary-surface detector_final tier counts lie within the five-seed 95 % interval (mean
+      +- t_0.975,4 SD over the single-seed inventories); exact reproduction is reported
+  C5:
+    statement: if Google v3 or Microsoft match L8 within CIs, report it and adopt footprints as
+      the inventory (research-labels fallback 2). v5 - L8 is deferred (decision log 2026-10-06),
+      so the comparison is with the final model
+    match: test F1 at IoU 0.5 against OSM; Google v3 t90 (and Microsoft) matches if, for at least
+      3 of the 5 final seeds, the paired block-bootstrap 95 % CI of F1(seed) - F1(footprint)
+      includes 0 or lies below 0
+    reported: R-AUD final-model precision / recall vs footprint point precision / completeness
+      (recall_points), D4 tier counts and event AUC; not gating
+    outcome: failed under prereg v7 (journal entry 39, detector/falsifiers:C1,C5, 2026-10-12;
+      artifacts/detector/test_falsifiers.json) - Microsoft matches the final model on 5 of 5
+      seeds, Google v3 t90 on 1 of 5. The fallback (adopt footprints as the inventory) is applied
+      in prereg v8 - Microsoft is the main inventory (user decision 2026-10-16); statement,
+      match rule and reported rows unchanged
+
+# --- test access ----------------------------------------------------------------------------
+test_access:
+  rule: test tiles are scored only by `nakkhu eval --split test` after this file is frozen;
+    every access is journalled in runs/eval/test_journal.jsonl before scoring; a run scored
+    again with a different eval config is flagged
+  order: all Phase A runs exist before any arm is scored on test (plan 007 Step 4)
+  analyses: every analysis that reads test tiles or test-region audit answers is defined in
+    this file and runs after the v5 freeze, each journalled - detector test scoring (C1, C5,
+    detector_comparisons), G1, cross_sensor (C4), audit estimates (recall_points, precision_pool,
+    precision_microsoft (prereg v8), flood_trace, damage), flood validate (V1-V4, H2-H6, C3) and
+    uncertainty run (U1-U3, D4, C2)
+  amendment: prereg v8 amends v7 once (nakkhu prereg freeze --amend), after 42 journalled test
+    accesses and before any audit estimate of precision_pool, precision_microsoft, flood_trace
+    or damage, any flood validate, the uncertainty run and the G1 test run

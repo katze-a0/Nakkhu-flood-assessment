@@ -1,0 +1,6 @@
+# D1 model-size scaling row.
+extends: base.yaml
+model: yolo11s-obb
+task: obb
+weights: yolo11s-obb.pt
+weights_sha256: 43fa63102922e0701501241b307420d24fc55e080816888b18bf8c6f96b1a45a

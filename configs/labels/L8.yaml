@@ -1,0 +1,12 @@
+# L8: L7 + one self-training round (needs the plan 007 L7 model, seed 0, predictions on train
+# tiles and the val conf threshold at 90 % precision against OSM).
+extends: common.yaml
+arm: L8
+rule: consensus
+refine: sam2
+use_gate: true
+selftrain:
+  predictions: null         # path to the L7 seed-0 predictions (detections_px.parquet), plan 007
+  add_conf: null            # conf giving 90 % precision vs OSM on val (computed, plan 007)
+  support_conf: 0.1         # plan: footprint labels with no detection >= this are dropped
+  overlap_iou: 0.0          # an added detection must not overlap any footprint (IoU > this)

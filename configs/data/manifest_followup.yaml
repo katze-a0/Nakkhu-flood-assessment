@@ -1,0 +1,26 @@
+# Data register of plan 014 (prereg_v9_a3 follow-up tests), kept apart from configs/data/manifest.yaml
+# (same schema; check with `uv run nakkhu data verify --manifest configs/data/manifest_followup.yaml`).
+# ref_unosat_fl20240928npl is the P1-8 second reference. Before P1-8 runs it is read only for
+# integrity, CRS and extent (`nakkhu followup prep`); it is never intersected with buildings
+# outside the journalled P1-8 run.
+schema_version: 1
+entries:
+- id: ref_unosat_fl20240928npl
+  title: UNOSAT FL20240928NPL flood layers (HDX package 3996, FL20240928NPL_SHP.zip), incl. Spot-6 30 Sep
+    2024 Kathmandu flood extent, potentially affected buildings and analysis extent
+  url: https://unosat.org/static/unosat_filesystem/3996/FL20240928NPL_SHP.zip
+  access: public
+  licence: CC BY-SA (as listed for the UNOSAT FL20240928NPL dataset on HDX)
+  attribution: 'UNITAR-UNOSAT, FL20240928NPL, Spot-6 imagery 30 Sep 2024 (marked "not yet field validated"
+    by UNOSAT); CC BY-SA'
+  citation: UNITAR-UNOSAT (2024). Flood impact assessment of the capital city of Kathmandu, Bagmati Province,
+    Nepal, as of 30 September 2024 (FL20240928NPL). Humanitarian Data Exchange, https://data.humdata.org/dataset/flood-impact-assessment-of-the-capital-city-of-kathmandu-bagmati-province-nepal-as-of-30-s
+  bytes: 121174575
+  sha256: d4fe146d72d5fab905ad087ac9b08ee2d5fb98596488f3d126983090f28f728b
+  retrieved_utc: '2026-10-17T08:11:17Z'
+  local_path: data/raw/ref_unosat_fl20240928npl/FL20240928NPL_SHP.zip
+  clip: none
+  notes: 'Unmodified zip (server Last-Modified 2024-10-08T10:29:28Z, content-length 121174575; response
+    headers in headers.txt next to it). P1-8 layers: Spot6_20240930_FloodExtent_Kathmandu,
+    Spot6_20240930_PotentiallyAffectedBuilding_Kathmandu, Spot6_20240930_AnalysisExtent_Kathmandu; the
+    S1/S2 provincial layers in the same zip are not used. Members are read from the zip (no extraction).'

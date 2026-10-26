@@ -1,0 +1,5 @@
+# L6: L5 + SAM2 box-prompt refinement (needs the merged SAM2 outputs, see offload/sam2_refine).
+extends: common.yaml
+arm: L6
+rule: consensus
+refine: sam2

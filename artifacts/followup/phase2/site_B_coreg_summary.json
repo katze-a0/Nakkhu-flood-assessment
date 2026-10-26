@@ -1,0 +1,52 @@
+{
+  "blocks": 36,
+  "config_sha256": "2e0cc6bf8c0c82b527dd3f9916665f6476ddaabc7bb648eef1e8cea84ff585fa",
+  "coregistration": {
+    "0600": {
+      "blocks": 36,
+      "blocks_accepted": 21,
+      "held_back": 27,
+      "held_back_accepted": 17,
+      "held_back_median_residual_px": 0.27625920500077855,
+      "median_shift_px": 5.414182141607659,
+      "verify_max_median_px": 1.0,
+      "verify_pass": true
+    }
+  },
+  "inventories": {
+    "google_v3_uncut": {
+      "n_final": 40298,
+      "n_greenhouse_by_centroid": 36,
+      "n_greenhouse_by_iou": 11,
+      "n_greenhouse_removed": 36,
+      "n_in_extent": 40334,
+      "registration": "footprints",
+      "role": "sensitivity"
+    },
+    "microsoft": {
+      "n_final": 13507,
+      "n_greenhouse_by_centroid": 8,
+      "n_greenhouse_by_iou": 1,
+      "n_greenhouse_removed": 8,
+      "n_in_extent": 13515,
+      "registration": "footprints",
+      "role": "primary"
+    },
+    "osm": {
+      "n_final": 11140,
+      "n_greenhouse_by_centroid": 77,
+      "n_greenhouse_by_iou": 77,
+      "n_greenhouse_removed": 77,
+      "n_in_extent": 11217,
+      "registration": "osm",
+      "role": "primary"
+    }
+  },
+  "label_free": "setup, observability masks and co-registration only; no building feature, score or class",
+  "site": "B",
+  "timings_s": {
+    "buildings": 5.1,
+    "coregister": 58.8,
+    "masks": 8.6
+  }
+}

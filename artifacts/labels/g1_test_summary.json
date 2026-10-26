@@ -1,0 +1,31 @@
+{
+  "arm": "L6",
+  "gate_status": "complete",
+  "mode": "test",
+  "note": "G1",
+  "osm_greenhouses_dropped": true,
+  "results": [
+    {
+      "iou": "30",
+      "spearman_rho": 0.10109665565914398,
+      "spearman_rho_osm_reg_ok_False": -0.0022063556369719636,
+      "spearman_rho_osm_reg_ok_True": 0.22180072028811523,
+      "tiles": 174,
+      "tiles_osm_reg_ok_False": 124,
+      "tiles_osm_reg_ok_True": 50
+    },
+    {
+      "iou": "50",
+      "spearman_rho": 0.1342262226130054,
+      "spearman_rho_osm_reg_ok_False": 0.010357100485950817,
+      "spearman_rho_osm_reg_ok_True": 0.322641056422569,
+      "tiles": 174,
+      "tiles_osm_reg_ok_False": 124,
+      "tiles_osm_reg_ok_True": 50
+    }
+  ],
+  "splits": [
+    "test"
+  ],
+  "statistic": "Spearman rho(gate score, label F1 vs aligned OSM)"
+}

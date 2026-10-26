@@ -1,0 +1,24 @@
+# Project-wide settings. Every relative path resolves against the nakkhu/ root.
+schema_version: 1
+
+# Working CRS for all vectors and rasters: WGS 84 / UTM zone 45N.
+crs: EPSG:32645
+
+paths:
+  # Root for downloaded and intermediate data (gitignored). The only setting that may be an
+  # absolute path outside nakkhu/, e.g. --set paths.data_root=E:/nakkhu-data.
+  data_root: data
+  manifest: configs/data/manifest.yaml
+
+# AOI files (promoted from .tmp/data/ by plan 002, Step 1; registered in the data manifest).
+aoi:
+  analysis_extent: configs/aoi/aoi_recommended_analysis_extent.geojson
+  routing_domain: configs/aoi/routing_domain_upper_bagmati_glo30.geojson
+  # Valid-data footprint of the WorldView-2 13 Jan 2024 scene (143.6 km2): training tiles come
+  # from here outside the analysis extent (Decisions 2026-10-05).
+  training_domain: configs/aoi/training_domain_wv02_20240113.geojson
+
+# Seed lists (plan 005): label arms and baselines use `arms`; the final model uses `final`.
+seeds:
+  arms: [0, 1, 2]
+  final: [0, 1, 2, 3, 4]

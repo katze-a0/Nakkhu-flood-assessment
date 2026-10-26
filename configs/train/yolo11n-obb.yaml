@@ -1,0 +1,6 @@
+# Phase A arm model and D1 row (plan 007).
+extends: base.yaml
+model: yolo11n-obb
+task: obb
+weights: yolo11n-obb.pt
+weights_sha256: b62898ebf38940ca4df323863e45ee9d84a1a46d5d11ebdde529fb33aa9f3a32

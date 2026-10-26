@@ -1,0 +1,117 @@
+# Automatic flood-trace and damage change map (plan 009 Steps 1-5; V1). Every relative path
+# resolves against nakkhu/. The change map never reads HAND, a DEM, the river/channel lines or
+# a distance to the channel (plan 009 STOP condition; tests/test_flood.py checks the imports).
+# Values marked PROPOSED go into prereg v2 (plan 009 Outcome) and are not frozen until the user
+# re-freezes configs/prereg.yaml; they were fixed before any feature was computed.
+schema_version: 1
+version: change_v1
+
+region: analysis_extent          # configs/project.yaml `aoi` key (13.34 km2 test region)
+
+# 0.5 m mosaics on the shared plan 003 grid (identical transform and shape, checked at start).
+scenes:
+  pre: {id: maxar_wv02_20240113, mosaic: "{data_root}/interim/mosaic/10300100F5AB8000_0p5m.tif"}
+  post:                         # order = preference per building (0600 first, 0500 fills gaps)
+    - {id: maxar_ge01_20241006_0600, strip: "0600", mosaic: "{data_root}/interim/mosaic/105001003E1F0600_0p5m.tif"}
+    - {id: maxar_ge01_20241006_0500, strip: "0500", mosaic: "{data_root}/interim/mosaic/105001003E1F0500_0p5m.tif"}
+
+# Support: Sentinel-2 L2A tile 45RUL, 1 Oct 2024 (post) minus 23 Sep 2024 (pre). Reflectance =
+# DN * scale + offset from each STAC item (raster:bands).
+sentinel2:
+  pre: "{data_root}/raw/s2_l2a_45RUL/2024-09-23"
+  post: "{data_root}/raw/s2_l2a_45RUL/2024-10-01"
+  scl_unusable: [0, 1, 3, 8, 9, 10]   # no data, saturated, cloud shadow, cloud medium/high, cirrus
+  window_px: 3                        # mean over the 3 x 3 10 m pixels around the building centroid
+  min_clear_px: 5                     # of 9, clear on both dates; else the S2 features are missing
+
+# Step 1: per-block phase correlation of GE01 to WV02 on ground features (footprints masked).
+coregistration:
+  block_m: 1000                 # blocks aligned to the grid origin
+  holdout_offset_m: 500         # held-back verification blocks: same size, shifted by half a block
+  max_shift_px: 40              # |shift| above this is rejected (20 m)
+  min_ground_frac: 0.05         # share of block pixels that are valid, clear ground (5 % = 50,000 m2)
+  min_peak_ratio: 1.5           # correlation peak / best peak outside 5 px of it
+  footprint_buffer_m: 2.0       # footprints (and this margin) are not ground
+  verify_max_median_px: 1.0     # Step 1 verify: median residual on held-back blocks
+  # Gate (coordinator decision 2026-10-06): a strip failing the verify is not used in the
+  # primary classes; its gap-fill buildings are not observable there. The *_all_strips
+  # columns are the sensitivity that keeps every strip.
+  gate: true
+
+# Step 2: observability mask on a 4 m aggregate (mean of 8 x 8 px), per strip.
+mask:
+  agg_px: 8
+  cloud:
+    bright_min: 200             # core: GE01 brightness (mean RGB, raw DN) >= this
+    sat_max: 0.12               #       and saturation (max-min)/max <= this
+    pre_bright_max: 170         #       and WV02 brightness < this (bright in both = bright roof)
+    min_area_m2: 1000           #       connected core area
+    grow_delta_min: 25          # halo: cells connected to a core, matched GE01 - WV02 >= this
+    grow_sat_max: 0.2           #       and matched saturation <= this
+  shadow:
+    ratio_max: 0.6              # matched GE01 brightness <= ratio x WV02 brightness
+    bright_max: 60              #       and <= this (matched DN)
+    sat_max: 0.25               #       and low saturation
+    min_area_m2: 2500           #       connected area (building shadows are smaller)
+  dilate_m: 12
+  pixel_dark_max: 30            # 0.5 m pixels darker than this in either date are not used
+                                # in building features (building shadows; matched DN)
+
+# Step 3: per-band histogram matching of GE01 to WV02 over the whole observable extent of each
+# strip (never restricted by distance to the channel).
+normalise:
+  method: histogram_match
+  bins: 256
+
+# Step 4: buildings. Inventories are loaded exactly as plan 008 does (centroid in the extent,
+# Google v3 t90 cut, OSM greenhouses removed via nakkhu.reference.greenhouse), so building ids
+# match the building HAND tables; geometries are then moved by the plan 004 per-tile
+# registration shifts onto the WV02 imagery.
+buildings:
+  hand_sweep_config: configs/hand/sweep.yaml   # inventory definitions only (no HAND is read)
+  registration:
+    footprints: labels/registration_shifts.csv  # Google + Microsoft (artifacts/)
+    osm: labels/osm_registration_shifts.csv
+  # Inventories scored (`nakkhu flood change --inventory ...` overrides the list). A missing
+  # inventory (detector_final until plan 007 promotes it) is reported as pending and skipped.
+  inventories: [detector_final, google_v3, google_v3_uncut, microsoft, osm]
+  # Primary = Microsoft footprints (prereg v8, plan 013: the prereg v7 C5 fallback, user
+  # 2026-10-16); detector_final = secondary inventory; Google v3 cut = comparison (coordinator
+  # decision 2026-10-06). These two keys only label and promote outputs: no computed value
+  # depends on them. Each audit inventory is promoted as
+  # artifacts/flood/change_map_buildings_<id>.parquet with a change_map_buildings_<id>.json
+  # sidecar (change-map and inventory SHA-256) and points.
+  primary_inventory: microsoft
+  audit_inventories: [microsoft, detector_final, google_v3]
+  ground_mask_from: [google_v3_uncut, microsoft, osm]   # union of their footprints = not ground
+  ring_m: [1.0, 6.0]            # ground ring = footprint buffered 6 m minus buffered 1 m, minus
+                                # every footprint of ground_mask_from
+  min_ring_px: 8                # usable ring pixels (2 m2) for a building to be observable
+  observable_buffer_m: 6.0      # no masked cell and only valid post pixels within this buffer
+
+# Step 4 features (all post - pre). Ring and roof: median over usable pixels of the per-pixel
+# difference. brightness = mean(R, G, B); saturation = (max - min) / max; sediment index =
+# (R - B) / (R + B); texture = std of brightness in 3 x 3 px. Sentinel-2: MNDWI (B03, B11),
+# BSI ((B11 + B04) - (B08 + B02)) / ((B11 + B04) + (B08 + B02)), NDVI (B08, B04).
+# Step 5 score (PROPOSED for prereg v2): robust z per feature and strip, z = (x - median) /
+# (1.4826 MAD) over the buildings observable in that strip; signed z (+1, -1, or "abs" = the
+# z of |x|); score = mean of the available signed z (S2 may be missing); class positive if the
+# score exceeds the 2-component Gaussian-mixture boundary fitted on observable buildings.
+score:
+  flood:
+    ring_d_brightness: 1        # dried silt is paler than the January ground
+    ring_d_saturation: -1       # a silt coat greys painted and vegetated surfaces
+    ring_d_sediment: 1          # brown mud raises red relative to blue
+    ring_d_texture: 1           # debris and deposits roughen the ground
+    s2_d_mndwi: 1               # standing water or wet ground
+    s2_d_bsi: 1                 # bare soil or silt
+    s2_d_ndvi: -1               # vegetation buried or flattened
+  damage:
+    roof_d_brightness: abs      # a changed roof either way
+    roof_d_texture: 1           # broken roofs and rubble are rougher
+  required: [ring_d_brightness, ring_d_saturation, ring_d_sediment, ring_d_texture]
+  gmm:
+    components: 2
+    init_quantiles: [0.25, 0.75]
+    max_iter: 1000
+    tol: 1.0e-10

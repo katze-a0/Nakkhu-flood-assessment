@@ -1,0 +1,43 @@
+{
+  "drop_change_map": false,
+  "estimates_material": {
+    "audit_config": "d8b58d88db2c8bf27ede49e7dff698026ee03f7efce23d6d6561c0a1fe65bb25",
+    "items": "b7fca33fa9bb96cf5bbfea4061afd26652cfdc536fa05601a075b6226d16d190",
+    "n_boot": 2000,
+    "redo": {
+      "flood_trace": {
+        "archive": "responses_pass1.jsonl",
+        "archive_sha256": "115e0f1dc8ae2ca51c975e8349521f6557a5ea355431f0855389cf70ef54f42a",
+        "mode": "restart",
+        "prior_answer_shown": false,
+        "reason": "pass 1 void: damage criterion misapplied; drone panel mislabelled pre-flood imagery",
+        "restart_of": "pass1"
+      }
+    },
+    "responses": "b91606922289cae74149585952f70464663156af46adbec52f5b5fc38f95d51a",
+    "task": "flood_trace"
+  },
+  "inventory": "microsoft",
+  "not_observable": 16,
+  "npv": {
+    "ci_hi": 0.9749869046224198,
+    "ci_lo": 0.9143157798603542,
+    "estimate": 0.9472787845859375,
+    "n": 173
+  },
+  "ppv": {
+    "estimate": 0.8571428571428571,
+    "n": 91,
+    "wilson_hi": 0.9145724186345122,
+    "wilson_lo": 0.7707818642734304,
+    "yes": 78
+  },
+  "r1_used": true,
+  "rule": "R1 is not used if the Wilson 95 % lower bound of the audited PPV is < 0.5 (prereg change_map.drop_rule); V3 then runs on R1-aud only",
+  "sample_hashes": {
+    "buildings_sha256": "ec262ded643129be6199d09472928be6c29753c0cd3f60795ec74f7e424f11ef",
+    "change_map_file_sha256": "027e57fe52f120eb095833678c623336a66c14a76e03f98bf6a153ac05df4f4d",
+    "change_map_sha256": "027e57fe52f120eb095833678c623336a66c14a76e03f98bf6a153ac05df4f4d",
+    "inventory_sha256": "d2c8dcd4693d2d6a62b150b45e609515bc09574ee58448620ef11f7e941d3ceb"
+  }
+}

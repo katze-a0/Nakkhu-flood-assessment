@@ -1,0 +1,41 @@
+# Final audit sizes from the timed pilot (plan 006 Step 5). Written once by the click page or `nakkhu audit allocate`.
+schema_version: 1
+written_utc: '2026-10-12T15:47:32Z'
+items_sha256: e677367bd652cd9fbc755d98a6020fed57ead23c5ffcb5b7d11b761f5ccb26cf
+rule: n = min(design, max(150, floor(30 min / (pilot median s x time_factor x (1 +
+  0.05)))))
+pilot:
+  n: 40
+  median_s: 3.0549999999999997
+  mean_s: 7.98865
+  q25_s: 2.096
+  q75_s: 5.58775
+  total_s: 319.546
+tasks:
+  recall_points:
+    n: 350
+    design_n: 350
+    fit_in_budget: 561
+    time_factor: 1.0
+    expected_min: 18.7
+    provisional: false
+  precision_pool:
+    n: 300
+    design_n: 300
+    fit_in_budget: 561
+    time_factor: 1.0
+    expected_min: 16.0
+    provisional: true
+  flood_trace:
+    n: 280
+    design_n: 300
+    fit_in_budget: 280
+    time_factor: 2.0
+    expected_min: 29.9
+    provisional: true
+expected_total_min: 64.7
+cap_min: 120.0
+exceeds_cap: false
+note: 'precision_pool and flood_trace sizes are provisional: they assume the recall_points
+  pilot median times time_factor. Their page shows the remaining time from their own
+  logged median, a sitting can be split, and the cap stops the page.'

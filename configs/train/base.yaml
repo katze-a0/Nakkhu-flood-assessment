@@ -1,0 +1,21 @@
+# Shared training settings for every arm and model (plan 007 Step 2). Ultralytics defaults
+# (8.4.173, pinned in uv.lock group `train`) except `epochs` and `seed`; seed comes from the
+# CLI (configs/project.yaml seeds). Model selection: best.pt by Ultralytics val fitness
+# (mAP50-95) on the arm's own val-split labels.
+schema_version: 1
+imgsz: 640
+# Frozen after the pilot (2026-10-06; L1 and L6, yolo11n-obb, seed 0, 100 epochs; not
+# reported): the smallest multiple of 10 at which the best Ultralytics val fitness (mAP50-95 on
+# the arm's own val labels) so far reaches >= 95 % of the 100-epoch maximum on both pilot arms
+# (L1 0.975 at 70, 0.946 at 60; L6 0.962 at 50), which also fits the free Kaggle quota.
+epochs: 70
+batch: 16
+deterministic: true
+# Runtime-only settings (do not change the optimisation): fixed dataloader workers so data
+# order/augmentation is the same on Kaggle (2 per GPU of 4 vCPU) and Colab (2 vCPU); RAM cache
+# for speed; no plots (avoids font downloads); max_det raised because val tiles hold up to
+# ~800 label instances (default 300 would truncate the val metrics).
+workers: 2
+cache: ram
+plots: false
+max_det: 1000

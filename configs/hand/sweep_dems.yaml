@@ -1,0 +1,82 @@
+# DEM extension of the plan 008 sweep (label-free): the account-gated DEMs fetched on 2026-10-17
+# (NASADEM, SRTM GL1, AW3D30 via OpenTopography; NASA HMA 8 m mosaic via NSIDC) next to GLO-30
+# and FABDEM, on the same 30 m grid, burn, conditioning and thresholds as configs/hand/sweep.yaml.
+# configs/hand/sweep.yaml itself is hash-pinned by prereg_v9_a1 (common.hand_grid) and is not
+# edited: this file `extends` it. Its `dems` entries are added to / replace the base entries;
+# `only` selects. Only fill + burn and breach + burn are routed (the sensitivity-member
+# conditionings); thresholds are the sweep's 0.05-2 km2 plus each DEM's drop-analysis threshold.
+# No H1 agreement step. Runs go to their own stages, so `hand attribute`, `hand tier-export` and
+# plan 009 keep reading the canonical sweep:
+#   uv run nakkhu hand sweep --config configs/hand/sweep_dems.yaml
+#   uv run nakkhu hand attribute --config configs/hand/sweep_dems.yaml --inventory microsoft detector_final
+#   uv run nakkhu hand dem-diagnostics --config configs/hand/sweep_dems.yaml
+extends: configs/hand/sweep.yaml
+stage: hand-dems
+attribute_stage: hand-dems-attribute
+agreement_step: false
+# A surface failing the HAND units check (e.g. interior cells draining to a pit left by the fill
+# conditioning) is recorded in config_grid.csv as `failed` with the reason and left out, instead
+# of stopping the run (plan 008 STOP condition; the primary surface still stops it).
+on_units_failure: skip
+
+# Vertical harmonisation (P1-4 of prereg_v9_a1: every DEM in EGM2008 m): H_target = H + N_source -
+# N_target, the geoid undulations N sampled bilinearly from the NGA grids (PROJ-data, manifest
+# geoid_*) onto the sweep grid (`hydro.dem.geoid_shift`). A DEM without `vertical` is already in
+# the target datum (GLO-30, FABDEM). Horizontal: every DEM is warped bilinearly onto the sweep's
+# EPSG:32645 30 m grid, as for GLO-30 and FABDEM.
+vertical_target: egm2008
+geoids:
+  egm96:
+    manifest_id: geoid_egm96
+    path: "{data_root}/raw/geoid_egm96/geoid_egm96_routing2km.tif"
+  egm2008:
+    manifest_id: geoid_egm2008
+    path: "{data_root}/raw/geoid_egm2008/geoid_egm2008_routing2km.tif"
+
+dems:
+  nasadem:
+    manifest_id: dem_nasadem
+    path: "{data_root}/raw/dem_nasadem/dem_nasadem_routing2km.tif"
+    surface: DSM (SRTM Feb 2000, reprocessed)
+    vertical_datum: EGM96 (OpenTopography OT.032021.4326.2), converted to EGM2008
+    vertical: egm96
+  srtmgl1:
+    manifest_id: dem_srtmgl1
+    path: "{data_root}/raw/dem_srtmgl1/dem_srtmgl1_routing2km.tif"
+    surface: DSM (SRTM Feb 2000, void-filled V3; the 12.5 m ALOS-RTC DEM is resampled SRTM)
+    vertical_datum: EGM96 (OpenTopography OT.042013.4326.1), converted to EGM2008
+    vertical: egm96
+  aw3d30:
+    manifest_id: dem_aw3d30
+    path: "{data_root}/raw/dem_aw3d30/dem_aw3d30_routing2km.tif"
+    surface: DSM (optical, ALOS PRISM 2006-2011; V3.2 via OpenTopography, not v4.1)
+    vertical_datum: EGM96 (OpenTopography OT.112016.4326.2), converted to EGM2008
+    vertical: egm96
+  # NASA HMA 8 m mosaic (WorldView/GeoEye stereo 2008-2017), WGS84 ellipsoidal heights, custom
+  # Albers grid, warped bilinearly onto the 30 m grid like every DEM (prereg_v9_a1 P1-4-hma8m:
+  # "sweep grid (bilinear)"). Voids (-9999; 1.3 % of the routing domain, 0.06 % of the extent)
+  # are filled from the prepared GLO-30 cell (`void_fill`); dem_prep.csv counts them.
+  hma8m:
+    manifest_id: dem_hma8m_mos
+    path: "{data_root}/raw/dem_hma8m_mos/dem_hma8m_mos_routing2km.tif"
+    surface: DSM (optical stereo, 8 m native, bilinear to 30 m; voids filled from GLO-30)
+    vertical_datum: WGS84 ellipsoid (NSIDC user guide), converted to EGM2008
+    vertical: ellipsoid
+    void_fill: glo30
+
+only:
+  dems: [glo30, fabdem, nasadem, srtmgl1, aw3d30, hma8m]
+  conditioning: [fill_burn, breach_burn]
+  inventories: [microsoft, detector_final]
+statistics: [centroid]
+
+# Label-free diagnostics (`hand dem-diagnostics`): main mask M as defined in
+# configs/prereg_addenda/prereg_v9_a1.yaml `definitions.main_mask` (cells touched by the 11
+# Nakkhu/Bagmati ways with D8 contributing area >= 1 km2 on the same DEM x conditioning);
+# drains_main_t at the listed thresholds; elevation differences flagged above the listed limits.
+diagnostics:
+  main_lines: configs/aoi/osm_nakkhu_bagmati_lines.geojson
+  main_min_area_km2: 1.0
+  drain_thresholds_km2: [0.2, 1.0]
+  references: [glo30, fabdem]
+  artefact_abs_diff_m: [20, 50]

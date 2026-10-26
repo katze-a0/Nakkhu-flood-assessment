@@ -1,0 +1,62 @@
+{
+  "columns": [
+    "building_id",
+    "x",
+    "y",
+    "hand_m",
+    "tier"
+  ],
+  "crs": "EPSG:32645",
+  "edges": [
+    0.0,
+    3.0,
+    6.0,
+    9.0,
+    12.0
+  ],
+  "hand_column": "glo30__breach_burn__mr__centroid",
+  "inventories": {
+    "detector_final": {
+      "counts": {
+        "0-3": 523,
+        "3-6": 570,
+        "6-9": 532,
+        "9-12": 521,
+        ">12": 9641,
+        "on_drainage": 66
+      },
+      "file": "building_tiers_detector_final.csv",
+      "filters": {
+        "n_final": 11853,
+        "n_greenhouse_by_centroid": 26,
+        "n_greenhouse_by_iou": 1,
+        "n_greenhouse_removed": 26,
+        "n_in_extent": 11879,
+        "role": "primary"
+      },
+      "n": 11853,
+      "n_missing": 0
+    },
+    "microsoft": {
+      "counts": {
+        "0-3": 641,
+        "3-6": 605,
+        "6-9": 545,
+        "9-12": 456,
+        ">12": 10589,
+        "on_drainage": 89
+      },
+      "file": "building_tiers_microsoft.csv",
+      "filters": {
+        "n_final": 12925,
+        "n_greenhouse_by_centroid": 25,
+        "n_greenhouse_by_iou": 3,
+        "n_greenhouse_removed": 25,
+        "n_in_extent": 12950,
+        "role": "primary"
+      },
+      "n": 12925,
+      "n_missing": 0
+    }
+  }
+}

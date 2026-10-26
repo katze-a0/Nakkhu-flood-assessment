@@ -1,0 +1,99 @@
+# Derived AOI files (plan 002 provenance follow-up). `nakkhu aoi build` rebuilds every product
+# below from registered raw inputs only, writes them into runs/aoi/<run_id>/ and compares each
+# with the registered file in configs/aoi/ (it never overwrites a registered file).
+# Ported from the research scripts kept in configs/aoi/scripts/ (recommend.py, burn.py,
+# basins.py, hb.py); the parameters are theirs. Paths resolve against nakkhu/.
+schema_version: 1
+work_crs: EPSG:32645
+
+# Registered raw inputs (configs/data/manifest.yaml ids in comments).
+inputs:
+  # dem_glo30 (keep_source: the full 1x1 degree tile, sha256 5a0ec09c...)
+  glo30_tile: "{data_root}/raw/dem_glo30/source/Copernicus_DSM_COG_10_N27_00_E085_00_DEM.tif"
+  # fp_osm: Geofabrik snapshot nepal-261003.osm.pbf, osmosis_replication_timestamp 2026-10-03T20:20:50Z
+  osm_pbf: "{data_root}/raw/fp_osm/source/nepal-261003.osm.pbf"
+  osm_pbf_timestamp: "2026-10-03T20:20:50Z"  # osmosis_replication_timestamp of that snapshot
+  # maxar_*_datamask: STAC item JSONs (item geometry = data footprint of each quadkey tile)
+  stac_items:
+    pre: ["{data_root}/raw/maxar_wv02_20240113_datamask/stac"]
+    post: ["{data_root}/raw/maxar_ge01_20241006_0500_datamask/stac",
+           "{data_root}/raw/maxar_ge01_20241006_0600_datamask/stac"]
+
+# Registered files each product is compared with (manifest id -> local_path).
+registered:
+  waterways_rivers: configs/aoi/osm_waterways_rivers.json        # aoi_osm_waterways_rivers
+  osm_lines: configs/aoi/osm_nakkhu_bagmati_lines.geojson        # aoi_osm_nakkhu_bagmati_lines
+  catchment_c4: configs/aoi/catchment_c4_glo30_osm_burned.geojson  # aoi_catchment_c4
+  routing_domain: configs/aoi/routing_domain_upper_bagmati_glo30.geojson  # aoi_routing_domain
+  analysis_extent: configs/aoi/aoi_recommended_analysis_extent.geojson    # aoi_analysis_extent
+  flood_sites: configs/aoi/flood_reach_sites_2024.geojson        # aoi_flood_reach_sites_2024
+
+# Nakkhu-Bagmati confluence (lon, lat): end node of OSM way 518744798 "Nakhu River".
+confluence: [85.296452, 27.6632326]
+
+# Overpass-equivalent selection for aoi_osm_waterways_rivers (query text and how the box was
+# recovered: configs/aoi/osm_waterways_rivers.overpassql). bbox is (south, west, north, east).
+waterways_rivers:
+  query: configs/aoi/osm_waterways_rivers.overpassql
+  tags: {waterway: river}
+  bbox: [27.45, 85.20, 27.75, 85.45]
+
+# OSM river lines used for the channel burn, the confluence and the reach length. The research
+# selection (configs/aoi/scripts/confl.py) took the ways named Nakhu River, Nakhhu, Nallu Khola,
+# Lele River and every name containing "Bagmati" from the Overpass result above: the first 10
+# ways below. Way 591536939 (Bagmati headwater near 85.424 E, 27.78 N, inside the routing domain
+# but outside the Overpass box) was added on 2026-10-05 (orchestrator decision) so the burn covers
+# the mapped main channel consistently. All ways are read by id from the dated PBF.
+osm_lines:
+  ways:
+    - {id: 518744798, name: Nakhu River}
+    - {id: 518744799, name: Nakhhu}
+    - {id: 341325159, name: Nallu Khola}
+    - {id: 891351416, name: Nallu Khola}
+    - {id: 891351437, name: Nallu Khola}
+    - {id: 456520168, name: Lele River}
+    - {id: 518770057, name: "Bagmati Nadi (बागमती नदी)"}
+    - {id: 751466758, name: "Bagmati Nadi (बागमती नदी)"}
+    - {id: 1053917529, name: "Bagmati Nadi (बागमती नदी)"}
+    - {id: 751466757, name: "Bagmati River (बागमती नदी)"}
+    - {id: 591536939, name: "Bagmati River (बागमती नदी)"}
+  # Cross-check only: waterway=river ways in the PBF with one of these names that touch the DEM
+  # window but are not in `ways` are listed in the run summary (nothing is added automatically).
+  check_names: [Nakhu River, Nakhhu, Nallu Khola, Lele River, "Bagmati Nadi (बागमती नदी)",
+                "Bagmati River (बागमती नदी)"]
+
+# GLO-30 window (lon/lat bounds) read for both delineations; D8 via pyflwdir.from_dem with
+# latlon=True, outlets="edge" and nodata -9999 (the tile has no nodata value).
+dem_window: [85.1, 27.35, 85.6, 27.85]
+
+# burn.py: all OSM lines rasterised (all_touched) and lowered by burn_depth_m; outlet = the burned
+# cell with upa_min < upstream area < upa_max km2 within max_dist_m of the confluence and the
+# largest upstream area.
+catchment_c4:
+  burn_depth_m: 60.0
+  outlet: {max_dist_m: 300.0, upa_min_km2: 20.0, upa_max_km2: 300.0}
+  stem_names: [Nakhu River, Nakhhu, Nallu Khola]  # reported: share of the OSM stem inside
+
+# basins.py: unburned GLO-30; outlet = the cell within window_deg (lon and lat) of the
+# confluence, inside the Bagmati lines buffered by line_buffer_m and closer than max_dist_m to
+# the confluence, with the largest upstream area.
+routing_domain:
+  outlet: {window_deg: 0.01, line_buffer_m: 60.0, max_dist_m: 1500.0, line_name_contains: Bagmati}
+
+# recommend.py: (catchment c4 U confluence disc) n Maxar pre n post footprints; parts smaller
+# than min_part_m2 are dropped.
+analysis_extent:
+  disc_radius_m: 1000.0
+  pre_catalogs: ["10300100F5AB8000"]                       # WorldView-2, 2024-01-13
+  post_catalogs: ["105001003E1F0500", "105001003E1F0600"]  # GeoEye-1, 2024-10-06
+  min_part_m2: 10000.0
+
+# Point coordinates and their provenance (no live lookups at build time).
+flood_sites: configs/aoi/flood_reach_sites_2024.yaml
+
+# A rebuild matches its registered file when every check holds (areas and IoU in work_crs).
+tolerance:
+  area_rel: 1.0e-6        # |area_rebuilt - area_registered| / area_registered
+  iou_min: 0.999999
+  hausdorff_m: 0.01       # polygons, lines (per way) and points
+  length_rel: 1.0e-6      # per OSM way

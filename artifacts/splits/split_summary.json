@@ -1,0 +1,247 @@
+{
+  "blocks": {
+    "by_role": {
+      "mixed": 66,
+      "test": 31,
+      "train": 75,
+      "val": 12
+    },
+    "eligible_for_val": 99,
+    "total": 184
+  },
+  "by_split": {
+    "buffer": {
+      "blocks": 85,
+      "buffer_of": {
+        "test": 74,
+        "val": 148
+      },
+      "distance_to_river_m_tile": {
+        "q05": 59.400108961311645,
+        "q25": 318.255437252333,
+        "q50": 614.6518040706073,
+        "q75": 869.6886073843341,
+        "q95": 1239.1671203109747
+      },
+      "instances_by_centroid": {
+        "google": 70332,
+        "google_t90": 26944,
+        "microsoft": 23225
+      },
+      "microsoft_per_km2_tile": {
+        "q05": 68.359375,
+        "q25": 500.48828125,
+        "q50": 1041.1614750494682,
+        "q75": 1530.76171875,
+        "q95": 2010.2539062499998
+      },
+      "osm_registered_tiles": 73,
+      "tiles": 222,
+      "usable_tiles": 220,
+      "valid_km2": 22.323651500000004
+    },
+    "test": {
+      "blocks": 31,
+      "distance_to_river_m_tile": {
+        "q05": 28.858157118059125,
+        "q25": 174.64364217562098,
+        "q50": 336.6562150721271,
+        "q75": 571.6071870459833,
+        "q95": 877.841845880052
+      },
+      "instances_by_centroid": {
+        "google": 44058,
+        "google_t90": 19898,
+        "microsoft": 18586
+      },
+      "microsoft_per_km2_tile": {
+        "q05": 107.421875,
+        "q25": 554.19921875,
+        "q50": 1132.8125,
+        "q75": 1494.140625,
+        "q95": 1934.456005535505
+      },
+      "osm_registered_tiles": 50,
+      "tiles": 180,
+      "usable_tiles": 174,
+      "valid_km2": 17.632831250000002
+    },
+    "train": {
+      "blocks": 150,
+      "distance_to_river_m_tile": {
+        "q05": 35.45317026082611,
+        "q25": 207.98002493522276,
+        "q50": 433.000159255571,
+        "q75": 826.8409276102676,
+        "q95": 1622.2804000905041
+      },
+      "instances_by_centroid": {
+        "google": 297228,
+        "google_t90": 113773,
+        "microsoft": 85429
+      },
+      "microsoft_per_km2_tile": {
+        "q05": 84.65733425832326,
+        "q25": 498.046875,
+        "q50": 888.671875,
+        "q75": 1316.1879905324206,
+        "q95": 1855.46875
+      },
+      "osm_registered_tiles": 280,
+      "tiles": 973,
+      "usable_tiles": 906,
+      "valid_km2": 92.59744475000002
+    },
+    "val": {
+      "blocks": 12,
+      "distance_to_river_m_tile": {
+        "q05": 40.166896263910765,
+        "q25": 173.06004900824996,
+        "q50": 365.33160036002516,
+        "q75": 759.9991113520599,
+        "q95": 1224.1120392793782
+      },
+      "instances_by_centroid": {
+        "google": 35536,
+        "google_t90": 13597,
+        "microsoft": 10352
+      },
+      "microsoft_per_km2_tile": {
+        "q05": 53.222656250000036,
+        "q25": 534.66796875,
+        "q50": 844.7265625,
+        "q75": 1313.4765625,
+        "q95": 2076.1718749999995
+      },
+      "osm_registered_tiles": 34,
+      "tiles": 108,
+      "usable_tiles": 108,
+      "valid_km2": 11.0592
+    }
+  },
+  "checks": {
+    "every_tile_assigned": true,
+    "min_train_to_test_m": 320.0,
+    "min_train_to_val_m": 320.0,
+    "separation_ok": true,
+    "unique_tile_ids": true
+  },
+  "grid_sha256": "bf7f6d0b07edf288914a9d7ae37fbcb369f08a5201015aac5b40048362783c77",
+  "osm_registration_read": true,
+  "rule_sha256": "ae00dcccd19c2f17bca3ee9db49e623b5b4469aac1be6dc71a5e9803760057f1",
+  "split_file": "configs/splits/split_v1.yaml",
+  "split_sha256": "52786e81a91046ed4ca5e6db33c8767aeb9aa098b6d745b8e7c571f9957309ef",
+  "strata": {
+    "d0_r0": {
+      "eligible": 13,
+      "val": 2
+    },
+    "d0_r1": {
+      "eligible": 20,
+      "val": 2
+    },
+    "d1_r0": {
+      "eligible": 19,
+      "val": 2
+    },
+    "d1_r1": {
+      "eligible": 14,
+      "val": 2
+    },
+    "d2_r0": {
+      "eligible": 18,
+      "val": 2
+    },
+    "d2_r1": {
+      "eligible": 15,
+      "val": 2
+    }
+  },
+  "val_blocks": [
+    {
+      "block_id": "b_01_05",
+      "distance_m": 71.27996920646328,
+      "microsoft_per_km2": 1119.7916666666665,
+      "stratum": "d1_r0"
+    },
+    {
+      "block_id": "b_01_08",
+      "distance_m": 46.44958600925061,
+      "microsoft_per_km2": 857.2048611111111,
+      "stratum": "d1_r0"
+    },
+    {
+      "block_id": "b_03_01",
+      "distance_m": 690.3529471087425,
+      "microsoft_per_km2": 592.4479166666666,
+      "stratum": "d0_r1"
+    },
+    {
+      "block_id": "b_04_01",
+      "distance_m": 1169.6373789487866,
+      "microsoft_per_km2": 673.8281249999999,
+      "stratum": "d0_r1"
+    },
+    {
+      "block_id": "b_04_03",
+      "distance_m": 172.99392690544343,
+      "microsoft_per_km2": 1269.5312499999998,
+      "stratum": "d2_r0"
+    },
+    {
+      "block_id": "b_04_07",
+      "distance_m": 128.9021364959805,
+      "microsoft_per_km2": 1486.5451388888887,
+      "stratum": "d2_r0"
+    },
+    {
+      "block_id": "b_05_03",
+      "distance_m": 490.313142883758,
+      "microsoft_per_km2": 907.1180555555554,
+      "stratum": "d1_r1"
+    },
+    {
+      "block_id": "b_05_04",
+      "distance_m": 1098.8496744002728,
+      "microsoft_per_km2": 1032.986111111111,
+      "stratum": "d1_r1"
+    },
+    {
+      "block_id": "b_05_05",
+      "distance_m": 735.0551268186019,
+      "microsoft_per_km2": 1192.4913194444443,
+      "stratum": "d2_r1"
+    },
+    {
+      "block_id": "b_05_10",
+      "distance_m": 482.2655010828473,
+      "microsoft_per_km2": 1394.314236111111,
+      "stratum": "d2_r1"
+    },
+    {
+      "block_id": "b_05_21",
+      "distance_m": 36.96424903717408,
+      "microsoft_per_km2": 110.67708333333333,
+      "stratum": "d0_r0"
+    },
+    {
+      "block_id": "b_06_09",
+      "distance_m": 203.0115205452865,
+      "microsoft_per_km2": 595.703125,
+      "stratum": "d0_r0"
+    }
+  ],
+  "vs_plan003_domain": {
+    "buffer": {
+      "buffer": 67
+    },
+    "test": {
+      "test": 180
+    },
+    "train": {
+      "buffer": 155,
+      "train": 973,
+      "val": 108
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+ "note": "Instruction-card examples from usable train tiles (never test items). Candidates by rule (nakkhu.audit.workflow.example_candidates, seed 0, 6 per kind), then checked by eye locally on 2026-10-06 by the plan 006 agent. Rejected: yes 2 (soft), 4 (roof/shadow edge), 5 (too dark); greenhouse 1-3 (centre on a field inside an OSM greenhouse-horticulture polygon), 4 (grass between tunnels), 5 (unclear).",
+ "examples": [
+  {
+   "kind": "yes",
+   "candidate": "yes_1.jpg",
+   "x": 332098.6,
+   "y": 3058037.242,
+   "visual_check": "centre on a light flat roof"
+  },
+  {
+   "kind": "yes",
+   "candidate": "yes_3.jpg",
+   "x": 334028.528,
+   "y": 3069325.617,
+   "visual_check": "centre on a grey roof with a dark water tank"
+  },
+  {
+   "kind": "yes",
+   "candidate": "yes_6.jpg",
+   "x": 334205.953,
+   "y": 3067431.985,
+   "visual_check": "centre on a light roof in a dense block"
+  },
+  {
+   "kind": "no",
+   "candidate": "no_1.jpg",
+   "x": 336976.714,
+   "y": 3057883.213,
+   "visual_check": "centre on a bare field beside houses"
+  },
+  {
+   "kind": "no",
+   "candidate": "no_4.jpg",
+   "x": 334286.442,
+   "y": 3067786.173,
+   "visual_check": "centre on trees and lawn next to a tiled roof"
+  },
+  {
+   "kind": "greenhouse",
+   "candidate": "greenhouse_6.jpg",
+   "x": 335968.234,
+   "y": 3057998.822,
+   "visual_check": "centre on a row of white plastic tunnels"
+  }
+ ]
+}

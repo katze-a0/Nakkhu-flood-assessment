@@ -1,0 +1,64 @@
+# Plan 014 Step 2: inputs of `nakkhu followup prep` (label-free) and of `nakkhu followup run`.
+# The tests' own settings (definitions, thresholds, bootstrap, rows) are read from the frozen
+# addendum named here (configs/prereg_addenda/<addendum>.yaml); this file only pins WHICH runs
+# and files hold the v9 surfaces and tables, so that a later sweep or attribute run cannot
+# silently replace them (validate's `hand_table_path` takes the latest run).
+schema_version: 1
+addendum: prereg_v9_a3
+sweep_config: configs/hand/sweep.yaml          # v9 inventories, extent, greenhouse filter
+inventories: [microsoft, detector_final]
+
+# The v9 building HAND tables (journal 47 / 51 inputs; sha256 = the `hand_table:<inv>` inputs
+# recorded by the journal-51 competitor re-run, validation-competitors/20261017T042323Z-0f9d79f2).
+hand_tables:
+  microsoft:
+    run: hand-attribute/20261005T191727Z-dc9658f5
+    sha256: da7c6a2777c555cef1eb7cfba8970ceebd462fea8e2902f89d402d613ab563e3
+  detector_final:
+    run: hand-attribute/20261012T195115Z-0b241c76
+    sha256: 4c3e304340ff1b02d018a0abb4c3f0f2f514e34818bc37633e067f5c9660955f
+v9_inputs_record: runs/validation-competitors/20261017T042323Z-0f9d79f2/competitors_rerun.json
+building_tiers: artifacts/hand/building_tiers.json   # promoted v9 per-building x, y, HAND
+
+# Sweep runs whose interim rasters (dem_ref, fdir, acc, raw DEM) feed each DEM's derived
+# predictors; breach_burn routing for every DEM (prereg_v9_a3 P1-4 `conditioning`).
+# `thresholds: all16` = the 16 drop-analysis candidates (P1-2 and the 16-threshold prep);
+# `p1_4` = 0.2, 0.5, 1, 2 km2 and the DEM's own drop-analysis threshold (P1-4 `rules`).
+dems:
+  glo30: {sweep: hand/20261005T191226Z-dc9658f5, thresholds: all16}
+  fabdem: {sweep: hand/20261005T191226Z-dc9658f5, thresholds: all16}
+  gedtm30: {sweep: hand/20261005T191226Z-dc9658f5, thresholds: all16}
+  nasadem: {sweep: hand-dems/20261017T074042Z-c1b4c03a, thresholds: p1_4}
+  srtmgl1: {sweep: hand-dems/20261017T074042Z-c1b4c03a, thresholds: p1_4}
+  aw3d30: {sweep: hand-dems/20261017T074042Z-c1b4c03a, thresholds: p1_4}
+  # hma8m / hma8m_native are not prepared (coordinator 2026-10-17: +450 m blunder strip, a
+  # surface model); P1-4 records them as not ready and they wait for P1-4-hma8m.
+
+# P1-6 features come from this DEM's surfaces (GLO-30) plus FABDEM's hand_mr_d8 and elevation.
+feature_dem: glo30
+
+# The team's HAND model (P1-9 / P1-10); sha256 values come from the addendum's team_hand_data.
+team:
+  results_zip: "{data_root}/raw/ext_team_hand/Nakkhu_handmodel_results-20261017T072229Z-1-001.zip"
+  members_dir: Nakkhu_handmodel_results
+  hand: Hand Value.tif
+  dem: Dem12.5.tif
+  flow_direction: Flow Direction.tif
+  streams: Streams.tif
+  masks: {lt4: Handvaluelessthan4m.tif, lt6: Handvaluelessthan6m.tif, lt10: Handvaluelessthan10m.tif}
+  basin: Nakkhu_Basin.shp
+  outlet: Nakkhu_Outlet.shp
+  digitized: Nakkhu_river_digitized.shp
+  stream_area_km2: 0.78125          # team streams: flow accumulation >= 5000 cells of 12.5 m
+  dems: [dem12.5, glo30, fabdem]    # prereg_v9_a3 definitions.team_dems
+  conditionings: [fill, breach_burn]
+
+# P1-8 second reference (registered in configs/data/manifest_followup.yaml).
+unosat:
+  manifest: configs/data/manifest_followup.yaml
+  id: ref_unosat_fl20240928npl
+  members_dir: FL20240928NPL_SHP
+  layers:
+    flood_extent: Spot6_20240930_FloodExtent_Kathmandu
+    affected_points: Spot6_20240930_PotentiallyAffectedBuilding_Kathmandu
+    analysis_extent: Spot6_20240930_AnalysisExtent_Kathmandu

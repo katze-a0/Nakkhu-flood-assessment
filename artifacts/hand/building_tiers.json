@@ -1,0 +1,118 @@
+{
+  "columns": [
+    "building_id",
+    "x",
+    "y",
+    "hand_m",
+    "tier"
+  ],
+  "crs": "EPSG:32645",
+  "greenhouses": {
+    "by_tag": {
+      "building=greenhouse": 214,
+      "landuse=greenhouse": 2,
+      "landuse=greenhouse_horticulture": 62
+    },
+    "n_areas": 278
+  },
+  "hand_column": "glo30__breach_burn__tdrop__centroid",
+  "inventories": {
+    "detector_final": {
+      "attribute_run": "hand-attribute/20261012T195115Z-0b241c76",
+      "attribute_summary_sha256": "6d1de8195eae58dd927d0978440f02b7860c00914523e40bbb933c6820642881",
+      "count_check": "count_check_detector_final.csv",
+      "count_stability_sha256": "fd1191d76a00680f0244dc022bfaf96cfbadfdbb7b16b285ee173b94cd5c6122",
+      "counts": {
+        "0-3": 871,
+        "3-6": 899,
+        "6-9": 651,
+        "9-12": 743,
+        ">12": 8457,
+        "on_drainage": 232
+      },
+      "counts_match": {
+        "attribute_run": true,
+        "promoted": true
+      },
+      "file": "building_tiers_detector_final.csv",
+      "filters": {
+        "n_final": 11853,
+        "n_greenhouse_by_centroid": 26,
+        "n_greenhouse_by_iou": 1,
+        "n_greenhouse_removed": 26,
+        "n_in_extent": 11879,
+        "role": "primary"
+      },
+      "hand_table": "runs/hand-attribute/20261012T195115Z-0b241c76/building_hand_detector_final.parquet",
+      "hand_table_sha256": "4c3e304340ff1b02d018a0abb4c3f0f2f514e34818bc37633e067f5c9660955f",
+      "inventory_path": "artifacts/detector/inventory_final.parquet",
+      "inventory_sha256": "a5e291c42e5968f505cd5edfeef028f8c330e1441e77ec76b1c1d5acf7b21318",
+      "n_missing_hand": 0,
+      "output_bytes": 670969,
+      "output_sha256": "bc1d5d421f02961a8cc3d5ea4aab03055ae05f62c5e31effd121b2e9a6b7a301",
+      "rows": 11853
+    },
+    "microsoft": {
+      "attribute_run": "hand-attribute/20261005T191727Z-dc9658f5",
+      "attribute_summary_sha256": "0ee603ba15b5a4224b14c6c8699636670f555f41565d4a2b173b1e852b9fb67c",
+      "count_check": "count_check_microsoft.csv",
+      "count_stability_sha256": "ed6820c3a2095aa3a4efc5d87bb909795f414e736008857f4c6d0b522ce44af1",
+      "counts": {
+        "0-3": 832,
+        "3-6": 857,
+        "6-9": 661,
+        "9-12": 676,
+        ">12": 9666,
+        "on_drainage": 233
+      },
+      "counts_match": {
+        "attribute_run": true,
+        "promoted": true
+      },
+      "file": "building_tiers_microsoft.csv",
+      "filters": {
+        "n_final": 12925,
+        "n_greenhouse_by_centroid": 25,
+        "n_greenhouse_by_iou": 3,
+        "n_greenhouse_removed": 25,
+        "n_in_extent": 12950,
+        "role": "primary"
+      },
+      "hand_table": "runs/hand-attribute/20261005T191727Z-dc9658f5/building_hand_microsoft.parquet",
+      "hand_table_sha256": "da7c6a2777c555cef1eb7cfba8970ceebd462fea8e2902f89d402d613ab563e3",
+      "inventory_path": "{data_root}/raw/fp_microsoft/fp_microsoft.parquet",
+      "inventory_sha256": "d2c8dcd4693d2d6a62b150b45e609515bc09574ee58448620ef11f7e941d3ceb",
+      "n_missing_hand": 0,
+      "output_bytes": 667562,
+      "output_sha256": "5ad715ba2dc537fd87505f81ab59f82546de2792f9fdd2782f16569f96de47bd",
+      "rows": 12925
+    }
+  },
+  "promoted_counts": {
+    "index_sha256": "839e6ee4eaa25bc7e912e6ca07a7a851494c9c9f83d64e22bb9d5e617774c3ef",
+    "path": "artifacts/uncertainty/ppi_tier_counts.csv",
+    "sha256": "839e6ee4eaa25bc7e912e6ca07a7a851494c9c9f83d64e22bb9d5e617774c3ef"
+  },
+  "reads_audit_answers": false,
+  "reads_change_map": false,
+  "reads_labels": false,
+  "sweep_config": "D:/academia/flood/nakkhu/configs/hand/sweep.yaml",
+  "sweep_config_sha256": "0b241c76c52fa0b98dc328cc5568a3c46b54ae87ebb4a0945887ee6f0f5c6f22",
+  "test_access": false,
+  "tiers": [
+    "on_drainage",
+    "0-3",
+    "3-6",
+    "6-9",
+    "9-12",
+    ">12"
+  ],
+  "tiers_m": [
+    0.0,
+    3.0,
+    6.0,
+    9.0,
+    12.0
+  ],
+  "xy_decimals": 3
+}

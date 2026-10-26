@@ -1,0 +1,55 @@
+{
+ "answered_units": 294,
+ "answered_units_in_tiles": 294,
+ "answered_units_outside_tiles": 0,
+ "arm": "L6",
+ "auditors": {
+  "recall_nearmiss": [
+   "author"
+  ],
+  "recall_points": [
+   "teammate_1"
+  ]
+ },
+ "clicked_points_used": 31,
+ "definition": "prereg falsifiers.G1.confirmatory",
+ "eligible_tiles": 15,
+ "eligible_tiles_without_yes": 0,
+ "gating": false,
+ "inputs": {
+  "gate_scores_sha256": "6080f9a4abffa618c29f2eb9c61f95cfb9cd2da96ffe3eeb2042353f2b9da960",
+  "labels_tiles_sha256": "ed197ae469519356122e47f2262897981033fea5ad81e3fdd3c6349ad10fb15f",
+  "primary_summary_sha256": "ba6f6cd22d281afe9c3a22f5cbf5e0a4e37549132f07f4ff758e804c5cdc6c88",
+  "primary_tile_quality_sha256": "94445ec1f0a626c53829fb734e8823e22bef47a97c1dc372cbcc74df8e882e96",
+  "recall_nearmiss_items_sha256": "e024cd0c316513e747d68ea8045944c45beabe09c0965ea6b2b5fe6d6a8947d8",
+  "recall_nearmiss_responses_sha256": "642dffd082a50bbb1329c4e7b6c94df82ba7dbabb3083d728481173d810092a7",
+  "recall_points_items_sha256": "e677367bd652cd9fbc755d98a6020fed57ead23c5ffcb5b7d11b761f5ccb26cf",
+  "recall_points_responses_sha256": "cd0579773a664ce02db473f411c9423f5ce1a1c2055ef3363fe0cbb7b56336ae"
+ },
+ "min_answered": 5,
+ "outside_stratum": "excluded",
+ "primary_run": "labels/20261016T185057Z-cf204ba1",
+ "protocol": "v2",
+ "radius_m": 8.0,
+ "spearman_rho": -0.13333874447894276,
+ "statistic": "Spearman rho(gate score, audit quality of the L6 labels)",
+ "test_access": {
+  "entry": {
+   "eval_cfghash": "f7f9c55d",
+   "note": "plan 004 G1 confirmatory",
+   "prereg_sha256": "89baaed3e19554db599b510219c94285880820d4b840a7a0e76478d2150253ba",
+   "run": "labels/20261016T191215Z-f7f9c55d",
+   "split_sha256": "52786e81a91046ed4ca5e6db33c8767aeb9aa098b6d745b8e7c571f9957309ef",
+   "utc": "2026-10-16T19:12:16Z"
+  },
+  "flag_reason": "",
+  "flagged": false,
+  "prior_accesses": 0
+ },
+ "tiles": 15,
+ "tiles_in_primary_run": 174,
+ "tiles_with_answered_units": 119,
+ "tolerance_m": 1.0,
+ "units": 300,
+ "weights": "N_h / n_h over answered (Yes/No) units, Unsure excluded"
+}

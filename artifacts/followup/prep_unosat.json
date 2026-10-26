@@ -1,0 +1,67 @@
+{
+  "bytes": 121174575,
+  "file": "data/raw/ref_unosat_fl20240928npl/FL20240928NPL_SHP.zip",
+  "id": "ref_unosat_fl20240928npl",
+  "layers": {
+    "affected_points": {
+      "bounds_lonlat": [
+        85.28500205000006,
+        27.589274970000076,
+        85.46988410000006,
+        27.728017040000054
+      ],
+      "crs": "EPSG:4326",
+      "features": 5056,
+      "geometry_types": [
+        "Point"
+      ],
+      "member": "FL20240928NPL_SHP/Spot6_20240930_PotentiallyAffectedBuilding_Kathmandu.shp",
+      "metadata_keyword_snippets": [],
+      "valid_share": 1.0
+    },
+    "analysis_extent": {
+      "area_km2_whole_layer": 452.04078407044375,
+      "bounds_lonlat": [
+        85.28423275500006,
+        27.587311276000037,
+        85.49289337100004,
+        27.787661653000043
+      ],
+      "crs": "EPSG:4326",
+      "features": 1,
+      "geometry_types": [
+        "Polygon"
+      ],
+      "member": "FL20240928NPL_SHP/Spot6_20240930_AnalysisExtent_Kathmandu.shp",
+      "metadata_keyword_snippets": [],
+      "n_detector_final_centroids_inside": 11853,
+      "n_microsoft_centroids_inside": 12925,
+      "share_of_nakkhu_extent_inside": 0.9999999999999986,
+      "valid_share": 1.0
+    },
+    "flood_extent": {
+      "area_km2_whole_layer": 7.557854737393784,
+      "bounds_lonlat": [
+        85.28431872800007,
+        27.589166016000036,
+        85.47016484300008,
+        27.728331126000057
+      ],
+      "crs": "EPSG:4326",
+      "features": 1,
+      "geometry_types": [
+        "MultiPolygon"
+      ],
+      "member": "FL20240928NPL_SHP/Spot6_20240930_FloodExtent_Kathmandu.shp",
+      "metadata_keyword_snippets": [],
+      "valid_share": 0.0
+    }
+  },
+  "licence": "CC BY-SA (as listed for the UNOSAT FL20240928NPL dataset on HDX)",
+  "manifest": "configs/data/manifest_followup.yaml",
+  "members": 97,
+  "note": "integrity, CRS and extent only; no building was intersected with the flood extent or the affected-building points (that is P1-8)",
+  "sha256": "d4fe146d72d5fab905ad087ac9b08ee2d5fb98596488f3d126983090f28f728b",
+  "sha256_matches_manifest": true,
+  "zip_crc_ok": true
+}

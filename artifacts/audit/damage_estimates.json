@@ -1,0 +1,89 @@
+{
+ "answers_pass": {
+  "flood_trace": {
+   "archive": "responses_pass1.jsonl",
+   "archive_sha256": "115e0f1dc8ae2ca51c975e8349521f6557a5ea355431f0855389cf70ef54f42a",
+   "mode": "restart",
+   "prior_answer_shown": false,
+   "reason": "pass 1 void: damage criterion misapplied; drone panel mislabelled pre-flood imagery",
+   "restart_of": "pass1"
+  }
+ },
+ "estimates": {
+  "damage_share_of_traced": {
+   "ci_hi": 0.16951446665452224,
+   "ci_lo": 0.02213135178365223,
+   "estimate": 0.06873343935843025,
+   "n": 82
+  }
+ },
+ "material": {
+  "audit_config": "d8b58d88db2c8bf27ede49e7dff698026ee03f7efce23d6d6561c0a1fe65bb25",
+  "items": "b7fca33fa9bb96cf5bbfea4061afd26652cfdc536fa05601a075b6226d16d190",
+  "n_boot": 2000,
+  "redo": {
+   "flood_trace": {
+    "archive": "responses_pass1.jsonl",
+    "archive_sha256": "115e0f1dc8ae2ca51c975e8349521f6557a5ea355431f0855389cf70ef54f42a",
+    "mode": "restart",
+    "prior_answer_shown": false,
+    "reason": "pass 1 void: damage criterion misapplied; drone panel mislabelled pre-flood imagery",
+    "restart_of": "pass1"
+   }
+  },
+  "responses": "b91606922289cae74149585952f70464663156af46adbec52f5b5fc38f95d51a",
+  "task": "damage"
+ },
+ "strata": [
+  {
+   "frame_n": 3836,
+   "n_items": 86,
+   "no": 2,
+   "p_yes": 0.0,
+   "stratum": "negative_far",
+   "unanswered": 84,
+   "unsure": 0,
+   "wilson_hi": 0.6576197724933469,
+   "wilson_lo": 0.0,
+   "yes": 0
+  },
+  {
+   "frame_n": 2581,
+   "n_items": 114,
+   "no": 8,
+   "p_yes": 0.1111111111111111,
+   "stratum": "negative_near",
+   "unanswered": 105,
+   "unsure": 0,
+   "wilson_hi": 0.434999705576656,
+   "wilson_lo": 0.019890887638544907,
+   "yes": 1
+  },
+  {
+   "frame_n": 352,
+   "n_items": 100,
+   "no": 35,
+   "p_yes": 0.5070422535211268,
+   "stratum": "positive",
+   "unanswered": 22,
+   "unsure": 7,
+   "wilson_hi": 0.6199484948878713,
+   "wilson_lo": 0.39341308325020075,
+   "yes": 36
+  }
+ ],
+ "task": "damage",
+ "test_access": {
+  "entry": {
+   "eval_cfghash": "5d4804e43ecb",
+   "note": "nakkhu audit estimate",
+   "prereg_sha256": "89baaed3e19554db599b510219c94285880820d4b840a7a0e76478d2150253ba",
+   "run": "audit/damage",
+   "split_sha256": "52786e81a91046ed4ca5e6db33c8767aeb9aa098b6d745b8e7c571f9957309ef",
+   "utc": "2026-10-16T18:02:04Z"
+  },
+  "flag_reason": "",
+  "flagged": false,
+  "prior_accesses": 0
+ }
+}

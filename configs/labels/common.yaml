@@ -1,0 +1,81 @@
+# Shared label-building settings for arms L1-L8 (plan 004). Values marked "plan" are the plan's
+# research defaults (research-labels §3.1); they are frozen into configs/prereg.yaml by plan 005
+# before any test-block scoring and must not be tuned on test tiles.
+schema_version: 1
+
+# Tile set the labels are built for (plan 003 index; every tile gets labels).
+# `train_domains` (plan 003 provisional domain) is only the pool of the registration null.
+tiles:
+  scene: maxar_wv02_20240113
+  purpose: train
+  train_domains: [train]
+
+# Plan 005 split: an arm's tiles.txt lists usable `train`-split tiles; the L7 admit fraction is
+# chosen on `val`-split tiles only; test tiles are never scored here.
+split:
+  file: configs/splits/split_v1.yaml
+  train: train
+  val: val
+
+# Greenhouses are not buildings (Decisions 2026-10-05). Same rule and inputs as the exposure
+# counts (configs/hand/sweep.yaml `greenhouse_filter`): OSM greenhouse areas from the fp_osm PBF
+# via src/nakkhu/reference/greenhouse.py (tags GREENHOUSE_TAGS; bbox = analysis extent +
+# training domain + `bbox_pad_deg`); a footprint overlapping one (IoU >= `iou_min`, or centroid
+# inside) is dropped from every arm and from the aligned-OSM scoring reference. Matching and
+# registration run before the exclusion (greenhouse edges still register a tile).
+greenhouse_filter:
+  pbf: "{data_root}/raw/fp_osm/source/nepal-261003.osm.pbf"
+  iou_min: 0.3
+  bbox_pad_deg: 0.005
+
+# Google v3 thresholds come per S2 level-4 cell from score_thresholds_s2_level_4.csv; these
+# fixed cut-offs are used only for a polygon whose cell has none (plan Risks).
+fallback_thresholds: {t80: 0.75, t85: 0.75, t90: 0.75}
+
+# Step 2: cross-source match (plan).
+match:
+  iou_min: 0.3
+  contain_min: 0.5
+
+# Step 3: per-tile registration (union of Google and Microsoft boundaries vs image gradient).
+# The same settings register the OSM reference (nakkhu.labelqa).
+registration:
+  # 24 px = 12 m (Decisions 2026-10-05; the plan's 12 px truncated real 6-12 m offsets of both
+  # the footprints and OSM; null acceptance at 24 px is 0.33 % of mismatched pairs).
+  max_shift_px: 24
+  sigma_px: 1.0             # Gaussian low-pass of the cross-power spectrum (estimator setting)
+  exclusion_px: 4           # radius around the peak excluded when finding the second peak
+  # min_peak_ratio: the `quantile` of the peak ratio under a null of deliberately mismatched
+  # (image, footprints) pairs drawn from `train` tiles only (seeded); computed by every build
+  # and recorded in its summary. A number here would override the null rule.
+  min_peak_ratio: {null_quantile: 0.95, null_pairs: 600, seed: 0}
+
+# Step 4: SAM2 box-prompt refinement (L6-L8; offloaded).
+sam2:
+  model: facebook/sam2.1-hiera-small   # Hugging Face weights, Apache 2.0
+  box_dilate_m: 2.0         # plan
+  min_mask_iou: 0.5         # mask replaces the footprint at IoU >= this; below, footprint kept (Decisions 2026-10-06)
+  mask_threshold: 0.0       # logit threshold for the binary mask (SAM2 default)
+  batch_prompts: 64
+
+# Step 5: polygon -> OBB filters (plan).
+obb:
+  min_area_m2: 9.0
+  min_inside_frac: 0.5
+  min_rectangularity: 0.6
+  max_ignore_frac: 0.15
+
+# Step 6: tile quality gate (L7). Score = unweighted mean of per-feature percentile ranks.
+gate:
+  features:
+    peak_ratio: higher
+    mean_iou: higher
+    conflict_frac: lower
+    sam2_mean_iou: higher
+    valid_frac: higher
+  # Fraction of train tiles admitted: the candidate in `admit_candidates` with the highest
+  # pooled L6 label F1 against aligned OSM on val-split tiles (rejected tiles count their OSM
+  # buildings as misses; IoU `admit_iou`); written by `nakkhu labels setpoint --write`.
+  admit_candidates: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+  admit_iou: 0.5
+  admit_fraction: 1

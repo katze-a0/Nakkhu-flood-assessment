@@ -1,0 +1,98 @@
+{
+ "answers_pass": {
+  "flood_trace": {
+   "archive": "responses_pass1.jsonl",
+   "archive_sha256": "115e0f1dc8ae2ca51c975e8349521f6557a5ea355431f0855389cf70ef54f42a",
+   "mode": "restart",
+   "prior_answer_shown": false,
+   "reason": "pass 1 void: damage criterion misapplied; drone panel mislabelled pre-flood imagery",
+   "restart_of": "pass1"
+  }
+ },
+ "estimates": {
+  "drop_change_map": false,
+  "not_observable": 16,
+  "npv": {
+   "ci_hi": 0.9749869046224198,
+   "ci_lo": 0.9143157798603542,
+   "estimate": 0.9472787845859375,
+   "n": 173
+  },
+  "ppv": {
+   "estimate": 0.8571428571428571,
+   "n": 91,
+   "wilson_hi": 0.9145724186345122,
+   "wilson_lo": 0.7707818642734304,
+   "yes": 78
+  }
+ },
+ "material": {
+  "audit_config": "d8b58d88db2c8bf27ede49e7dff698026ee03f7efce23d6d6561c0a1fe65bb25",
+  "items": "b7fca33fa9bb96cf5bbfea4061afd26652cfdc536fa05601a075b6226d16d190",
+  "n_boot": 2000,
+  "redo": {
+   "flood_trace": {
+    "archive": "responses_pass1.jsonl",
+    "archive_sha256": "115e0f1dc8ae2ca51c975e8349521f6557a5ea355431f0855389cf70ef54f42a",
+    "mode": "restart",
+    "prior_answer_shown": false,
+    "reason": "pass 1 void: damage criterion misapplied; drone panel mislabelled pre-flood imagery",
+    "restart_of": "pass1"
+   }
+  },
+  "responses": "b91606922289cae74149585952f70464663156af46adbec52f5b5fc38f95d51a",
+  "task": "flood_trace"
+ },
+ "strata": [
+  {
+   "frame_n": 3836,
+   "n_items": 86,
+   "no": 72,
+   "p_yes": 0.02702702702702703,
+   "stratum": "negative_far",
+   "unanswered": 6,
+   "unsure": 6,
+   "wilson_hi": 0.09329292516912502,
+   "wilson_lo": 0.007443352638267217,
+   "yes": 2
+  },
+  {
+   "frame_n": 2581,
+   "n_items": 114,
+   "no": 90,
+   "p_yes": 0.09090909090909091,
+   "stratum": "negative_near",
+   "unanswered": 7,
+   "unsure": 8,
+   "wilson_hi": 0.16381413790125468,
+   "wilson_lo": 0.048565762881513215,
+   "yes": 9
+  },
+  {
+   "frame_n": 352,
+   "n_items": 100,
+   "no": 13,
+   "p_yes": 0.8571428571428571,
+   "stratum": "positive",
+   "unanswered": 7,
+   "unsure": 2,
+   "wilson_hi": 0.9145724186345122,
+   "wilson_lo": 0.7707818642734304,
+   "yes": 78
+  }
+ ],
+ "task": "flood_trace",
+ "test_access": {
+  "entry": {
+   "eval_cfghash": "658d80ea36bc",
+   "note": "nakkhu audit estimate",
+   "prereg_sha256": "89baaed3e19554db599b510219c94285880820d4b840a7a0e76478d2150253ba",
+   "run": "audit/flood_trace",
+   "split_sha256": "52786e81a91046ed4ca5e6db33c8767aeb9aa098b6d745b8e7c571f9957309ef",
+   "utc": "2026-10-16T18:01:38Z"
+  },
+  "flag_reason": "",
+  "flagged": false,
+  "prior_accesses": 0
+ }
+}

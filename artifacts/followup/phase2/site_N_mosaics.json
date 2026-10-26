@@ -1,0 +1,75 @@
+{
+  "grid": {
+    "crs": "EPSG:32645",
+    "height_px": 26240,
+    "origin": {
+      "north": 3075200.0,
+      "west": 330880.0
+    },
+    "origin_from": "phase2 site extent",
+    "pixel_size_m": 0.5,
+    "tile_px": 640,
+    "width_px": 16640
+  },
+  "mosaics": {
+    "post": {
+      "blocks_total": 117,
+      "blocks_written": 117,
+      "created_utc": "2026-10-17T15:53:59Z",
+      "native_pixel_m": 0.30517578125,
+      "path": "{data_root}/interim/followup/phase2/mosaic/site_N_post_0p5m.tif",
+      "scenes": [
+        "maxar_ge01_20241006_0600_full"
+      ],
+      "seconds": 91.5,
+      "sha256": "38af7d1094089a340d66d35fb8ae4795497d3e15599c52e8c2b6814b25f6d07f",
+      "sources": [
+        "{data_root}/raw/maxar_ge01_20241006_0600_full/visual/105001003E1F0600_031331033112-visual.tif",
+        "{data_root}/raw/maxar_ge01_20241006_0600_full/visual/105001003E1F0600_031331033113-visual.tif",
+        "{data_root}/raw/maxar_ge01_20241006_0600_full/visual/105001003E1F0600_031331033130-visual.tif",
+        "{data_root}/raw/maxar_ge01_20241006_0600_full/visual/105001003E1F0600_031331033131-visual.tif",
+        "{data_root}/raw/maxar_ge01_20241006_0600_full/visual/105001003E1F0600_031331033132-visual.tif",
+        "{data_root}/raw/maxar_ge01_20241006_0600_full/visual/105001003E1F0600_031331033133-visual.tif",
+        "{data_root}/raw/maxar_ge01_20241006_0600_full/visual/105001003E1F0600_031331033310-visual.tif",
+        "{data_root}/raw/maxar_ge01_20241006_0600_full/visual/105001003E1F0600_031331033311-visual.tif",
+        "{data_root}/raw/maxar_ge01_20241006_0600_full/visual/105001003E1F0600_031331033312-visual.tif",
+        "{data_root}/raw/maxar_ge01_20241006_0600_full/visual/105001003E1F0600_031331033313-visual.tif",
+        "{data_root}/raw/maxar_ge01_20241006_0600_full/visual/105001003E1F0600_031331122002-visual.tif",
+        "{data_root}/raw/maxar_ge01_20241006_0600_full/visual/105001003E1F0600_031331122020-visual.tif",
+        "{data_root}/raw/maxar_ge01_20241006_0600_full/visual/105001003E1F0600_031331122022-visual.tif",
+        "{data_root}/raw/maxar_ge01_20241006_0600_full/visual/105001003E1F0600_031331122200-visual.tif",
+        "{data_root}/raw/maxar_ge01_20241006_0600_full/visual/105001003E1F0600_031331122202-visual.tif"
+      ],
+      "valid_km2": 97.23473875,
+      "valid_px": 388938955
+    },
+    "pre": {
+      "blocks_total": 117,
+      "blocks_written": 104,
+      "created_utc": "2026-10-17T15:52:35Z",
+      "native_pixel_m": 0.30517578125,
+      "path": "{data_root}/interim/followup/phase2/mosaic/site_N_pre_0p5m.tif",
+      "scenes": [
+        "maxar_wv02_20240113"
+      ],
+      "seconds": 83.4,
+      "sha256": "d7e74c49f28f255932dd023022f7d539c0ff5a69978294e4d6455b8c50f1893c",
+      "sources": [
+        "{data_root}/raw/maxar_wv02_20240113/visual/10300100F5AB8000_031331033112-visual.tif",
+        "{data_root}/raw/maxar_wv02_20240113/visual/10300100F5AB8000_031331033113-visual.tif",
+        "{data_root}/raw/maxar_wv02_20240113/visual/10300100F5AB8000_031331033130-visual.tif",
+        "{data_root}/raw/maxar_wv02_20240113/visual/10300100F5AB8000_031331033131-visual.tif",
+        "{data_root}/raw/maxar_wv02_20240113/visual/10300100F5AB8000_031331033132-visual.tif",
+        "{data_root}/raw/maxar_wv02_20240113/visual/10300100F5AB8000_031331033133-visual.tif",
+        "{data_root}/raw/maxar_wv02_20240113/visual/10300100F5AB8000_031331033310-visual.tif",
+        "{data_root}/raw/maxar_wv02_20240113/visual/10300100F5AB8000_031331033311-visual.tif",
+        "{data_root}/raw/maxar_wv02_20240113/visual/10300100F5AB8000_031331033312-visual.tif",
+        "{data_root}/raw/maxar_wv02_20240113/visual/10300100F5AB8000_031331033313-visual.tif"
+      ],
+      "valid_km2": 84.66451125,
+      "valid_px": 338658045
+    }
+  },
+  "run": "followup-p2/20261017T155235Z-bb6f81d9",
+  "site": "N"
+}

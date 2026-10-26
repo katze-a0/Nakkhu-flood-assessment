@@ -1,0 +1,66 @@
+{
+  "contribution_fails_if": "intervals not computable (non-finite) or not calibrated (ece or ppi fails)",
+  "decomposition": {
+    "computable": true,
+    "detector_terms": 0.05139975518298931,
+    "gating": false,
+    "note": "a finding either way (prereg)",
+    "terrain_dominates": true,
+    "terrain_first_order": 0.9368241963157266
+  },
+  "decomposition_finding": {
+    "computable": true,
+    "detector_terms": 0.05139975518298931,
+    "terrain_dominates": true,
+    "terrain_first_order": 0.9368241963157266
+  },
+  "ece": {
+    "max": 0.1,
+    "method": "isotonic",
+    "other_methods": {
+      "temperature": 0.4082639776877387
+    },
+    "pass": true,
+    "value": 0.09556836236260764
+  },
+  "factorial_problems": [
+    "ensemble_expected: totals differ across HAND members (10797.419231322523-10797.419231323503)"
+  ],
+  "intervals_computable": true,
+  "main_inventory": "microsoft",
+  "ppi": {
+    "descriptive_splits": [
+      {
+        "expected_a_ci_misses_b_rate": 0.394,
+        "expected_miss_rate": 0.1665,
+        "inventory": "detector_final",
+        "mode": "block",
+        "observed_a_ci_misses_b_rate": 0.4165,
+        "observed_miss_rate": 0.1715,
+        "role": "descriptive",
+        "valid_repeats": 1000
+      }
+    ],
+    "expected_miss_rate": 0.0515,
+    "inventory": "detector_final",
+    "max": 0.1,
+    "miss_rate": 0.064,
+    "pass": true,
+    "reported_other_inventories": [
+      {
+        "expected_a_ci_misses_b_rate": 0.289,
+        "expected_miss_rate": 0.063,
+        "inventory": "microsoft",
+        "mode": "stratified_random",
+        "observed_a_ci_misses_b_rate": 0.5745,
+        "observed_miss_rate": 0.2105,
+        "role": "reported",
+        "valid_repeats": 1000
+      }
+    ],
+    "rule": "miss if |A - B| > z_0.975 sqrt(se_A^2 + se_B^2)",
+    "split_mode": "stratified_random",
+    "valid_repeats": 1000
+  },
+  "u1_chosen": "isotonic"
+}

@@ -1,0 +1,97 @@
+[project]
+name = "nakkhu"
+version = "0.1.0"
+description = "Building-level flood-exposure pipeline for the Nakkhu River (Lalitpur, Nepal)"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Bimala Sapkota" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "geopandas>=1.2.0",
+    "numpy>=2.5.3",
+    "osmium>=4.3.1",
+    "pandas>=3.0.6",
+    "pillow>=12.3.0",
+    "pyarrow>=25.0.1",
+    "pyogrio>=0.13.0",
+    "pyproj>=3.8.0",
+    "pyyaml>=6.0.3",
+    "rasterio>=1.5.2",
+    "requests>=2.34.2",
+    "scipy>=1.18.1",
+    "shapely>=2.1.2",
+]
+
+[project.scripts]
+nakkhu = "nakkhu.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.12.1,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.16.10",
+    "ty>=0.0.84",
+]
+# Plan 004 SAM2 box-prompt refinement (Hugging Face SAM2 port; weights Apache 2.0). Not a default
+# group: run with `uv run --group sam ...`; the offloaded job installs it from uv.lock.
+sam = [
+    "torch>=2.14.1",
+    "torchvision>=0.29.1",
+    "transformers>=5.18.0",
+]
+hydro = [
+    "exactextract>=0.3.0",
+    "pyflwdir>=0.5.12",
+    "pysheds>=0.5",
+    "whitebox>=2.3.6",
+]
+train = [
+    "torch>=2.14.1",
+    "torchvision>=0.29.1",
+    "ultralytics>=8.4.173",
+]
+ml = [
+    "scikit-learn>=1.9.1",
+]
+
+[tool.uv]
+# `uv run` / `uv sync` install the hydro group (plan 008 HAND code) and the ml group (plan 014
+# P1-6 models) too, with their tests.
+default-groups = ["dev", "hydro", "ml"]
+
+# Windows: CUDA 12.6 torch wheels from the PyTorch index (local GPU); Linux uses PyPI torch.
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu126", marker = "sys_platform == 'win32'" }]
+torchvision = [{ index = "pytorch-cu126", marker = "sys_platform == 'win32'" }]
+
+[[tool.uv.index]]
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu126"
+explicit = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = [
+    "E501",   # line length -- the formatter owns this
+]
+
+[tool.ty.environment]
+python-version = "3.12"
+
+[tool.ty.src]
+# Research scripts copied as AOI provenance records (plan 002); not package code.
+exclude = ["configs/aoi/scripts"]

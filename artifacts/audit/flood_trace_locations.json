@@ -1,0 +1,23 @@
+{
+  "answers_read": false,
+  "by_stratum": {
+    "negative_far": 86,
+    "negative_near": 114,
+    "positive": 100
+  },
+  "columns": [
+    "item_id",
+    "x",
+    "y",
+    "stratum"
+  ],
+  "crs": "EPSG:32645",
+  "file": "flood_trace_locations.csv",
+  "output_sha256": "506f89599d987ab67ba47c0197a9b41dad48dbcf760312cfc76787a8b7045e82",
+  "rows": 300,
+  "sample_items_sha256": "b7fca33fa9bb96cf5bbfea4061afd26652cfdc536fa05601a075b6226d16d190",
+  "sample_run": "audit/20261016T092651Z-e052dea2",
+  "source": "audit/flood_trace/items.parquet",
+  "source_sha256": "b7fca33fa9bb96cf5bbfea4061afd26652cfdc536fa05601a075b6226d16d190",
+  "task": "flood_trace"
+}

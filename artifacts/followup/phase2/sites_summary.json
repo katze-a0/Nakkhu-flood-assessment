@@ -1,0 +1,133 @@
+{
+  "files": {
+    "site_A_blocks.geojson": "d52d394309c116326563b86c3c90e16b41d3ca86a96c0b04001e6481d041d7aa",
+    "site_A_buildings.parquet": "50f4ea626024f2a91307f799fb73e4003f7d1a399e1362cc9e5bcece89da1b43",
+    "site_A_extent.geojson": "0eaa219dfd2fdee8c3a48879b3d6dcc110626aa0dda53f39553892690004471a",
+    "site_A_lines.geojson": "0c82526332b348494ad91d5693e663d7ca24983b78db49de91d9c287da8e4d06",
+    "site_A_overlap.geojson": "7ebc3ee781ffd4aef37d75c18646c6a4fae6b8b959f299a0df048c553f46045a",
+    "site_B_blocks.geojson": "422c875af741bdc5f94665212f7f716a3f43cbff76e12037077256a62586b9f6",
+    "site_B_buildings.parquet": "ed2e9843d79405dbb88d155d526236929028c0f08e168a082fa1e0126a3c37e1",
+    "site_B_extent.geojson": "8a56e414a17fb3aa3147d72a1e1b1b643ded797e2d26fe35492578bf8cc12fdc",
+    "site_B_lines.geojson": "67f0e6133e309ffe1ca9ce54fcc2305e93393c4a31d8bab469f659e9ad4b3038",
+    "site_B_overlap.geojson": "e2fcd4f204d578391fdda5ee081ef6f8eec502af6ec722e337b9d0849280a307",
+    "site_N_blocks.geojson": "be0bba33ec931cb1b0e0e420a231dbbec26e446341401987ff428abf0ef7d054",
+    "site_N_buildings.parquet": "48d0ffccf3b6c0fe2ac7a1d2203b614b0c3075322be10c01df7a48a5ba142007",
+    "site_N_extent.geojson": "3bc6a7f7a29fd35ebd066f425896fd804b2a67be6be19d7e8472c7412f48339e",
+    "site_N_lines.geojson": "380d5e53ef4a3e6cbb7cb87728c5b943b9d9c31aa8cb323eda57d7ab9280faf0",
+    "site_N_overlap.geojson": "0c22f553d19a2e843ab23b825d9f7ef2b2db52f3e41663d15ea97d2803097800"
+  },
+  "sites": {
+    "A": {
+      "bagmati_km_in_extent": 3.257499777957647,
+      "blocks_within_corridor": 36,
+      "dropped_nakkhu_buffer": 0,
+      "extent_km2": 33.1776,
+      "inventory": {
+        "n_final": 32669,
+        "n_greenhouse_by_centroid": 0,
+        "n_greenhouse_by_iou": 0,
+        "n_greenhouse_removed": 0,
+        "n_in_extent": 32669,
+        "role": "primary"
+      },
+      "main_line_km": 20.596027585839987,
+      "n_blocks": 36,
+      "n_blocks_with_building": 36,
+      "n_buildings": 32669,
+      "n_buildings_in_overlap": 29506,
+      "name": "Manohara + Hanumante",
+      "overlap_km2": 233.57028340541575,
+      "pre": [
+        "maxar_wv02_20240113",
+        "maxar_wv02_20240113_f2bccf00"
+      ],
+      "role": "test",
+      "shared_lost": 0,
+      "site_line_km_in_overlap": 17.33852780788234,
+      "site_line_km_total": 27.573300424291936,
+      "way_ids": [
+        327796598,
+        1181523800,
+        341559558,
+        5209634,
+        341598002,
+        518746337,
+        27033861,
+        32133805,
+        538977158,
+        1190905688
+      ]
+    },
+    "B": {
+      "bagmati_km_in_extent": 0.0,
+      "blocks_within_corridor": 23,
+      "dropped_nakkhu_buffer": 0,
+      "extent_km2": 21.1968,
+      "inventory": {
+        "n_final": 13507,
+        "n_greenhouse_by_centroid": 8,
+        "n_greenhouse_by_iou": 1,
+        "n_greenhouse_removed": 8,
+        "n_in_extent": 13515,
+        "role": "primary"
+      },
+      "main_line_km": 13.134027529056135,
+      "n_blocks": 23,
+      "n_blocks_with_building": 23,
+      "n_buildings": 13507,
+      "n_buildings_in_overlap": 11070,
+      "name": "Godawari + Kodku",
+      "overlap_km2": 143.60279129985378,
+      "pre": [
+        "maxar_wv02_20240113"
+      ],
+      "role": "test",
+      "shared_lost": 0,
+      "site_line_km_in_overlap": 13.134027529056135,
+      "site_line_km_total": 21.81029203010953,
+      "way_ids": [
+        339705639,
+        240177910,
+        518776738
+      ]
+    },
+    "N": {
+      "bagmati_km_in_extent": 2.779507509534639,
+      "blocks_within_corridor": 39,
+      "dropped_nakkhu_buffer": 0,
+      "extent_km2": 35.9424,
+      "inventory": {
+        "n_final": 37234,
+        "n_greenhouse_by_centroid": 0,
+        "n_greenhouse_by_iou": 0,
+        "n_greenhouse_removed": 0,
+        "n_in_extent": 37234,
+        "role": "primary"
+      },
+      "main_line_km": 18.532508509919314,
+      "n_blocks": 39,
+      "n_blocks_with_building": 39,
+      "n_buildings": 37234,
+      "n_buildings_in_overlap": 34702,
+      "name": "Bishnumati + Dhobi (Rudramati)",
+      "overlap_km2": 143.60279129985378,
+      "pre": [
+        "maxar_wv02_20240113"
+      ],
+      "role": "negative_control",
+      "shared_lost": 0,
+      "site_line_km_in_overlap": 15.75300100038467,
+      "site_line_km_total": 15.753001000384668,
+      "way_ids": [
+        52869409,
+        185751198,
+        752113745,
+        756183475,
+        788476632,
+        788476633,
+        52869396,
+        1425820139
+      ]
+    }
+  }
+}

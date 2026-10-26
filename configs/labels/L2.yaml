@@ -1,0 +1,4 @@
+# L2: Microsoft only.
+extends: common.yaml
+arm: L2
+rule: microsoft

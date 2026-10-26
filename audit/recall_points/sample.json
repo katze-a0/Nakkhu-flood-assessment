@@ -1,0 +1,67 @@
+{
+ "google_t90": 0.789,
+ "greenhouse_areas_near_region": 23,
+ "greenhouse_footprints_dropped": {
+  "google": 51,
+  "microsoft": 27,
+  "osm": 23
+ },
+ "inputs": {
+  "fp_google_v3": "fc14dc7886f13a7ca8bb80f5b9d87a61893cff2f4b43dbee928a3e7a882b5adf",
+  "fp_microsoft": "35755fc0c0e567e5a441b1de8fb56f56e430e2f2f3d2b898f7380882230cb576",
+  "fp_osm": "dfca439326e246a8a13b7c866d457bc46356c9c03d3d3380c10d4602cf998f3e",
+  "greenhouse_settings": "d6cd56860efa1e02bd192054916e0ad4991598fd948339531fd78da952b4c104",
+  "registration_footprints": "5132e5ea29bc2ee770b288cf0a33d5a2fc8855afa2359072752531114fd9eb58",
+  "registration_osm": "63ec7a0ffac05b4d8af6dbeb7c8a657afc8fcdd39b29b52f35a165011508c997"
+ },
+ "items": 350,
+ "items_sha256": "e677367bd652cd9fbc755d98a6020fed57ead23c5ffcb5b7d11b761f5ccb26cf",
+ "outside_area_m2": 6884451.452198422,
+ "pilot_items": 40,
+ "points_per_source": {
+  "google": 30454,
+  "microsoft": 12949,
+  "osm": 10144
+ },
+ "prereg_sha256": "aac2bf59826a46827467e5116e1b32d6aa8e455be81cc05749db8a5864e53a95",
+ "region_area_m2": 13344122.927629065,
+ "run": "audit/20261005T194103Z-d3368cd7",
+ "seed": 0,
+ "split_sha256": "52786e81a91046ed4ca5e6db33c8767aeb9aa098b6d745b8e7c571f9957309ef",
+ "strata": {
+  "--O": {
+   "design_n": 27,
+   "frame_n": 1387
+  },
+  "-M-": {
+   "design_n": 30,
+   "frame_n": 1932
+  },
+  "-MO": {
+   "design_n": 29,
+   "frame_n": 1703
+  },
+  "G--": {
+   "design_n": 52,
+   "frame_n": 8601
+  },
+  "G-O": {
+   "design_n": 35,
+   "frame_n": 3039
+  },
+  "GM-": {
+   "design_n": 63,
+   "frame_n": 13710
+  },
+  "GMO": {
+   "design_n": 64,
+   "frame_n": 13940
+  },
+  "outside": {
+   "design_n": 50,
+   "frame_n": 0
+  }
+ },
+ "task": "recall_points",
+ "units": 44312
+}

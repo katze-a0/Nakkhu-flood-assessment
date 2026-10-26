@@ -1,0 +1,6 @@
+# D2: horizontal boxes (labels = axis-aligned envelopes of the arm's OBBs; COCO detect head).
+extends: base.yaml
+model: yolo11s-hbb
+task: detect
+weights: yolo11s.pt
+weights_sha256: 85a76fe86dd8afe384648546b56a7a78580c7cb7b404fc595f97969322d502d5

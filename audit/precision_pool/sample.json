@@ -1,0 +1,52 @@
+{
+ "clusters": 19373,
+ "detections": 82630,
+ "inputs": {},
+ "items": 300,
+ "items_sha256": "0b12b7900de71c1f6eeced5d351665ab08604a551a916ae27428a2695a0b5352",
+ "pilot_items": 0,
+ "prereg_sha256": "d31e45d69dafd709e105be03cd7782d0d51b7eebd180bd63664adbe4991d32e9",
+ "run": "audit/20261012T195226Z-b490a772",
+ "runs": 6,
+ "seed": 0,
+ "split_sha256": "52786e81a91046ed4ca5e6db33c8767aeb9aa098b6d745b8e7c571f9957309ef",
+ "strata": {
+  "share0_chan0": {
+   "design_n": 25,
+   "frame_n": 752
+  },
+  "share0_chan1": {
+   "design_n": 35,
+   "frame_n": 2051
+  },
+  "share0_chan2": {
+   "design_n": 42,
+   "frame_n": 3471
+  },
+  "share1_chan0": {
+   "design_n": 18,
+   "frame_n": 219
+  },
+  "share1_chan1": {
+   "design_n": 25,
+   "frame_n": 713
+  },
+  "share1_chan2": {
+   "design_n": 30,
+   "frame_n": 1254
+  },
+  "share2_chan0": {
+   "design_n": 29,
+   "frame_n": 1223
+  },
+  "share2_chan1": {
+   "design_n": 42,
+   "frame_n": 3425
+  },
+  "share2_chan2": {
+   "design_n": 54,
+   "frame_n": 6265
+  }
+ },
+ "task": "precision_pool"
+}

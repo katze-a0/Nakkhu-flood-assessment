@@ -1,0 +1,194 @@
+# Plan 010: detection-to-exposure uncertainty (contribution C2; U1, U2, U3, D4).
+# Frozen in configs/prereg.yaml (`uncertainty_propagation` section since v7; sha256_of this file plus
+# mirrors), before any test access, any sitting-2 sample and any audit estimate. Amended once in
+# prereg v8 (plan 013, before any sitting-2/3 answer and before this analysis): Microsoft is the
+# main inventory (prereg v7 C5 fallback), U3 runs per inventory, and every count has a stated
+# unit (count_units below). Read by
+# src/nakkhu/uncertainty/. Every value here is fixed before the analysis; nothing is tuned on
+# test results. One `nakkhu uncertainty run` computes U1-U3 and D4 as ONE journalled test access.
+schema_version: 1
+
+# Random streams: numpy default_rng([seed, stream]) with one fixed stream id per purpose
+# (nakkhu.uncertainty.spec.STREAMS), so adding a purpose never shifts another's draws.
+
+# --- inputs ---------------------------------------------------------------------------------
+inputs:
+  # Final detector (prereg detector_selection): L5 + YOLO11n-OBB, seeds 0-4, WV02 test-region
+  # inference, each seed at its own val F1-max threshold (prereg conf_threshold).
+  final_model: {arm: L5, model: yolo11n-obb, seeds: [0, 1, 2, 3, 4],
+                train_runs: "train/L5/yolo11n-obb/seed{seed}"}
+  # detector_final (prereg): plan 007 ensemble (nakkhu.ensemble) of the five seeds, model key
+  # ensemble:L5/yolo11n-obb/seeds0-1-2-3-4, cut at its own val F1-max threshold; its `conf`
+  # (sum of member confs / 5) is the U1 raw score.
+  detector_final: artifacts/detector/inventory_final.parquet
+  # Sitting-2 pool (prereg audit_precision_pool): the five seed test runs and the ensemble test
+  # run, each with threshold_from the val eval of the same model.
+  # HAND: the primary surface and the 28 routing-gate-passing centroid surfaces of the plan 008
+  # sweep (config_grid.csv `in_sensitivity_range`); footprint statistics are a sensitivity.
+  hand_sweep: configs/hand/sweep.yaml
+  hand_surfaces: in_sensitivity_range        # 28 surfaces x centroid (84 members with stats)
+  hand_statistic_primary: centroid
+  hand_statistics_sensitivity: [centroid, footprint_min, footprint_plus10m]
+  # Audit (plan 006): sitting 1 + 1b (recall_points / recall_nearmiss) and sitting 2
+  # (precision_pool, whose runs are exactly the five final seeds).
+  audit_tasks: {recall: recall_points, nearmiss: recall_nearmiss, precision: precision_pool,
+                precision_main: precision_microsoft}
+  # prereg v8 (plan 013): the main inventory = Microsoft footprints (prereg v7 C5 fallback, user
+  # 2026-10-16); detector_final is the secondary inventory. Its polygon precision comes from the
+  # sitting-2 task precision_main.
+  main_inventory: microsoft
+  blocks: artifacts/splits/blocks.geojson    # plan 005 3 x 3-tile blocks (cross-fit, split)
+  event_skill: artifacts/validation/by_inventory.csv   # plan 009 (D4 AUC column)
+
+# --- answer coding of the recall audit (prereg audit_recall) --------------------------------
+answers:
+  primary: {protocol: v2, radius_m: 8.0, unsure: excluded}
+  sensitivities:
+    - {name: v1, protocol: v1, unsure: excluded}
+    - {name: v2_r4, protocol: v2, radius_m: 4.0, unsure: excluded}
+    - {name: v2_unsure_yes, protocol: v2, radius_m: 8.0, unsure: as_yes}
+    - {name: v2_unsure_no, protocol: v2, radius_m: 8.0, unsure: as_no}
+  precision_unsure: excluded            # precision_pool Unsure: excluded (bounds reported)
+  detection_tolerance_m: 1.0            # point "detected" if within 1 m of an OBB (plan 006)
+
+# --- U1: existence probability of an ensemble cluster ---------------------------------------
+u1:
+  units: sitting-2 units in the detector_final domain (the unit holds an ensemble-run box)
+  raw_score: highest ensemble conf among the unit's ensemble-run boxes (conf = sum of the
+    member confs / 5 = seeds detecting / 5 x their mean conf)
+  methods: [temperature, isotonic]
+  temperature: {clip: 1.0e-4, log_t_bounds: [-5.0, 5.0]}
+  isotonic: non-decreasing weighted pool-adjacent-violators; linear between knots, flat ends
+  weights: design                       # w = N_h / n_h of the precision_pool strata
+  cross_fit: leave_one_block_out        # plan 005 block of the unit's box centroid; a block
+                                        # whose complement lacks a class is unscored (counted)
+  final_fit: chosen method refitted on every audited domain unit, applied to every
+    detector_final cluster (ensemble expected count = sum of calibrated probabilities per tier)
+  ece: {bins: 10, binning: equal_count_pooled_out_of_fold, weighted: true}
+  choose: lower pooled out-of-fold weighted ECE; tie -> temperature
+  pass_ece_max: 0.1                     # falsifier C2.ece (prereg)
+
+# --- U3: bias-corrected tier counts ----------------------------------------------------------
+u3:
+  population: recall-frame units (plan 006 recall_points frame without the `outside` area
+    stratum; de-duplicated Google v3 / Microsoft / OSM points in the extent, greenhouses
+    removed); the outside stratum's Yes share (Wilson) is reported as the not-in-any-source
+    rate and is not added to any total
+  estimand: T_g = real buildings (recall answer coding) among population units in tier group g
+  secondary_estimand: N_t = real buildings in tier t = D_t p_g / r_g (ratio; D_t = detector_final
+    clusters in t, p_g = their audited precision, r_g = their audited recall in g, recall at the
+    clicked roof point for near-miss Yes units as in prereg audit_recall)
+  tiers_from: primary HAND surface, centroid statistic (unit point for recall units; the
+    centroid of the highest-conf ensemble box for precision units; the box centroid for
+    detector_final clusters)
+  pooling: {min_answered: 20, rule: merge the group with the fewest answered units below
+    min_answered into its adjacent group with fewer answered units (tie -> lower HAND), repeat;
+    answered = min(recall-frame yes/no units, precision units in the detector_final domain,
+    answered precision_main units) per tier; one grouping for every inventory}
+  # prereg v8: U3 per inventory; the first is primary (the main inventory). PPI++ uses the
+  # inventory only as the prediction f, so the estimand T_g does not change.
+  inventories: [microsoft, detector_final]
+  # prereg v8 count units (user 2026-10-16): exposure is counted in real objects (Microsoft
+  # polygons, detector boxes). Recall-frame point totals (PPI++ / HT T_g) count footprint points,
+  # several of which can sit on one roof (plans/building_unit_definition.md), so they are
+  # reported only as upper bounds on buildings. A ratio of an object count to a point-level
+  # recall or completeness mixes units and is a sensitivity row, never primary.
+  count_units:
+    precision_only: objects             # D_t p_g, the exposure count
+    naive: objects                      # D_t
+    ensemble_expected: objects
+    ppi_pp: frame_points                # upper bound on buildings
+    ht: frame_points                    # upper bound on buildings
+    ratio: mixed                        # D_t p_g / r_g: sensitivity only
+  estimators:
+    primary: precision_only             # main inventory, primary coding: D_t p_g per tier
+    secondary: [naive]                  # and precision_only of the secondary inventory
+    upper_bound: [ppi_pp, ht]           # frame-point totals; C2.ppi checks the PPI++ intervals
+    sensitivity: [ratio]                # mixed units
+  ppi:
+    prediction: per inventory - detector_final = an OBB within detection_tolerance_m of the
+      unit's own point; microsoft = the recall-frame flag in_microsoft (unit point within
+      membership_tol_m of a registered Microsoft polygon)
+    ratio_inputs: D_t = the inventory's objects per tier (centroid HAND; for Microsoft the
+      units of its HAND table); p_g = their audited precision in g (detector_final-domain units
+      of precision_pool; precision_main design proportion for Microsoft); r_g = the share of Yes
+      recall units in g the inventory holds (detector_final at the clicked roof point for a
+      near-miss Yes; Microsoft by in_microsoft at the unit point)
+    lambda: design-based Cov(HT_Y, HT_f) / Var(HT_f) on the full sample, clipped to [0, 1],
+      0 if Var(HT_f) = 0; held fixed in the bootstrap
+  bootstrap: {method: rao_wu, n_boot: 2000, seed: 0, level: 0.95, interval: percentile}
+  split_sample:
+    repeats: 1000
+    seed: 0
+    # prereg v6: units are halved at random within the audit strata (the stratified random
+    # design the audit was drawn under); the v5 block halving stays as a descriptive row
+    unit: stratified_random
+    halves: within each audit stratum a seeded random permutation of its answered units, first
+      floor(n_h/2) -> A, rest -> B (nakkhu.uncertainty.ppi.halve)
+    secondary_descriptive: [block]      # plan 005 blocks halved (cluster subsample); not gating
+    # prereg v8: the check gates on detector_final as frozen (C2); the same check with the main
+    # inventory as f is reported beside it (gating mode only, with its expected rate), never gating
+    gating_inventory: detector_final
+    weights: N_h / n_h recomputed within each half (answered units)
+    min_per_stratum: 2                  # a repeat with < 2 answered units of a stratum in either
+                                        # half is invalid (counted, excluded)
+    estimate_a: ppi_pp
+    estimate_b: ht
+    se: bootstrap SD of each half's estimate (n_boot below)
+    n_boot: 2000
+    miss: "|A - B| > z_0.975 * sqrt(se_A^2 + se_B^2)"
+    pass_miss_max: 0.10                 # falsifier C2.ppi (prereg), pooled over groups x repeats
+    also_reported: the simulated expected miss rate (same frozen settings) beside the observed
+      one, for the gating and the descriptive split; and the share of repeats whose A
+      percentile CI misses the B point estimate (plan 010 Step 6 wording) with its expected value
+  simulation:
+    replicates: 1000
+    seed: 0
+    n_boot: 2000
+    coverage_band: [0.93, 0.97]
+    population: synthetic frame with the observed N_h, n_h, groups and blocks; per-stratum Yes
+      share and P(f = 1 | Y) set to the observed sample values (plug-in); known truth
+    reports: bias, coverage and the expected split-sample rates (not gating)
+
+# --- U2: factorial and variance decomposition ----------------------------------------------
+u2:
+  primary:
+    # prereg v8: unit-consistent (boxes x the audited precision of those boxes); the v7 ratio
+    # response (boxes over a point-level recall) is the mixed-unit sensitivity below
+    response: precision-corrected count of a single seed, sum over target tiers of
+      D_{s,h,t} p_{s,h,g(t),b} (D = seed s boxes at its own threshold; p from the plan 006
+      per-run domain of seed s; tiers of the audit units under surface h; audit replicate b)
+    recall_correction: false
+    factors: {seed: [0, 1, 2, 3, 4], surface: in_sensitivity_range, audit: 200}
+    audit_replicates: {n: 200, seed: 0}  # joint Rao-Wu replicates of both audits (own stream)
+    grouping: tier groups fixed from the primary surface (u3.pooling) for every surface
+    decomposition: balanced 3-way ANOVA sums of squares; first-order share SS_S / SS_total and
+      total share = sum of SS over terms containing the factor
+    finding: terrain dominates in HAND <= 3 m if first-order share(surface) > share(seed) +
+      share(audit) + share(seed x audit); a finding either way (falsifier C2.decomposition)
+    target_tiers: [on_drainage, 0-3]    # summed: buildings with HAND <= 3 m; every tier reported
+  sensitivity:
+    - {name: ratio_mixed_units, recall_correction: true}   # v7 response D p / r, mixed units
+  descriptive:
+    response: raw per-tier count
+    # best label arm = L5 = the final seeds; worst = L2 (lowest seed-mean val F1@0.5)
+    inventories: [detector_final, ensemble_expected, seed0, seed1, seed2, seed3, seed4,
+                  L2_seed0, L2_seed1, L2_seed2, google_v3, microsoft, overture, osm]
+    hand_members: 84                    # 28 surfaces x 3 statistics
+    decomposition: balanced 2-way ANOVA (inventory x HAND member) per tier
+  share_ci: {resample: surfaces within DEM, n_boot: 2000, seed: 0, level: 0.95}
+  checks: [balanced, totals equal across HAND members per inventory, tier counts sum to totals]
+
+# --- D4 -------------------------------------------------------------------------------------
+d4:
+  rows: every u2.descriptive inventory except ensemble_expected
+  baseline: microsoft                   # prereg v8: the main inventory (v7: detector_final)
+  columns: raw tier counts (objects) on the primary surface, delta % vs the baseline, event
+    ROC-AUC and PR-AUC from plan 009 by_inventory.csv (reference R1 if usable, else R1-aud)
+
+# --- outputs --------------------------------------------------------------------------------
+outputs:
+  dir: artifacts/uncertainty
+  files: [calibration_curve.csv, ece.csv, tier_counts_factorial.parquet,
+          variance_decomposition.csv, ppi_tier_counts.csv, coverage_check.json,
+          inventory_comparison.csv, falsifiers.json]

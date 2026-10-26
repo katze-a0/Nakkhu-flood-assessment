@@ -1,0 +1,69 @@
+# Plan 014 Phase 2 sites (prereg_v9_a3 phase2; draft prereg_v9_a4 section 2). Label-free
+# inputs of `nakkhu followup p2 ...` (src/nakkhu/followup/phase2.py): site lines, corridor
+# blocks, building tables, site mosaics, footprint registration, the co-registration gate and
+# the site predictors. Nothing here reads a change-map class, an audit answer or any reference.
+# Every relative path resolves against nakkhu/; `{data_root}` is paths.data_root.
+schema_version: 1
+addendum: prereg_v9_a3          # the frozen rules this file applies (definitions, phase2)
+
+# OSM waterway=river ways (configs/aoi/osm_waterways_rivers.json, snapshot nepal-261003).
+rivers: configs/aoi/osm_waterways_rivers.json
+bagmati_way_ids: [751466757, 518770057, 751466758, 1053917529]
+
+# Plan-005 lattice, extended: 320 m tiles, 3 x 3 tiles = 960 m blocks, origin = the plan 003
+# grid origin (configs/tiling.yaml), block id b_{col // 3:02d}_{row // 3:02d} as splits.block_ids.
+lattice: {west: 331200.0, north: 3074880.0, tile_m: 320.0, block_tiles: 3}
+corridor_m: 1000.0              # block centre within this distance of the site lines
+nakkhu_extent: configs/aoi/aoi_recommended_analysis_extent.geojson
+nakkhu_buffer_m: 320.0          # blocks touching the Nakkhu extent buffered by this are dropped
+grid_margin_m: 200.0            # site mosaic grid = site extent bounds + margin, on the lattice
+
+# ARD data-mask sources (valid-data polygons) per scene id.
+datamasks:
+  maxar_wv02_20240113: maxar_wv02_20240113_datamask
+  maxar_wv02_20240113_f2bccf00: maxar_wv02_20240113_f2bccf00_datamask
+  maxar_ge01_20241006_0600_full: maxar_ge01_20241006_0600_datamask
+post: {scene: maxar_ge01_20241006_0600_full, strip: "0600"}
+
+sites:                          # order = tie order of the shared-block rule
+  A:
+    name: Manohara + Hanumante
+    way_ids: [327796598, 1181523800, 341559558, 5209634, 341598002, 518746337, 27033861,
+              32133805, 538977158, 1190905688]
+    pre: [maxar_wv02_20240113, maxar_wv02_20240113_f2bccf00]   # first valid pixel wins
+    role: test
+  B:
+    name: Godawari + Kodku
+    way_ids: [339705639, 240177910, 518776738]
+    pre: [maxar_wv02_20240113]
+    role: test
+  N:
+    name: Bishnumati + Dhobi (Rudramati)
+    way_ids: [52869409, 185751198, 752113745, 756183475, 788476632, 788476633, 52869396,
+              1425820139]
+    pre: [maxar_wv02_20240113]
+    role: negative_control
+
+# Inventories over the sites: same releases and processing as v9, wider clip. Paths replace
+# the configs/hand/sweep.yaml inventory paths for site runs only (the v9 inventory rules -
+# centroid in the extent, greenhouse filter of the pinned PBF - are unchanged).
+inventories:
+  microsoft: "{data_root}/raw/fp_microsoft_routing/fp_microsoft.parquet"
+  google_v3_uncut: "{data_root}/raw/fp_google_v3_routing/fp_google_v3.parquet"
+  osm: "{data_root}/interim/followup/phase2/fp_osm_routing.parquet"   # from the pinned PBF
+osm_pbf: "{data_root}/raw/fp_osm/source/nepal-261003.osm.pbf"
+
+# Footprint registration on the site tiles (a4 open issue 4, option (a)): the plan-004 method
+# and settings (configs/labels/common.yaml registration) with the v9 thresholds, read from the
+# promoted v9 shift tables (min_peak_ratio column).
+registration:
+  settings: configs/labels/common.yaml
+  footprints_reference: artifacts/labels/registration_shifts.csv       # google + microsoft
+  osm_reference: artifacts/labels/osm_registration_shifts.csv
+  tile_px: 640
+
+# HAND and features: the frozen GLO-30 / FABDEM breach_burn routing of the v9 sweep.
+dems:
+  glo30: {sweep: hand/20261005T191226Z-dc9658f5, thresholds: all16}
+  fabdem: {sweep: hand/20261005T191226Z-dc9658f5, thresholds: all16}
+feature_dem: glo30

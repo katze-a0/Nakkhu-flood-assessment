@@ -1,0 +1,7 @@
+predictor,dem,column,conditioning,inventory,reference,rows,n_covered,n_nan_on_covered,n,affected,n_blocks,auc
+hand_mr_d8,glo30,hand_mr_d8__glo30,breach_burn,microsoft,R1,P1-9 covered rows finite for all six,4014,0,3920,196,18,0.9070377748306626
+hand_mr_d8,fabdem,hand_mr_d8__fabdem,breach_burn,microsoft,R1,P1-9 covered rows finite for all six,4014,0,3920,196,18,0.9069089907713891
+hand_mr_rem,glo30,hand_mr_rem__glo30,breach_burn,microsoft,R1,P1-9 covered rows finite for all six,4014,0,3920,196,18,0.905458115039786
+hand_mr_rem,fabdem,hand_mr_rem__fabdem,breach_burn,microsoft,R1,P1-9 covered rows finite for all six,4014,0,3920,196,18,0.904471683947478
+hand_team_acc,glo30,hand_team_acc__glo30__breach_burn,breach_burn,microsoft,R1,P1-9 covered rows finite for all six,4014,49,3920,196,18,0.9069747528442097
+hand_team_acc,fabdem,hand_team_acc__fabdem__breach_burn,breach_burn,microsoft,R1,P1-9 covered rows finite for all six,4014,62,3920,196,18,0.9067980172735045

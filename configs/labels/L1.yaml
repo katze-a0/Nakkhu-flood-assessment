@@ -1,0 +1,4 @@
+# L1: Google v3 with confidence >= t90 (per-S2-cell 90 %-precision threshold).
+extends: common.yaml
+arm: L1
+rule: google_t90

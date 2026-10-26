@@ -1,0 +1,61 @@
+{
+  "clarifications": {
+    "density_100m": "count of other centroids of the same inventory within 100 m (self excluded)",
+    "hand_any_t": "streams = contributing area >= t only, exactly as the sweep code (hydro.hand.stream_mask); the burn conditions the routing DEM only. The addendum's wording 'plus the burned lines' is not implemented, so hand_any at the 0.2 km2 drop threshold equals hand_v9 (coordinator decision 2026-10-17). Burned cells below the threshold on GLO-30 per threshold: {\"t0p05\": 2839, \"t0p075\": 2918, \"t0p1\": 2965, \"t0p15\": 3019, \"t0p2\": 3049, \"t0p25\": 3072, \"t0p3\": 3104, \"t0p4\": 3140, \"t0p5\": 3165, \"t0p75\": 3214, \"t1\": 3233, \"t1p5\": 3321, \"t2\": 3407, \"t3\": 3506, \"t4\": 3651, \"t5\": 3756}",
+    "hma8m": "not prepared (coordinator 2026-10-17); P1-4 lists it as not ready",
+    "team_outlet": "definitions.hand_team_acc: the outlet = the basin cell (centre) nearest the team's Nakkhu_Outlet point; its routing elevation is set 1 m below the basin minimum before fill / breach so the clipped basin drains (and its flats resolve) to it, as ArcGIS lets the outlet drain off the raster; its HAND reference is restored like a burned cell. Without it pysheds left the int16 outlet flats unresolved (8 % of Dem12.5 basin cells never reached a stream)."
+  },
+  "inventories": {
+    "detector_final": {
+      "centroids_identical": true,
+      "distance_identical": true,
+      "distance_recomputed_sha256": "5dee69953c54ac426cf5d851309b26f81035b808d82af625d17e054380b74992",
+      "distance_sha256": "5dee69953c54ac426cf5d851309b26f81035b808d82af625d17e054380b74992",
+      "hand_table": "runs/hand-attribute/20261012T195115Z-0b241c76/building_hand_detector_final.parquet",
+      "hand_table_sha256": "4c3e304340ff1b02d018a0abb4c3f0f2f514e34818bc37633e067f5c9660955f",
+      "join_check": {
+        "max_abs_diff_m": 0.0,
+        "n": 11853,
+        "nan_mismatch": 0,
+        "surface": "glo30__breach_burn__tdrop/hand.tif"
+      },
+      "n_buildings": 11853,
+      "pinned_sha256": "4c3e304340ff1b02d018a0abb4c3f0f2f514e34818bc37633e067f5c9660955f",
+      "promoted_building_tiers": {
+        "file": "artifacts/hand/building_tiers_detector_final.csv",
+        "max_abs_dhand_m": 5.664062513233148e-06,
+        "max_abs_dx_m": 0.0004998964723199606,
+        "max_abs_dy_m": 0.0005000000819563866,
+        "rows_and_ids_equal": true
+      },
+      "uid_order_equal": true,
+      "validate_reads": "runs\\hand-attribute\\20261012T195115Z-0b241c76\\building_hand_detector_final.parquet"
+    },
+    "microsoft": {
+      "centroids_identical": true,
+      "distance_identical": true,
+      "distance_recomputed_sha256": "70c677d284326fd44a2a045029f100bfba87fb77f5315983054e20b05a6d6b6c",
+      "distance_sha256": "70c677d284326fd44a2a045029f100bfba87fb77f5315983054e20b05a6d6b6c",
+      "hand_table": "runs/hand-attribute/20261005T191727Z-dc9658f5/building_hand_microsoft.parquet",
+      "hand_table_sha256": "da7c6a2777c555cef1eb7cfba8970ceebd462fea8e2902f89d402d613ab563e3",
+      "join_check": {
+        "max_abs_diff_m": 0.0,
+        "n": 12925,
+        "nan_mismatch": 0,
+        "surface": "glo30__breach_burn__tdrop/hand.tif"
+      },
+      "n_buildings": 12925,
+      "pinned_sha256": "da7c6a2777c555cef1eb7cfba8970ceebd462fea8e2902f89d402d613ab563e3",
+      "promoted_building_tiers": {
+        "file": "artifacts/hand/building_tiers_microsoft.csv",
+        "max_abs_dhand_m": 6.445312493497113e-06,
+        "max_abs_dx_m": 0.000499938556458801,
+        "max_abs_dy_m": 0.0004999777302145958,
+        "rows_and_ids_equal": true
+      },
+      "uid_order_equal": true,
+      "validate_reads": "runs\\hand-attribute\\20261005T191727Z-dc9658f5\\building_hand_microsoft.parquet"
+    }
+  },
+  "stored_surfaces_identical": true
+}

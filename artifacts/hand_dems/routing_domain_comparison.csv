@@ -1,0 +1,3 @@
+domain,area_km2,iou_vs_burned,outlet_x,outlet_y,outlet_upstream_km2,outlet_dist_to_confluence_m
+glo30__breach_burn (adopted),590.6745,1.0,331155.0,3059805.0,590.6745,1495.0206121127976
+"research (unburned GLO-30, pyflwdir, EPSG:4326 grid)",590.4845003200215,0.9958673747193928,,,,

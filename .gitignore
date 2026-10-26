@@ -1,0 +1,34 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Tool caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.cache/
+
+# Virtual environments
+.venv/
+venv/
+
+# Local secrets (API keys for plan 002/008; never committed)
+.env
+
+# Data: raw downloads and intermediate products stay local
+data/raw/
+data/interim/
+
+# Runs: everything is local except the per-run summary digests
+runs/**
+!runs/**/
+!runs/**/summary.json
+
+# Large binaries: weights, rasters, image chips
+*.pt
+*.tif
+*.jpg

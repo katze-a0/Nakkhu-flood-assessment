@@ -1,0 +1,6 @@
+inventory,n_buildings,n_in_extent,role,confidence_cut,n_after_cut,n_greenhouse_removed,n_greenhouse_by_iou,n_greenhouse_by_centroid,n_final,cut_thresholds
+google_v3,14202,30486,primary,confidence_threshold_90%_precision,14226.0,24,4,24,14202,0.789
+google_v3_uncut,30436,30486,sensitivity,,,50,4,50,30436,
+microsoft,12925,12950,primary,,,25,3,25,12925,
+osm,10154,10177,primary,,,23,23,23,10154,
+overture,22460,22483,primary,,,23,23,23,22460,

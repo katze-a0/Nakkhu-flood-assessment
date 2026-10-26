@@ -1,0 +1,136 @@
+# Data register of plan 014 Phase 2 (prereg_v9_a3 sites A, B and the negative control N), kept
+# apart from configs/data/manifest.yaml (same schema). Filled only by `nakkhu data fetch` run on
+# the private VPS with `--set paths.manifest='"{data_root}/manifest_phase2.yaml"'` and copied here;
+# check with `uv run nakkhu data verify --manifest configs/data/manifest_phase2.yaml` where the
+# files live. Maxar entries are CC BY-NC 4.0: their files stay on the VPS (plans/followup_phase2_prep.md).
+schema_version: 1
+entries:
+- id: fp_google_v3_routing
+  title: Google Open Buildings v3 polygons (S2 level-4 cell 39f), same release, clipped to the routing
+    domain + buffer (plan 014 Phase-2 sites; change-map ground mask)
+  url: https://storage.googleapis.com/open-buildings-data/v3/polygons_s2_level_4_gzip/39f_buildings.csv.gz
+  access: public
+  licence: CC BY 4.0 or ODbL 1.0 (user's choice; used under CC BY 4.0)
+  attribution: Google Open Buildings v3 (https://sites.research.google/gr/open-buildings/), CC BY 4.0
+  citation: Sirko et al. (2021). Continental-Scale Building Detection from High Resolution Satellite Imagery.
+    arXiv:2107.12283
+  bytes: 91291125
+  sha256: 2d3af7125278840c1585487a2fd71c5ea131a396f241ca4a821d9aa1ea10b86e
+  retrieved_utc: '2026-10-17T15:02:43Z'
+  local_path: '{data_root}/raw/fp_google_v3_routing'
+  clip: routing
+  notes: 'The v9 change map''s ground mask (configs/flood/change.yaml buildings.ground_mask_from, pinned)
+    needs google_v3_uncut over the sites; fp_google_v3 stops at 85.359 E. The 8.4 GB cell file is streamed
+    through the cache and deleted (VPS only). | S2 cell 39f thresholds: confidence_threshold_80%_precision=0.707,
+    confidence_threshold_85%_precision=0.742, confidence_threshold_90%_precision=0.789, building_count_80%_precision=64581641,
+    building_count_85%_precision=49119609, building_count_90%_precision=28747341, building_count=87929503,
+    num_samples=39015 | 87929503 rows scanned in 39f_buildings.csv.gz; the 8.4 GB cell file was deleted
+    after filtering (sha256/md5 kept in source.json) | 985370 features intersect the `routing` clip; 30486
+    have their centroid in the extent; 0 invalid geometries fixed'
+- id: fp_microsoft_routing
+  title: Microsoft Global ML Building Footprints, same release, clipped to the routing domain + buffer
+    (plan 014 Phase-2 sites)
+  url: https://bfppub.blob.core.windows.net/%24web/2026-08-13/dataset-links.csv
+  access: public
+  licence: CDLA-Permissive-2.0
+  attribution: Microsoft Global ML Building Footprints, CDLA-Permissive-2.0
+  citation: Microsoft (2026). Global ML Building Footprints, release 2026-08-13. https://github.com/microsoft/GlobalMLBuildingFootprints
+  bytes: 104578538
+  sha256: 07695399e1239472586a97f2e768b52d2dd04026680c6cfb7d39586479e0061f
+  retrieved_utc: '2026-10-17T15:01:45Z'
+  local_path: '{data_root}/raw/fp_microsoft_routing'
+  clip: routing
+  notes: fp_microsoft covers only the WV02 F5AB8000 training domain (west of 85.359 E); site A lies partly
+    east of it. Same release and processing, wider clip. | 383799 features intersect the `routing` clip;
+    12950 have their centroid in the extent; 4 invalid geometries fixed
+- id: maxar_ge01_20241006_0600_datamask
+  title: ARD data-mask GeoPackages and STAC items, GeoEye-1 105001003E1F0600
+  url: https://maxar-opendata.s3.amazonaws.com/events/Nepal-Floods-Sept-2024/ard/acquisition_collections/105001003E1F0600_collection.json
+  access: public
+  licence: CC BY-NC 4.0
+  attribution: Contains Maxar Open Data, copyright Maxar Intelligence (now Vantor), CC BY-NC 4.0
+  citation: Vantor Open Data Program was accessed on 2026-10-17 from https://registry.opendata.aws/vantor-open-data
+  bytes: 1570322
+  sha256: 4ebcda451d0d82504ad11150de7811cb7ee4ca63e9ad27426f967fcc1f108af9
+  retrieved_utc: '2026-10-17T14:59:29Z'
+  local_path: '{data_root}/raw/maxar_ge01_20241006_0600_datamask'
+  clip: none
+  notes: '15 STAC items; assets available: data-mask, ms_analytic, pan_analytic, visual; pan_analytic/ms_analytic
+    not fetched; no cloud-mask asset (data-mask = valid data only)'
+- id: maxar_ge01_20241006_0600_full
+  title: GeoEye-1 105001003E1F0600, 2024-10-06, visual (0.305 m grid, native GSD 0.53-0.55 m), full scene
+    (plan 014 Phase-2 post-event)
+  url: https://maxar-opendata.s3.amazonaws.com/events/Nepal-Floods-Sept-2024/ard/acquisition_collections/105001003E1F0600_collection.json
+  access: public
+  licence: CC BY-NC 4.0
+  attribution: Contains Maxar Open Data, copyright Maxar Intelligence (now Vantor), CC BY-NC 4.0
+  citation: Vantor Open Data Program was accessed on 2026-10-17 from https://registry.opendata.aws/vantor-open-data
+  bytes: 506978084
+  sha256: 9e28c3363511ecd9e3d59dcd33d9917b5e84bb34441b8fc3ffb5b599e1595187
+  retrieved_utc: '2026-10-17T15:01:07Z'
+  local_path: '{data_root}/raw/maxar_ge01_20241006_0600_full'
+  clip: none
+  notes: 'The whole 233.6 km2 strip; maxar_ge01_20241006_0600 (extent + 500 m clip) stays the plan 009
+    source. Source COGs kept byte-exact. | 15 STAC items; assets available: data-mask, ms_analytic, pan_analytic,
+    visual; pan_analytic/ms_analytic not fetched; no cloud-mask asset (data-mask = valid data only)'
+- id: maxar_wv02_20240113
+  title: WorldView-2 10300100F5AB8000, 2024-01-13, visual (pansharpened RGB, 0.305 m grid, native GSD
+    0.56 m), full scene
+  url: https://maxar-opendata.s3.amazonaws.com/events/Nepal-Floods-Sept-2024/ard/acquisition_collections/10300100F5AB8000_collection.json
+  access: public
+  licence: CC BY-NC 4.0
+  attribution: Contains Maxar Open Data, copyright Maxar Intelligence (now Vantor), CC BY-NC 4.0
+  citation: Vantor Open Data Program was accessed on 2026-10-17 from https://registry.opendata.aws/vantor-open-data
+  bytes: 475195095
+  sha256: 7a027488403c9c6e468b05cc4dc8da19b79355f93b29aeadb71ea61336c3b5ad
+  retrieved_utc: '2026-10-17T14:58:44Z'
+  local_path: '{data_root}/raw/maxar_wv02_20240113'
+  clip: training
+  notes: 'Training domain (Decisions 2026-10-05: train on WV-2 tiles outside the extent). Source COGs
+    kept byte-exact (no recompression). | 10 STAC items; assets available: data-mask, ms_analytic, pan_analytic,
+    visual; pan_analytic/ms_analytic not fetched; no cloud-mask asset (data-mask = valid data only)'
+- id: maxar_wv02_20240113_datamask
+  title: ARD data-mask GeoPackages (valid-data polygons) and STAC items, WorldView-2 10300100F5AB8000
+  url: https://maxar-opendata.s3.amazonaws.com/events/Nepal-Floods-Sept-2024/ard/acquisition_collections/10300100F5AB8000_collection.json
+  access: public
+  licence: CC BY-NC 4.0
+  attribution: Contains Maxar Open Data, copyright Maxar Intelligence (now Vantor), CC BY-NC 4.0
+  citation: Vantor Open Data Program was accessed on 2026-10-17 from https://registry.opendata.aws/vantor-open-data
+  bytes: 1049495
+  sha256: 4144cdd5844138af6ae1ac6ea59fe6c179190a7224f84fd287a5243d1f62f1b6
+  retrieved_utc: '2026-10-17T14:59:21Z'
+  local_path: '{data_root}/raw/maxar_wv02_20240113_datamask'
+  clip: none
+  notes: '10 STAC items; assets available: data-mask, ms_analytic, pan_analytic, visual; pan_analytic/ms_analytic
+    not fetched; no cloud-mask asset (data-mask = valid data only)'
+- id: maxar_wv02_20240113_f2bccf00
+  title: WorldView-2 10300100F2BCCF00, 2024-01-13, visual (0.305 m grid, native GSD 0.55 m), full scene
+    (east strip; plan 014 Phase-2 site A pre-event)
+  url: https://maxar-opendata.s3.amazonaws.com/events/Nepal-Floods-Sept-2024/ard/acquisition_collections/10300100F2BCCF00_collection.json
+  access: public
+  licence: CC BY-NC 4.0
+  attribution: Contains Maxar Open Data, copyright Maxar Intelligence (now Vantor), CC BY-NC 4.0
+  citation: Vantor Open Data Program was accessed on 2026-10-17 from https://registry.opendata.aws/vantor-open-data
+  bytes: 1031139437
+  sha256: 54dbb683b9f13c4508f8aea240c765c60a5ed8130741cfa075d9aa1c7fbb1ba1
+  retrieved_utc: '2026-10-17T14:59:42Z'
+  local_path: '{data_root}/raw/maxar_wv02_20240113_f2bccf00'
+  clip: none
+  notes: 'Same date and sensor as 10300100F5AB8000 (east strip, 315.6 km2 data footprint, 85.335-85.488
+    E). Source COGs kept byte-exact (no recompression). | 20 STAC items; assets available: data-mask,
+    ms_analytic, pan_analytic, visual; pan_analytic/ms_analytic not fetched; no cloud-mask asset (data-mask
+    = valid data only)'
+- id: maxar_wv02_20240113_f2bccf00_datamask
+  title: ARD data-mask GeoPackages and STAC items, WorldView-2 10300100F2BCCF00
+  url: https://maxar-opendata.s3.amazonaws.com/events/Nepal-Floods-Sept-2024/ard/acquisition_collections/10300100F2BCCF00_collection.json
+  access: public
+  licence: CC BY-NC 4.0
+  attribution: Contains Maxar Open Data, copyright Maxar Intelligence (now Vantor), CC BY-NC 4.0
+  citation: Vantor Open Data Program was accessed on 2026-10-17 from https://registry.opendata.aws/vantor-open-data
+  bytes: 2097862
+  sha256: 37b4300cac5787167c35bcba6c795a0dd674faab5bee4ade9f348baf96fc1a08
+  retrieved_utc: '2026-10-17T15:00:51Z'
+  local_path: '{data_root}/raw/maxar_wv02_20240113_f2bccf00_datamask'
+  clip: none
+  notes: '20 STAC items; assets available: data-mask, ms_analytic, pan_analytic, visual; pan_analytic/ms_analytic
+    not fetched; no cloud-mask asset (data-mask = valid data only)'

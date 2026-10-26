@@ -1,0 +1,49 @@
+{
+ "answered": 280,
+ "answers": {
+  "no": 175,
+  "unsure": 16,
+  "yes": 89
+ },
+ "auditors": [
+  "author"
+ ],
+ "author_total_min": 38.686283333333336,
+ "cap_min": 120.0,
+ "items_sha256": "b7fca33fa9bb96cf5bbfea4061afd26652cfdc536fa05601a075b6226d16d190",
+ "queue_slots": 294,
+ "redo": {
+  "archive": "responses_pass1.jsonl",
+  "archive_sha256": "115e0f1dc8ae2ca51c975e8349521f6557a5ea355431f0855389cf70ef54f42a",
+  "auditor": "author",
+  "chips_manifest_sha256": "9601cfdbb90d6684f801fc079b7e130b36195dceda0efd050f43ee76207ffbac",
+  "event": "restart",
+  "items_sha256": "b7fca33fa9bb96cf5bbfea4061afd26652cfdc536fa05601a075b6226d16d190",
+  "note": "pass1 void; whole sitting served again from scratch in the same queue order, blind: no pass1 answer reaches the page and estimates use this log only",
+  "prior_answer_shown": false,
+  "reason": "pass 1 void: damage criterion misapplied; drone panel mislabelled pre-flood imagery",
+  "restart_of": "pass1",
+  "utc": "2026-10-16T17:41:19Z"
+ },
+ "repeats_answered": 14,
+ "self_agreement": {
+  "agreement": 0.9285714285714286,
+  "kappa": 0.810810810810811,
+  "n": 14
+ },
+ "self_agreement_yes_no": {
+  "agreement": 0.9285714285714286,
+  "kappa": 0.810810810810811,
+  "n": 14
+ },
+ "task": "flood_trace",
+ "timing": {
+  "logged_min": 7.056916666666667,
+  "mean_s": 1.2383333333333333,
+  "median_s": 0.787,
+  "sittings_min": {
+   "flood_trace-20261016T174120Z": 7.056916666666663
+  }
+ },
+ "undone": 48
+}

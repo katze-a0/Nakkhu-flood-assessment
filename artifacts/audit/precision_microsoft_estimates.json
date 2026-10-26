@@ -1,0 +1,157 @@
+{
+ "answers_pass": "first pass (blind)",
+ "estimates": {
+  "by_stratum": {
+   "agree_chan0": {
+    "ci_hi": 0.8787810724119288,
+    "ci_lo": 0.4738353887164283,
+    "estimate": 0.6666666666666667,
+    "n": 18
+   },
+   "agree_chan1": {
+    "ci_hi": 0.953340703847969,
+    "ci_lo": 0.5922523186982416,
+    "estimate": 0.7826086956521737,
+    "n": 23
+   },
+   "agree_chan2": {
+    "ci_hi": 0.963810780095188,
+    "ci_lo": 0.7149723661274392,
+    "estimate": 0.8620689655172414,
+    "n": 29
+   },
+   "ms_only_chan0": {
+    "ci_hi": 0.5535167825623306,
+    "ci_lo": 0.11285152708093722,
+    "estimate": 0.31578947368421056,
+    "n": 19
+   },
+   "ms_only_chan1": {
+    "ci_hi": 0.2493309271070362,
+    "ci_lo": 0.0006176057473512308,
+    "estimate": 0.12,
+    "n": 25
+   },
+   "ms_only_chan2": {
+    "ci_hi": 0.5194403848300017,
+    "ci_lo": 0.16059923394309555,
+    "estimate": 0.3461538461538462,
+    "n": 26
+   }
+  },
+  "overall": {
+   "ci_hi": 0.5715728813186954,
+   "ci_lo": 0.420064360402989,
+   "estimate": 0.4949748298937243,
+   "n": 140
+  },
+  "unsure": 10,
+  "unsure_as_no": {
+   "ci_hi": 0.5377263673046795,
+   "ci_lo": 0.3981829076757469,
+   "estimate": 0.469061267335236,
+   "n": 150
+  },
+  "unsure_as_yes": {
+   "ci_hi": 0.62376639110521,
+   "ci_lo": 0.4741604628260999,
+   "estimate": 0.5470706961991604,
+   "n": 150
+  }
+ },
+ "material": {
+  "audit_config": "d8b58d88db2c8bf27ede49e7dff698026ee03f7efce23d6d6561c0a1fe65bb25",
+  "items": "0d4f7fe860f3625c4a2b411f019226af9fd08873b169b52b89dc6ff8bc94855f",
+  "n_boot": 2000,
+  "responses": "69d56620517aaa79182f485a6f7e0f14fee2890911c0a3af0eae8b7549d9dbe5",
+  "task": "precision_microsoft"
+ },
+ "strata": [
+  {
+   "frame_n": 548,
+   "n_items": 18,
+   "no": 6,
+   "p_yes": 0.6666666666666666,
+   "stratum": "agree_chan0",
+   "unanswered": 0,
+   "unsure": 0,
+   "wilson_hi": 0.837212252491663,
+   "wilson_lo": 0.43749467295945105,
+   "yes": 12
+  },
+  {
+   "frame_n": 1647,
+   "n_items": 24,
+   "no": 5,
+   "p_yes": 0.782608695652174,
+   "stratum": "agree_chan1",
+   "unanswered": 0,
+   "unsure": 1,
+   "wilson_hi": 0.9033602197341379,
+   "wilson_lo": 0.5809651698373599,
+   "yes": 18
+  },
+  {
+   "frame_n": 3128,
+   "n_items": 29,
+   "no": 4,
+   "p_yes": 0.8620689655172413,
+   "stratum": "agree_chan2",
+   "unanswered": 0,
+   "unsure": 0,
+   "wilson_hi": 0.9450256003588804,
+   "wilson_lo": 0.6944100627964798,
+   "yes": 25
+  },
+  {
+   "frame_n": 1122,
+   "n_items": 21,
+   "no": 13,
+   "p_yes": 0.3157894736842105,
+   "stratum": "ms_only_chan0",
+   "unanswered": 0,
+   "unsure": 2,
+   "wilson_hi": 0.5398959232467253,
+   "wilson_lo": 0.1536437908779228,
+   "yes": 6
+  },
+  {
+   "frame_n": 2435,
+   "n_items": 27,
+   "no": 22,
+   "p_yes": 0.12,
+   "stratum": "ms_only_chan1",
+   "unanswered": 0,
+   "unsure": 2,
+   "wilson_hi": 0.2995579392092732,
+   "wilson_lo": 0.04166817150440358,
+   "yes": 3
+  },
+  {
+   "frame_n": 4045,
+   "n_items": 31,
+   "no": 17,
+   "p_yes": 0.34615384615384615,
+   "stratum": "ms_only_chan2",
+   "unanswered": 0,
+   "unsure": 5,
+   "wilson_hi": 0.5377942881118918,
+   "wilson_lo": 0.1941223032294052,
+   "yes": 9
+  }
+ ],
+ "task": "precision_microsoft",
+ "test_access": {
+  "entry": {
+   "eval_cfghash": "d504ed6d8cc9",
+   "note": "nakkhu audit estimate",
+   "prereg_sha256": "89baaed3e19554db599b510219c94285880820d4b840a7a0e76478d2150253ba",
+   "run": "audit/precision_microsoft",
+   "split_sha256": "52786e81a91046ed4ca5e6db33c8767aeb9aa098b6d745b8e7c571f9957309ef",
+   "utc": "2026-10-16T18:01:29Z"
+  },
+  "flag_reason": "",
+  "flagged": false,
+  "prior_accesses": 0
+ }
+}

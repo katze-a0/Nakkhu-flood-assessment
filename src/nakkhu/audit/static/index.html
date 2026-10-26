@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Building audit</title>
+<link rel="icon" href="data:,">
+<style>
+  :root {
+    --bg: #15171a; --panel: #1f2226; --line: #33373d; --text: #eceef0; --muted: #9aa1a9;
+    --yes: #2f8f5b; --no: #b0473f; --unsure: #5b6470; --accent: #d9b44a;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
+    font: 16px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  body { display: flex; flex-direction: column; align-items: center; }
+  header { width: 100%; max-width: 980px; padding: 10px 16px 0; }
+  .bar { height: 8px; background: var(--panel); border-radius: 4px; overflow: hidden; }
+  .bar > div { height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+  .meta { display: flex; justify-content: space-between; color: var(--muted); font-size: 14px;
+    margin-top: 6px; font-variant-numeric: tabular-nums; }
+  main { flex: 1; width: 100%; max-width: 980px; display: flex; flex-direction: column;
+    align-items: center; padding: 8px 16px 16px; gap: 12px; }
+  #question { font-size: 24px; font-weight: 600; text-align: center; min-height: 34px; }
+  #question.followup { color: var(--accent); }
+  #msg { min-height: 22px; color: var(--accent); font-size: 17px; font-weight: 600;
+    text-align: center; }
+  #chip.clicking { cursor: crosshair; outline: 3px solid var(--accent); }
+  .chipwrap { position: relative; display: flex; justify-content: center; align-items: center;
+    flex: 1; min-height: 0; width: 100%; }
+  #chip { max-width: 100%; max-height: calc(100vh - 230px); border-radius: 6px;
+    image-rendering: auto; visibility: hidden; background: #000; }
+  .buttons { display: flex; gap: 14px; width: 100%; max-width: 760px; }
+  .buttons button { flex: 1; border: 0; border-radius: 10px; padding: 16px 10px; color: #fff;
+    font-size: 22px; font-weight: 650; cursor: pointer; }
+  .buttons button small { display: block; font-size: 13px; font-weight: 500; opacity: .8; }
+  #b-no { background: var(--no); } #b-unsure { background: var(--unsure); }
+  #b-yes { background: var(--yes); }
+  .buttons button:disabled { opacity: .35; cursor: default; }
+  .hint { color: var(--muted); font-size: 13px; text-align: center; }
+  .overlay { position: fixed; inset: 0; background: rgba(10, 11, 13, .94); display: none;
+    align-items: center; justify-content: center; padding: 16px; z-index: 10; }
+  .overlay.on { display: flex; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+    max-width: 920px; width: 100%; max-height: 100%; overflow: auto; padding: 22px 26px; }
+  .card h1 { margin: 0 0 6px; font-size: 24px; }
+  .card h2 { margin: 18px 0 8px; font-size: 17px; color: var(--muted); font-weight: 600; }
+  .card ul { margin: 6px 0; padding-left: 20px; }
+  .card li { margin: 4px 0; }
+  .card li.strong { color: var(--accent); font-weight: 700; }
+  .prior { display: none; align-items: center; justify-content: center; gap: 8px 18px;
+    flex-wrap: wrap; border: 2px dashed var(--accent); border-radius: 8px; padding: 6px 14px;
+    font-size: 17px; max-width: 760px; width: 100%; }
+  .prior.on { display: flex; }
+  .prior .tag { color: var(--accent); font-weight: 700; font-size: 13px; letter-spacing: .06em;
+    text-transform: uppercase; }
+  .prior b.yes { color: #7fd3a2; } .prior b.no { color: #f09a92; }
+  .prior b.unsure, .prior b.none { color: var(--muted); }
+  body.redo #chip { max-height: calc(100vh - 274px); }
+  .redo-note { margin-top: 10px; color: var(--accent); font-weight: 600; }
+  .pace-note { margin-top: 10px; font-size: 18px; font-weight: 600; }
+  #msg.warn { color: #f0b46a; border: 2px solid #f0b46a; border-radius: 8px; padding: 4px 12px; }
+  .keys { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 6px; }
+  kbd { display: inline-block; min-width: 26px; padding: 2px 7px; border: 1px solid var(--line);
+    border-bottom-width: 3px; border-radius: 5px; background: #2a2e33; font: 600 14px ui-monospace,
+    Consolas, monospace; text-align: center; }
+  .examples { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px; }
+  .examples figure { margin: 0; }
+  .examples img { width: 100%; border-radius: 6px; display: block; }
+  .examples figcaption { font-size: 14px; margin-top: 3px; text-align: center; font-weight: 600; }
+  .examples .yes figcaption { color: #7fd3a2; } .examples .no figcaption { color: #f09a92; }
+  .go { margin-top: 18px; font-size: 18px; text-align: center; }
+  .big { font-size: 22px; text-align: center; }
+</style>
+</head>
+<body>
+<header>
+  <div class="bar"><div id="bar"></div></div>
+  <div class="meta"><span id="count">-</span><span id="left"></span><span id="clock">0:00</span></div>
+</header>
+<main>
+  <div id="question"></div>
+  <div id="msg"></div>
+  <div class="chipwrap"><img id="chip" alt="image to judge" draggable="false"></div>
+  <div id="prior" class="prior" aria-live="polite"></div>
+  <div class="buttons">
+    <button id="b-no"><span id="l-no">No</span><small>F</small></button>
+    <button id="b-unsure"><span id="l-unsure">Unsure</span><small>Space</small></button>
+    <button id="b-yes"><span id="l-yes">Yes</span><small>J</small></button>
+  </div>
+  <div class="hint"><kbd>Backspace</kbd> undo &nbsp; <kbd>Esc</kbd> pause &nbsp; <kbd>?</kbd> instructions
+    &nbsp; Every answer is saved at once; you can close the tab any time.</div>
+</main>
+
+<div class="overlay on" id="help"><div class="card">
+  <h1>One image at a time: answer the question</h1>
+  <div id="help-q" class="big"></div>
+  <div id="help-redo" class="redo-note" hidden>Redo pass: your previous answer for each image
+    is shown above the buttons.</div>
+  <div id="help-pace" class="pace-note" hidden></div>
+  <h2>Rules</h2>
+  <ul id="help-rules"></ul>
+  <h2>Keys</h2>
+  <div class="keys">
+    <span><kbd>J</kbd> <span id="k-yes">Yes</span></span>
+    <span><kbd>F</kbd> <span id="k-no">No</span></span>
+    <span><kbd>Space</kbd> <span id="k-unsure">Unsure</span></span>
+    <span><kbd>Backspace</kbd> undo last</span>
+    <span><kbd>Esc</kbd> pause</span>
+  </div>
+  <div id="ex-block">
+    <h2>Examples (from outside the audit area)</h2>
+    <div class="examples" id="examples"></div>
+  </div>
+  <div class="go" id="help-go">Press <kbd>Enter</kbd> to start</div>
+</div></div>
+
+<div class="overlay" id="pause"><div class="card big">
+  Paused. Press <kbd>Esc</kbd> to continue.<br><br>
+  <span class="hint" id="pause-hint">You can also close the tab: run the same command later and it resumes here.</span>
+</div></div>
+
+<div class="overlay" id="note"><div class="card big" id="note-text"></div></div>
+
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+let S = null, chipSrc = "", shownAt = 0, pausedAt = 0, pausedMs = 0, paused = false;
+let busy = false, lockUntil = 0, helpOpen = true, idleTimer = null, clickMode = false;
+const IDLE_MS = 45000, LOCK_MS = 200;
+const preload = new Map();   // chip URL -> Promise of an object URL (chips are no-store)
+const KEEP = 40;
+
+function fetchChip(url) {
+  if (!preload.has(url)) {
+    preload.set(url, fetch(url, {cache: "no-store"})
+      .then((r) => r.ok ? r.blob() : null)
+      .then((b) => b ? URL.createObjectURL(b) : url)
+      .catch(() => url));
+    while (preload.size > KEEP) {
+      const [old, p] = preload.entries().next().value;
+      if (old === chipSrc) break;
+      preload.delete(old);
+      p.then((u) => { if (u.startsWith("blob:")) URL.revokeObjectURL(u); });
+    }
+  }
+  return preload.get(url);
+}
+
+function showChip(url) {
+  fetchChip(url).then((src) => {
+    if (chipSrc !== url) return;
+    const img = $("chip");
+    if (img.src === src && img.complete) startItem(); else img.src = src;
+  });
+}
+
+async function api(path, body) {
+  const opts = body === undefined ? {} : {method: "POST",
+    headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)};
+  const r = await fetch(path, opts);
+  return r.json();
+}
+
+function fmt(ms) {
+  const s = Math.floor(ms / 1000), m = Math.floor(s / 60);
+  return m + ":" + String(s % 60).padStart(2, "0");
+}
+
+function runningMs() {
+  if (!shownAt) return 0;
+  const now = paused ? pausedAt : performance.now();
+  return Math.max(0, now - shownAt - pausedMs);
+}
+
+function setHelp(s) {
+  $("help-q").textContent = s.question || "";
+  $("help-rules").innerHTML = "";
+  for (const line of s.help || []) {
+    const li = document.createElement("li"); li.textContent = line;
+    if (/greenhouse/i.test(line)) li.className = "strong";
+    $("help-rules").appendChild(li);
+  }
+  $("help-redo").hidden = !s.redo;
+  $("help-pace").hidden = !s.pace;
+  $("help-pace").textContent = s.pace ? s.pace.text : "";
+  if (s.remote) {
+    $("pause-hint").textContent = "You can also close the tab: open the same link later and " +
+      "it resumes here.";
+  }
+  const keys = s.keys || {};
+  for (const k of ["yes", "no", "unsure"]) {
+    if (keys[k]) { $("k-" + k).textContent = keys[k]; $("l-" + k).textContent = keys[k]; }
+  }
+  const ex = $("examples"); ex.innerHTML = "";
+  for (const e of s.examples || []) {
+    const f = document.createElement("figure");
+    f.className = e.answer.toLowerCase().startsWith("yes") ? "yes" : "no";
+    const img = document.createElement("img"); img.src = e.src; img.alt = e.answer;
+    const c = document.createElement("figcaption"); c.textContent = e.answer;
+    f.append(img, c); ex.appendChild(f);
+  }
+  $("ex-block").style.display = (s.examples || []).length ? "" : "none";
+}
+
+function note(html) { $("note-text").innerHTML = html; $("note").classList.add("on"); }
+
+function render(s) {
+  S = s;
+  const pct = s.total ? (100 * s.done / s.total) : 0;
+  $("bar").style.width = pct.toFixed(1) + "%";
+  $("count").textContent = s.done + " / " + s.total;
+  $("left").textContent = s.remaining_min == null ? "" :
+    "about " + Math.max(1, Math.round(s.remaining_min)) + " min left";
+  $("note").classList.remove("on");
+  if (s.phase === "stopped") { note(s.message); return; }
+  if (s.phase === "done") {
+    note(s.remote ? "All done. Thank you!<br><br><span class='hint'>You can close this tab." +
+         "</span>" : "All done for this part. Thank you.<br><br><span class='hint'>Close the " +
+         "tab and stop the server with Ctrl+C.</span>"); return;
+  }
+  if (s.phase === "pilot_done") {
+    note((s.message || "Pilot done.") + "<br><br>Press <kbd>Enter</kbd> to continue, or close " +
+         "the tab to stop for now (it resumes here)."); return;
+  }
+  if (!s.click_refused) setClickMode(false);
+  $("msg").textContent = s.message || (clickMode ? "Click the roof inside the circle " +
+    "(Backspace cancels)." : "");
+  $("msg").classList.toggle("warn", !!s.pace_warning);
+  $("question").textContent = s.question;
+  $("question").classList.toggle("followup", s.qid === "followup");
+  showPrior(s);
+  for (const k of ["yes", "no", "unsure"]) $("l-" + k).textContent = s.keys[k];
+  if (s.chip !== chipSrc) {
+    chipSrc = s.chip; shownAt = 0; $("chip").style.visibility = "hidden"; showChip(s.chip);
+  } else if (!s.click_refused) {
+    startItem();
+  }
+  for (const url of s.prefetch || []) fetchChip(url);
+}
+
+function showPrior(s) {
+  const box = $("prior"); box.innerHTML = "";
+  document.body.classList.toggle("redo", !!s.redo);
+  if (!s.redo || !s.prior) { box.classList.remove("on"); return; }
+  const tag = document.createElement("span"); tag.className = "tag"; tag.textContent = "Redo";
+  box.appendChild(tag);
+  for (const p of s.prior) {
+    const span = document.createElement("span"); span.textContent = p.label + ": ";
+    const b = document.createElement("b"); b.className = p.value || "none"; b.textContent = p.text;
+    span.appendChild(b); box.appendChild(span);
+  }
+  box.classList.add("on");
+}
+
+function startItem() {
+  shownAt = performance.now(); pausedMs = 0; lockUntil = shownAt + LOCK_MS;
+  $("chip").style.visibility = paused ? "hidden" : "visible";
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => { if (!paused && !helpOpen) setPause(true); }, IDLE_MS);
+}
+
+$("chip").addEventListener("load", startItem);
+
+function setClickMode(on) {
+  clickMode = on;
+  $("chip").classList.toggle("clicking", on);
+  $("msg").textContent = on ? "Click the roof inside the circle (Backspace cancels)." : "";
+}
+
+async function answer(a, click) {
+  if (!S || S.phase !== "run" || busy || paused || helpOpen) return;
+  if (performance.now() < lockUntil || !shownAt) return;
+  if (a === "yes" && S.click_on_yes && !click) { setClickMode(true); return; }
+  if (a !== "yes" && clickMode) setClickMode(false);
+  busy = true;
+  try {
+    const ms = Math.round(runningMs());
+    const body = {pos: S.pos, qid: S.qid, answer: a, ms: ms};
+    if (click) body.click = click;
+    render(await api("api/answer", body));
+  } finally { busy = false; }
+}
+
+$("chip").addEventListener("click", (e) => {
+  if (!clickMode) return;
+  const img = $("chip"), r = img.getBoundingClientRect();
+  const x = (e.clientX - r.left) * img.naturalWidth / r.width;
+  const y = (e.clientY - r.top) * img.naturalHeight / r.height;
+  answer("yes", {x_px: x, y_px: y});
+});
+
+async function undo() {
+  if (!S || busy || paused || helpOpen || !S.can_undo) return;
+  busy = true;
+  try { chipSrc = ""; render(await api("api/undo", {})); } finally { busy = false; }
+}
+
+async function setPause(on) {
+  if (on === paused) return;
+  paused = on;
+  if (on) { pausedAt = performance.now(); $("pause").classList.add("on"); }
+  else {
+    if (shownAt) pausedMs += performance.now() - pausedAt;
+    $("pause").classList.remove("on");
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => { if (!paused && !helpOpen) setPause(true); }, IDLE_MS);
+  }
+  $("chip").style.visibility = on ? "hidden" : (shownAt ? "visible" : "hidden");
+  api("api/pause", {paused: on});
+}
+
+function closeHelp() {
+  helpOpen = false; $("help").classList.remove("on");
+  if (S && S.phase === "run" && shownAt) startItem();   // the item's clock restarts
+}
+
+function openHelp() {
+  helpOpen = true; $("help").classList.add("on");
+}
+
+document.addEventListener("keydown", async (e) => {
+  if (e.repeat || e.ctrlKey || e.altKey || e.metaKey) return;
+  const k = e.key;
+  if (helpOpen) {
+    if (k === "Enter" || k === "Escape" || k === "?") { e.preventDefault(); closeHelp(); }
+    return;
+  }
+  if (S && S.phase === "pilot_done" && k === "Enter") {
+    e.preventDefault(); chipSrc = ""; render(await api("api/state")); return;
+  }
+  if (k === "Escape") { e.preventDefault(); setPause(!paused); return; }
+  if (paused) return;
+  if (k === "?" || k === "h" || k === "H") { e.preventDefault(); openHelp(); return; }
+  if (k === "j" || k === "J") { e.preventDefault(); answer("yes"); }
+  else if (k === "f" || k === "F") { e.preventDefault(); answer("no"); }
+  else if (k === " ") { e.preventDefault(); answer("unsure"); }
+  else if (k === "Backspace") {
+    e.preventDefault();
+    if (clickMode) setClickMode(false); else undo();
+  }
+});
+
+$("b-yes").addEventListener("click", (e) => { e.currentTarget.blur(); answer("yes"); });
+$("b-no").addEventListener("click", (e) => { e.currentTarget.blur(); answer("no"); });
+$("b-unsure").addEventListener("click", (e) => { e.currentTarget.blur(); answer("unsure"); });
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden && !helpOpen) setPause(true);
+});
+
+setInterval(() => {
+  if (S) $("clock").textContent = "this sitting " + fmt(S.sitting_ms + runningMs());
+}, 500);
+
+(async () => {
+  const s = await api("api/state");
+  setHelp(s);
+  render(s);
+})();
+</script>
+</body>
+</html>

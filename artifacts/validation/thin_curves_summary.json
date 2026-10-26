@@ -1,0 +1,616 @@
+{
+  "curves": {
+    "pr_curves": [
+      {
+        "ap_full": 0.19710559942549177,
+        "ap_thin": 0.19763158040427384,
+        "inventory": "detector_final",
+        "kept": 263,
+        "non_finite_dropped": 0,
+        "points": 3287,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.18511637753979052,
+        "ap_thin": 0.18556960668008657,
+        "inventory": "detector_final",
+        "kept": 267,
+        "non_finite_dropped": 0,
+        "points": 4072,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.350400543943646,
+        "ap_thin": 0.35103329042953235,
+        "inventory": "google_v3",
+        "kept": 351,
+        "non_finite_dropped": 0,
+        "points": 3972,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.3204037968357385,
+        "ap_thin": 0.32094261065683694,
+        "inventory": "google_v3",
+        "kept": 370,
+        "non_finite_dropped": 0,
+        "points": 4863,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.3259879144539859,
+        "ap_thin": 0.32639077645761594,
+        "inventory": "google_v3_uncut",
+        "kept": 550,
+        "non_finite_dropped": 0,
+        "points": 5017,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.30269732016735035,
+        "ap_thin": 0.3029997523643073,
+        "inventory": "google_v3_uncut",
+        "kept": 597,
+        "non_finite_dropped": 0,
+        "points": 6132,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.3167076232179199,
+        "ap_thin": 0.31718980729503177,
+        "inventory": "microsoft",
+        "kept": 329,
+        "non_finite_dropped": 0,
+        "points": 3727,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.28819118526188264,
+        "ap_thin": 0.2888169235644734,
+        "inventory": "microsoft",
+        "kept": 345,
+        "non_finite_dropped": 0,
+        "points": 4561,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.368863093361659,
+        "ap_thin": 0.36992769139109516,
+        "inventory": "microsoft",
+        "kept": 60,
+        "non_finite_dropped": 0,
+        "points": 229,
+        "reference": "R1-aud",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.2357736799637804,
+        "ap_thin": 0.2359741433616089,
+        "inventory": "osm",
+        "kept": 159,
+        "non_finite_dropped": 0,
+        "points": 2673,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.2041606018726403,
+        "ap_thin": 0.20434077849936572,
+        "inventory": "osm",
+        "kept": 167,
+        "non_finite_dropped": 0,
+        "points": 3409,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.23663472566340207,
+        "ap_thin": 0.23708550068621953,
+        "inventory": "seed0",
+        "kept": 314,
+        "non_finite_dropped": 0,
+        "points": 3758,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.21386033586444522,
+        "ap_thin": 0.21426926835565124,
+        "inventory": "seed0",
+        "kept": 332,
+        "non_finite_dropped": 0,
+        "points": 4641,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.1959002780153384,
+        "ap_thin": 0.19652668382322785,
+        "inventory": "seed1",
+        "kept": 245,
+        "non_finite_dropped": 0,
+        "points": 3444,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.18607183917616915,
+        "ap_thin": 0.18666381147631989,
+        "inventory": "seed1",
+        "kept": 262,
+        "non_finite_dropped": 0,
+        "points": 4264,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.20594349580873134,
+        "ap_thin": 0.2064664441632297,
+        "inventory": "seed2",
+        "kept": 259,
+        "non_finite_dropped": 0,
+        "points": 3283,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.18611862040533794,
+        "ap_thin": 0.18659963269230262,
+        "inventory": "seed2",
+        "kept": 275,
+        "non_finite_dropped": 0,
+        "points": 4106,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.20653134325457648,
+        "ap_thin": 0.2069815199284955,
+        "inventory": "seed3",
+        "kept": 274,
+        "non_finite_dropped": 0,
+        "points": 3413,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.18765435155983043,
+        "ap_thin": 0.1880180990083407,
+        "inventory": "seed3",
+        "kept": 277,
+        "non_finite_dropped": 0,
+        "points": 4227,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.20913734768931025,
+        "ap_thin": 0.20981594353796013,
+        "inventory": "seed4",
+        "kept": 306,
+        "non_finite_dropped": 0,
+        "points": 3610,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.1953512278277552,
+        "ap_thin": 0.1958420275074562,
+        "inventory": "seed4",
+        "kept": 347,
+        "non_finite_dropped": 0,
+        "points": 4450,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.3496828879737114,
+        "ap_thin": 0.3500585736638911,
+        "inventory": "L2_seed0",
+        "kept": 428,
+        "non_finite_dropped": 0,
+        "points": 3976,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.3623518739818598,
+        "ap_thin": 0.36276928826338034,
+        "inventory": "L2_seed0",
+        "kept": 466,
+        "non_finite_dropped": 0,
+        "points": 4698,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.40390578105306224,
+        "ap_thin": 0.40442109755727856,
+        "inventory": "L2_seed1",
+        "kept": 398,
+        "non_finite_dropped": 0,
+        "points": 3839,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.40986156316578276,
+        "ap_thin": 0.4102915473364709,
+        "inventory": "L2_seed1",
+        "kept": 430,
+        "non_finite_dropped": 0,
+        "points": 4493,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.3341731681712623,
+        "ap_thin": 0.3345610390225792,
+        "inventory": "L2_seed2",
+        "kept": 339,
+        "non_finite_dropped": 0,
+        "points": 3772,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.32387682229746745,
+        "ap_thin": 0.32419009929038295,
+        "inventory": "L2_seed2",
+        "kept": 365,
+        "non_finite_dropped": 0,
+        "points": 4522,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.3640676385641798,
+        "ap_thin": 0.3646426661311191,
+        "inventory": "overture",
+        "kept": 516,
+        "non_finite_dropped": 0,
+        "points": 4862,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "ap_full": 0.35321592071160834,
+        "ap_thin": 0.3537084936210725,
+        "inventory": "overture",
+        "kept": 571,
+        "non_finite_dropped": 0,
+        "points": 5935,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      }
+    ],
+    "roc_curves": [
+      {
+        "auc_full": 0.8315300350184072,
+        "auc_thin": 0.8315286948574002,
+        "inventory": "detector_final",
+        "kept": 257,
+        "non_finite_dropped": 0,
+        "points": 3287,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.8469313704621908,
+        "auc_thin": 0.8469305879014014,
+        "inventory": "detector_final",
+        "kept": 257,
+        "non_finite_dropped": 0,
+        "points": 4072,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.8884231785357091,
+        "auc_thin": 0.8884234952377514,
+        "inventory": "google_v3",
+        "kept": 331,
+        "non_finite_dropped": 0,
+        "points": 3972,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.8887161952516657,
+        "auc_thin": 0.8887145753402125,
+        "inventory": "google_v3",
+        "kept": 353,
+        "non_finite_dropped": 0,
+        "points": 4863,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.888837058729356,
+        "auc_thin": 0.8888375309859349,
+        "inventory": "google_v3_uncut",
+        "kept": 496,
+        "non_finite_dropped": 0,
+        "points": 5017,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.88640858417204,
+        "auc_thin": 0.8864087016372832,
+        "inventory": "google_v3_uncut",
+        "kept": 532,
+        "non_finite_dropped": 0,
+        "points": 6132,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.8866126641591228,
+        "auc_thin": 0.886612221443042,
+        "inventory": "microsoft",
+        "kept": 317,
+        "non_finite_dropped": 0,
+        "points": 3727,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.8836633108090582,
+        "auc_thin": 0.8836627850323283,
+        "inventory": "microsoft",
+        "kept": 315,
+        "non_finite_dropped": 0,
+        "points": 4561,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.8063615089182191,
+        "auc_thin": 0.8063615089182191,
+        "inventory": "microsoft",
+        "kept": 45,
+        "non_finite_dropped": 0,
+        "points": 229,
+        "reference": "R1-aud",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.8579420319215131,
+        "auc_thin": 0.857942031921513,
+        "inventory": "osm",
+        "kept": 162,
+        "non_finite_dropped": 0,
+        "points": 2673,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.8638293184883477,
+        "auc_thin": 0.8638277064604704,
+        "inventory": "osm",
+        "kept": 162,
+        "non_finite_dropped": 0,
+        "points": 3409,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.8481026050973386,
+        "auc_thin": 0.848104051971728,
+        "inventory": "seed0",
+        "kept": 297,
+        "non_finite_dropped": 0,
+        "points": 3758,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.8460398777310358,
+        "auc_thin": 0.8460418036598151,
+        "inventory": "seed0",
+        "kept": 327,
+        "non_finite_dropped": 0,
+        "points": 4641,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.8508196177879437,
+        "auc_thin": 0.8508196177879437,
+        "inventory": "seed1",
+        "kept": 247,
+        "non_finite_dropped": 0,
+        "points": 3444,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.8644893882480156,
+        "auc_thin": 0.8644918893975022,
+        "inventory": "seed1",
+        "kept": 254,
+        "non_finite_dropped": 0,
+        "points": 4264,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.8197433492838306,
+        "auc_thin": 0.8197433492838307,
+        "inventory": "seed2",
+        "kept": 260,
+        "non_finite_dropped": 0,
+        "points": 3283,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.8206902368340288,
+        "auc_thin": 0.8206888311517926,
+        "inventory": "seed2",
+        "kept": 275,
+        "non_finite_dropped": 0,
+        "points": 4106,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.8539619503419718,
+        "auc_thin": 0.8539614028806322,
+        "inventory": "seed3",
+        "kept": 265,
+        "non_finite_dropped": 0,
+        "points": 3413,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.8638589849657561,
+        "auc_thin": 0.8638581403215815,
+        "inventory": "seed3",
+        "kept": 263,
+        "non_finite_dropped": 0,
+        "points": 4227,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.8488700456635015,
+        "auc_thin": 0.8488711109747514,
+        "inventory": "seed4",
+        "kept": 289,
+        "non_finite_dropped": 0,
+        "points": 3610,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.8488518966908798,
+        "auc_thin": 0.8488528279629974,
+        "inventory": "seed4",
+        "kept": 332,
+        "non_finite_dropped": 0,
+        "points": 4450,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.8866903958275991,
+        "auc_thin": 0.8866910471522249,
+        "inventory": "L2_seed0",
+        "kept": 387,
+        "non_finite_dropped": 0,
+        "points": 3976,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.8905549151833141,
+        "auc_thin": 0.8905550180897808,
+        "inventory": "L2_seed0",
+        "kept": 418,
+        "non_finite_dropped": 0,
+        "points": 4698,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.9104367733391201,
+        "auc_thin": 0.9104392605767075,
+        "inventory": "L2_seed1",
+        "kept": 344,
+        "non_finite_dropped": 0,
+        "points": 3839,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.9109101411316636,
+        "auc_thin": 0.9109097630113455,
+        "inventory": "L2_seed1",
+        "kept": 379,
+        "non_finite_dropped": 0,
+        "points": 4493,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.908936285587942,
+        "auc_thin": 0.9089338222990164,
+        "inventory": "L2_seed2",
+        "kept": 316,
+        "non_finite_dropped": 0,
+        "points": 3772,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.9051618376264805,
+        "auc_thin": 0.9051609550619314,
+        "inventory": "L2_seed2",
+        "kept": 334,
+        "non_finite_dropped": 0,
+        "points": 4522,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.8844390267374169,
+        "auc_thin": 0.8844372677416288,
+        "inventory": "overture",
+        "kept": 467,
+        "non_finite_dropped": 0,
+        "points": 4862,
+        "reference": "R1",
+        "tolerance": 0.0001
+      },
+      {
+        "auc_full": 0.8906381181029779,
+        "auc_thin": 0.8906371243891252,
+        "inventory": "overture",
+        "kept": 507,
+        "non_finite_dropped": 0,
+        "points": 5935,
+        "reference": "R1-all-strips",
+        "tolerance": 0.0001
+      }
+    ]
+  },
+  "pr_curves_rows": {
+    "full": 117235,
+    "thin": 9862
+  },
+  "roc_curves_rows": {
+    "full": 117235,
+    "thin": 9188
+  },
+  "rule": {
+    "cap_points": 1000,
+    "group": [
+      "inventory",
+      "reference"
+    ],
+    "method": "Ramer-Douglas-Peucker, endpoints kept",
+    "space": {
+      "pr_curves": "(recall, precision)",
+      "roc_curves": "(fpr, tpr)"
+    },
+    "test_access": "none (reads only the source run's curve files)",
+    "tolerance_growth": "doubled until points <= cap",
+    "tolerance_start": 0.0001
+  },
+  "source_run": "validation/20261016T180632Z-90b19d17",
+  "source_sha256": {
+    "pr_curves.csv": "0b411e3ed6cf36f03c5a771b816c62360b6775090ba39b5a7188fa0e7c2e2e1b",
+    "roc_curves.csv": "f86fac1681d343a6c981cfc3cb868050a0ba43862517e486a19e7d79a78d33eb"
+  }
+}

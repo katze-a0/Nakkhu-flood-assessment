@@ -1,0 +1,5 @@
+# L4: intersection = Google instances (>= 0.65, i.e. all of v3) that match at least one
+# Microsoft instance; Google geometry.
+extends: common.yaml
+arm: L4
+rule: intersection

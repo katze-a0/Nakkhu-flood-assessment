@@ -1,0 +1,11 @@
+inventory,reference,method,brier,n_scored,weighted,lower_brier,n_low,n_moderate,n_high,n_very_high
+microsoft,R1,logistic,0.038304541154196556,6769,False,False,5350,904,515,0
+microsoft,R1,isotonic,0.034783379435800225,6769,False,True,5905,295,322,247
+microsoft,R1-all-strips,logistic,0.03306460320454184,8243,False,False,6753,1050,440,0
+microsoft,R1-all-strips,isotonic,0.02991359176148129,8243,False,True,7341,314,355,233
+microsoft,R1-aud,logistic,0.07137570545055412,264,True,False,98,70,96,0
+microsoft,R1-aud,isotonic,0.06573436968139382,264,True,True,158,14,31,61
+detector_final,R1,logistic,0.036538510891813224,6021,False,False,4836,1162,23,0
+detector_final,R1,isotonic,0.034234963827016386,6021,False,True,5331,249,341,100
+detector_final,R1-all-strips,logistic,0.029016830286097795,7605,False,False,6447,1158,0,0
+detector_final,R1-all-strips,isotonic,0.027198830848634864,7605,False,True,6889,354,290,72

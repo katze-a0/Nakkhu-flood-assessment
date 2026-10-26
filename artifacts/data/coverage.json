@@ -1,0 +1,185 @@
+{
+  "aoi_km2": {
+    "analysis_extent": 13.34,
+    "routing_domain": 590.48,
+    "training_domain": 143.6
+  },
+  "dem_valid_share_of_routing_domain": {
+    "dem_aw3d30": {
+      "cells_in_target": 700234,
+      "invalid_cells": 0,
+      "share_valid": 1.0
+    },
+    "dem_fabdem": {
+      "cells_in_target": 700542,
+      "invalid_cells": 0,
+      "share_valid": 1.0
+    },
+    "dem_gedtm30": {
+      "cells_in_target": 700234,
+      "invalid_cells": 0,
+      "share_valid": 1.0
+    },
+    "dem_glo30": {
+      "cells_in_target": 700542,
+      "invalid_cells": 0,
+      "share_valid": 1.0
+    },
+    "dem_hma8m_mos": {
+      "cells_in_target": 9227595,
+      "invalid_cells": 120357,
+      "share_valid": 0.986957
+    },
+    "dem_nasadem": {
+      "cells_in_target": 700234,
+      "invalid_cells": 0,
+      "share_valid": 1.0
+    },
+    "dem_srtmgl1": {
+      "cells_in_target": 700234,
+      "invalid_cells": 0,
+      "share_valid": 1.0
+    },
+    "hand_asf_glo30": {
+      "cells_in_target": 700542,
+      "invalid_cells": 0,
+      "share_valid": 1.0
+    }
+  },
+  "footprints": {
+    "fp_google_v3": {
+      "extent_centroid_within": 30486,
+      "training_domain_intersecting": 447154,
+      "with_confidence": 447154
+    },
+    "fp_microsoft": {
+      "extent_centroid_within": 12950,
+      "note": "Recount of the 2026-02-03 release file of quadkey 123131223 with the same rule gives 12950 as well (identical in both releases), so the -15 difference to the research value is not a release effect; the research counting script was not kept and cannot be rerun.",
+      "research_value_2026_02_03": 12965,
+      "training_domain_intersecting": 137593,
+      "with_confidence": 137593
+    },
+    "fp_osm": {
+      "extent_centroid_within": 10177,
+      "training_domain_intersecting": 226551,
+      "with_confidence": 0
+    },
+    "fp_overture": {
+      "extent_centroid_within": 22483,
+      "training_domain_intersecting": 345676,
+      "with_confidence": 119180
+    }
+  },
+  "imagery_valid_share_of_extent": {
+    "maxar_ge01_20241006_0500": {
+      "grid_m": 2.0,
+      "share": 0.999823,
+      "share_interior_3m": 1.0,
+      "target_cells": 3336016
+    },
+    "maxar_ge01_20241006_0600": {
+      "grid_m": 2.0,
+      "share": 0.999823,
+      "share_interior_3m": 1.0,
+      "target_cells": 3336016
+    },
+    "maxar_ge01_20241006_combined": {
+      "grid_m": 2.0,
+      "share": 0.999823,
+      "share_interior_3m": 1.0,
+      "target_cells": 3336016
+    },
+    "maxar_wv02_20240113": {
+      "grid_m": 2.0,
+      "share": 0.99985,
+      "share_interior_3m": 1.0,
+      "target_cells": 3336016
+    },
+    "maxar_wv03_20230404": {
+      "grid_m": 2.0,
+      "share": 0.999823,
+      "share_interior_3m": 1.0,
+      "target_cells": 3336016
+    },
+    "oam_dukuchhap_1": {
+      "grid_m": 1.0,
+      "share": 0.085926,
+      "share_interior_3m": 0.086532,
+      "target_cells": 13344182
+    },
+    "oam_dukuchhap_2": {
+      "grid_m": 1.0,
+      "share": 0.061821,
+      "share_interior_3m": 0.062257,
+      "target_cells": 13344182
+    },
+    "oam_dukuchhap_3": {
+      "grid_m": 1.0,
+      "share": 0.016194,
+      "share_interior_3m": 0.01619,
+      "target_cells": 13344182
+    }
+  },
+  "sentinel2_scl": {
+    "2024-09-23": {
+      "extent": {
+        "cells": 33380,
+        "cloud_classes": [
+          8,
+          9,
+          10
+        ],
+        "cloud_shadow_share": 0.0,
+        "cloud_share": 0.0,
+        "no_data_share": 0.0,
+        "shadow_classes": [
+          3
+        ]
+      },
+      "routing_domain": {
+        "cells": 1476219,
+        "cloud_classes": [
+          8,
+          9,
+          10
+        ],
+        "cloud_shadow_share": 0.010348,
+        "cloud_share": 0.009339,
+        "no_data_share": 0.083272,
+        "shadow_classes": [
+          3
+        ]
+      }
+    },
+    "2024-10-01": {
+      "extent": {
+        "cells": 33380,
+        "cloud_classes": [
+          8,
+          9,
+          10
+        ],
+        "cloud_shadow_share": 0.003475,
+        "cloud_share": 0.0,
+        "no_data_share": 0.0,
+        "shadow_classes": [
+          3
+        ]
+      },
+      "routing_domain": {
+        "cells": 1476219,
+        "cloud_classes": [
+          8,
+          9,
+          10
+        ],
+        "cloud_shadow_share": 0.102613,
+        "cloud_share": 0.257255,
+        "no_data_share": 0.0,
+        "shadow_classes": [
+          3
+        ]
+      }
+    }
+  }
+}

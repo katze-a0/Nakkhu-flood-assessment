@@ -1,0 +1,34 @@
+# Share of the 2024 flooded Nakkhu reach inside the analysis extent (`nakkhu aoi reach`).
+# Registered inputs only; no live lookups. Lengths and intersections in work_crs.
+#
+# The reach is a section of the OSM Nakkhu main stem: the ways in `stem_names` (the same names
+# as build.yaml catchment_c4.stem_names), merged into one line, cut at the points of that line
+# nearest two registered sites of flood_reach_sites_2024.yaml. The downstream end is always the
+# confluence. Two upstream ends are reported because the upstream limit of the 2024 flooding is
+# not established (plan 002 research: mapped water reaches at least about 27.588 N and the maps
+# end near 27.585 N):
+#   main_stem    Tikabhairab, the Lele-Nallu junction at the head of the main stem (research
+#                definition "flooded main stem, Tikabhairab to the confluence", 14.81 km)
+#   mapped_water the upstream end of UNOSAT-mapped water (map-read, +-100 m), i.e. the part with
+#                flood water in a published map; reported with the end moved +-100 m along the line
+schema_version: 1
+work_crs: EPSG:32645
+
+inputs:
+  lines: configs/aoi/osm_nakkhu_bagmati_lines.geojson        # aoi_osm_nakkhu_bagmati_lines
+  sites: configs/aoi/flood_reach_sites_2024.yaml              # aoi_flood_reach_sites_2024
+  extent: configs/aoi/aoi_recommended_analysis_extent.geojson  # aoi_analysis_extent
+
+stem_names: [Nakhu River, Nakhhu, Nallu Khola]
+downstream_site: Nakkhu-Bagmati confluence (OSM way 518744798 end)
+
+# A site farther than this from the merged stem is refused (it cannot mark a point on the reach).
+max_site_offset_m: 300.0
+
+reaches:
+  main_stem:
+    upstream_site: Tikabhairab (Lele-Nallu junction, head of main stem)
+    end_uncertainty_m: 0.0
+  mapped_water:
+    upstream_site: Upstream end of UNOSAT-mapped water (map-read, +-100 m)
+    end_uncertainty_m: 100.0
